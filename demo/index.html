@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Snap Carousel - 🚀</title>
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚀</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+      margin: 0;
+      padding: 5vw;
+      min-height: 100vh;
+    }
+
+    h1 {
+      margin-top: 0;
+    }
+
+    ul {
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+
+    li[data-slide] {
+      aspect-ratio: 2/1;
+      display: flex;
+      place-content: center;
+      place-items: center;
+      background: aliceblue;
+      color: cornflowerblue;
+    }
+
+    li[data-slide]::before {
+      content: attr(data-slide);
+      font-size: 3rem;
+      font-weight: bold;
+    }
+
+    small {
+      display: block;
+      margin-top: -1em;
+    }
+
+    pre code {
+      border-radius: 5px;
+    }
+
+    example {
+      display: flex;
+      width: 100%;
+      gap: 4rem;
+    }
+
+    example>div {
+      width: 100%;
+      max-width: 400px;
+      flex-shrink: 0;
+    }
+
+    example snap-carousel {
+      width: 100%;
+    }
+
+    snap-carousel::part(button),
+    button {
+      border: none;
+      padding: 0.5rem;
+      display: inline-block;
+      min-width: 1.8rem;
+      border-radius: 2px;
+      text-transform: uppercase;
+      font-weight: bold;
+      font-size: .7rem;
+      cursor: pointer;
+    }
+
+    snap-carousel::part(controls) {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: .5rem;
+      gap: .5rem;
+    }
+
+    snap-carousel::part(nav) {
+      display: flex;
+      margin-top: .5rem;
+      gap: .5rem;
+      justify-content: center;
+    }
+
+    snap-carousel::part(active) {
+      background: rebeccapurple;
+      color: #FFF;
+    }
+
+    @media screen and (max-width: 1024px) {
+      example {
+        flex-direction: column;
+      }
+
+      snap-carousel[padding] ul {
+        margin-inline: -5vw;
+        width: auto;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Snap Carousel</h1>
+    <p style="max-width: 800px;">Snap carousel is a lightweight vanilla js library for creating carousels. It is
+      based on the recent web technologies that are custom elements / scroll-snap / <a href="#">scroll-padding</a>.</p>
+  </header>
+  <example>
+    <div>
+      <h2>Basic example</h2>
+      <small>Every available options</small>
+      <pre><code class="language-html">&lt;snap-carousel
+    displayed="2"
+    per-page="1"
+    nav
+    controls
+    stop
+    gap="16"
+    padding="16"
+    behavior="smooth"
+    loop
+    clone
+&gt;
+&lt;/snap-carousel&gt;</code></pre>
+    </div>
+    <snap-carousel displayed="2" per-page="1" nav controls stop gap="16" padding="16" behavior="smooth" loop clone
+      debug>
+      <ul slot="scroller">
+        <li data-slide="1"></li>
+        <li data-slide="2"></li>
+        <li data-slide="3"></li>
+        <li data-slide="4"><a href="#">Focus</a></li>
+        <li data-slide="5"></li>
+        <li data-slide="6"></li>
+        <li data-slide="7"></li>
+        <li data-slide="8"></li>
+        <li data-slide="9"></li>
+        <li data-slide="10"></li>
+        <li data-slide="11"></li>
+        <li data-slide="12"></li>
+        <li data-slide="13"></li>
+        <li data-slide="14"></li>
+      </ul>
+    </snap-carousel>
+  </example>
+  <example>
+    <div>
+      <h2>Snap stop</h2>
+      <pre><code class="language-html">&lt;snap-carousel
+    displayed="2"
+    gap="16"
+    nav
+    controls
+    stop
+&gt;
+&lt;/snap-carousel&gt;</code></pre>
+    </div>
+    <snap-carousel displayed="2" nav controls stop gap="16">
+      <ul slot="scroller">
+        <li data-slide="1"></li>
+        <li data-slide="2"></li>
+        <li data-slide="3"></li>
+        <li data-slide="4"><a href="#">Focus</a></li>
+        <li data-slide="5"></li>
+        <li data-slide="6"></li>
+        <li data-slide="7"></li>
+        <li data-slide="8"></li>
+      </ul>
+    </snap-carousel>
+  </example>
+
+  <example>
+    <div>
+      <h2>Padding</h2>
+      <pre><code class="language-html">&lt;snap-carousel
+    displayed="2"
+    per-page="2"
+    gap="2.5vw"
+    padding="5vw"
+    controls
+    nav
+&gt;
+&lt;/snap-carousel&gt;</code></pre>
+    </div>
+    <snap-carousel displayed="2" per-page="2" controls gap="2.5vw" padding="5vw" nav>
+      <ul slot="scroller">
+        <li data-slide="1"></li>
+        <li data-slide="2"></li>
+        <li data-slide="3"></li>
+        <li data-slide="4"></li>
+        <li data-slide="5"></li>
+        <li data-slide="6"></li>
+        <li data-slide="7"></li>
+        <li data-slide="8"></li>
+      </ul>
+    </snap-carousel>
+  </example>
+
+  <example>
+    <div>
+      <h2>Custom Buttons</h2>
+      <pre><code class="language-html">&lt;snap-carousel
+    displayed="2"
+    gap="16"
+    controls
+    nav
+&gt;
+&lt;button slot="prev-buttons" direction="prev" modifier="2"&gt;SUPER PREV (-2)&lt;/button&gt;
+&lt;button slot="prev-buttons" direction="prev"&gt;PREV&lt;/button&gt;
+&lt;button slot="next-buttons"&gt;NEXT&lt;/button&gt;
+&lt;button slot="next-buttons" modifier="2"&gt;SUPER NEXT (+2)&lt;/button&gt;
+&lt;/snap-carousel&gt;</code></pre>
+    </div>
+    <snap-carousel displayed="2" controls gap="16" nav>
+      <ul slot="scroller">
+        <li data-slide="1"></li>
+        <li data-slide="2"></li>
+        <li data-slide="3"></li>
+        <li data-slide="4"></li>
+        <li data-slide="5"></li>
+        <li data-slide="6"></li>
+        <li data-slide="7"></li>
+        <li data-slide="8"></li>
+      </ul>
+      <button slot="prev-buttons" direction="prev" modifier="2">SUPER PREV (-2)</button>
+      <button slot="prev-buttons" direction="prev">PREV</button>
+      <button slot="next-buttons">NEXT</button>
+      <button slot="next-buttons" modifier="2">SUPER NEXT (+2)</button>
+    </snap-carousel>
+  </example>
+
+  <example>
+    <div>
+      <h2>Responsive</h2>
+      <pre><code class="language-html">&lt;snap-carousel gap="16" controls nav
+    responsive='[{"breakpoint": 1024, "config": {"controls": true, "displayed": 2, "perPage": 2, "loop": true} }]'
+&gt;
+&lt;/snap-carousel&gt;</code></pre>
+    </div>
+    <snap-carousel displayed="1" gap="16" nav
+      responsive='[{"breakpoint": 1024, "config": {"controls": true, "displayed": 2, "perPage": 2, "loop": true} }]'>
+      <ul slot="scroller">
+        <li data-slide="1"></li>
+        <li data-slide="2"></li>
+        <li data-slide="3"></li>
+        <li data-slide="4"></li>
+        <li data-slide="5"></li>
+        <li data-slide="6"></li>
+        <li data-slide="7"></li>
+        <li data-slide="8"></li>
+      </ul>
+    </snap-carousel>
+  </example>
+
+  <script src="snap-carousel.dev.js"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script>
+  <script>
+    hljs.highlightAll();
+  </script>
+</body>
+
+</html>
