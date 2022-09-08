@@ -118,18 +118,19 @@ class SnapCarousel extends HTMLElement {
     };
 
     // this.setAttribute('tabindex', -1);
-    this.setAttribute('aria-label', 'carousel');
     this.setAttribute('aria-roledescription', 'carousel');
 
-    scroller.role = 'group';
-    scroller.setAttribute('aria-label', 'scroller');
-    scroller.setAttribute('aria-live', 'Polite');
+    scroller.setAttribute('role', 'group');
+    scroller.setAttribute('aria-live', 'polite');
+    scroller.setAttribute('aria-atomic', 'false');
 
     // Store item index in a data attribute
     items.forEach((item, i) => {
       item.dataset.index = i;
-      item.setAttribute('aria-label', (i + 1) + ' of ' + items.length);
-      item.setAttribute('aria-roledescription', 'item');
+      item.setAttribute('aria-setsize', items.length);
+      item.setAttribute('aria-posinset', (i + 1));
+      item.setAttribute('aria-roledescription', 'slide');
+      item.setAttribute('role', 'listitem');
     });
 
     this._addGlobalStyles();
@@ -519,6 +520,7 @@ class SnapCarousel extends HTMLElement {
     }
 
     container.style.display = current.nav && this._state.pageCount > 1 ? '' : 'none';
+    container.setAttribute('role', 'tablist');
 
     if (current.nav && container) {
       for (let index = 0; index < this._state.pageCount; index++) {
@@ -532,19 +534,16 @@ class SnapCarousel extends HTMLElement {
    * @param {Number} index
    */
   _createMarker(index) {
-    const { items, pagination } = this._elements;
+    const { pagination } = this._elements;
     const { container, dots } = pagination;
-
     const dot = _document.createElement('button');
     dot.innerHTML = index + 1;
     dot.addEventListener('click', () => this.goTo(index));
     dot.type = 'button';
     dot.part = 'button nav-button';
     dot.role = 'tab';
-    dot.setAttribute('tabindex', -1);
-    dot.setAttribute('aria-setsize', items.length);
-    dot.setAttribute('aria-posinset', index);
-    dot.setAttribute('aria-controls', `carousel-item-${index}`);
+    dot.setAttribute('aria-controls', this._elements.scroller.id);
+    dot.setAttribute('aria-selected', false);
     container.append(dot);
     dots.push(dot);
   }
@@ -596,6 +595,7 @@ class SnapCarousel extends HTMLElement {
         if (!this._configs.current.controls) return;
         this.goTo(this._state.index + button.modifier);
       });
+      button.setAttribute('aria-controls', this._elements.scroller.id);
     });
   }
 
@@ -616,13 +616,13 @@ class SnapCarousel extends HTMLElement {
 
     if (next) {
       if (active) {
-        active.setAttribute('tabindex', -1);
+        active.setAttribute('tabindex', 0);
         active.setAttribute('aria-selected', false);
         active.part = 'button nav-button';
       }
 
       next.part = 'button nav-button active';
-      next.setAttribute('tabindex', 0);
+      next.setAttribute('tabindex', -1);
       next.setAttribute('aria-selected', true);
       pagination.active = next;
     }

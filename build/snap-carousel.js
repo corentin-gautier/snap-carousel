@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  var htmlTemplate = "<slot name=\"controls\"><div slot=\"controls\" part=\"controls\"><slot name=\"prev-buttons\"><button part=\"button control-button\" type=\"button\" direction=\"prev\" aria-label=\"Previous\">Previous</button></slot><slot name=\"next-buttons\"><button part=\"button control-button\" type=\"button\" aria-label=\"Next\">Next</button></slot></div></slot><slot name=\"scroller\"><ul></ul></slot><slot name=\"pagination\"><nav part=\"nav\"></nav></slot>";
+  var htmlTemplate = "<slot name=\"scroller\"><ul></ul></slot><slot name=\"controls\"><div slot=\"controls\" part=\"controls\"><slot name=\"prev-buttons\"><button part=\"button control-button\" type=\"button\" direction=\"prev\" aria-label=\"Previous\">Previous</button></slot><slot name=\"next-buttons\"><button part=\"button control-button\" type=\"button\" aria-label=\"Next\">Next</button></slot></div></slot><slot name=\"pagination\"><div part=\"nav\"></div></slot>";
 
   var css_248z$1 = "snap-carousel:not([scrollbar]) .snp-c__scroller::-webkit-scrollbar{display:none}.snp-c__scroller{display:flex}.snp-c__scroller>*{display:block;flex:0 0 auto;width:calc(100%/var(--sc-perpage, 1) - var(--sc-gap, 0) + var(--sc-gap, 0)/var(--sc-perpage, 1))}";
 
@@ -122,18 +122,19 @@
       };
 
       // this.setAttribute('tabindex', -1);
-      this.setAttribute('aria-label', 'carousel');
       this.setAttribute('aria-roledescription', 'carousel');
 
-      scroller.role = 'group';
-      scroller.setAttribute('aria-label', 'scroller');
-      scroller.setAttribute('aria-live', 'Polite');
+      scroller.setAttribute('role', 'group');
+      scroller.setAttribute('aria-live', 'polite');
+      scroller.setAttribute('aria-atomic', 'false');
 
       // Store item index in a data attribute
       items.forEach((item, i) => {
         item.dataset.index = i;
-        item.setAttribute('aria-label', (i + 1) + ' of ' + items.length);
-        item.setAttribute('aria-roledescription', 'item');
+        item.setAttribute('aria-setsize', items.length);
+        item.setAttribute('aria-posinset', (i + 1));
+        item.setAttribute('aria-roledescription', 'slide');
+        item.setAttribute('role', 'listitem');
       });
 
       this._addGlobalStyles();
@@ -523,6 +524,7 @@
       }
 
       container.style.display = current.nav && this._state.pageCount > 1 ? '' : 'none';
+      container.setAttribute('role', 'tablist');
 
       if (current.nav && container) {
         for (let index = 0; index < this._state.pageCount; index++) {
@@ -536,19 +538,16 @@
      * @param {Number} index
      */
     _createMarker(index) {
-      const { items, pagination } = this._elements;
+      const { pagination } = this._elements;
       const { container, dots } = pagination;
-
       const dot = _document.createElement('button');
       dot.innerHTML = index + 1;
       dot.addEventListener('click', () => this.goTo(index));
       dot.type = 'button';
       dot.part = 'button nav-button';
       dot.role = 'tab';
-      dot.setAttribute('tabindex', -1);
-      dot.setAttribute('aria-setsize', items.length);
-      dot.setAttribute('aria-posinset', index);
-      dot.setAttribute('aria-controls', `carousel-item-${index}`);
+      dot.setAttribute('aria-controls', this._elements.scroller.id);
+      dot.setAttribute('aria-selected', false);
       container.append(dot);
       dots.push(dot);
     }
@@ -600,6 +599,7 @@
           if (!this._configs.current.controls) return;
           this.goTo(this._state.index + button.modifier);
         });
+        button.setAttribute('aria-controls', this._elements.scroller.id);
       });
     }
 
@@ -620,13 +620,13 @@
 
       if (next) {
         if (active) {
-          active.setAttribute('tabindex', -1);
+          active.setAttribute('tabindex', 0);
           active.setAttribute('aria-selected', false);
           active.part = 'button nav-button';
         }
 
         next.part = 'button nav-button active';
-        next.setAttribute('tabindex', 0);
+        next.setAttribute('tabindex', -1);
         next.setAttribute('aria-selected', true);
         pagination.active = next;
       }

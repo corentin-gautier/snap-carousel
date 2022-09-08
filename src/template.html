@@ -1,3 +1,7 @@
+<slot name="scroller">
+  <ul></ul>
+</slot>
+
 <slot name="controls">
   <div slot="controls" part="controls">
     <slot name="prev-buttons">
@@ -8,9 +12,10 @@
     </slot>
   </div>
 </slot>
-<slot name="scroller">
-  <ul></ul>
-</slot>
+
 <slot name="pagination">
-  <nav part="nav"></nav>
+
+  <!-- Axe d'amélioration :
+    générer la part="nav" ou bien y ajouter le rôle="listitem" en js -->
+  <div part="nav"></nav>
 </slot>
