@@ -1,13 +1,14 @@
 snap-carousel:not([scrollbar]) .snp-c__scroller::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 .snp-c__scroller {
-    display: flex;
+  display: flex;
 }
 
 .snp-c__scroller > * {
-    width: calc((100% / var(--sc-perpage, 1)) - var(--sc-gap, 0) + (var(--sc-gap, 0) / var(--sc-perpage, 1)));
-    display: block;
-    flex: 0 0 auto;
+  width: calc((100% / var(--sc-perpage, 1)) - var(--sc-gap, 0) + (var(--sc-gap, 0) / var(--sc-perpage, 1)));
+  max-width: 100%;
+  display: block;
+  flex: 0 0 auto;
 }
