@@ -72,7 +72,9 @@ class SnapCarousel extends HTMLElement {
    */
   constructor() {
     super();
+  }
 
+  connectedCallback() {
     const template = _document.createElement('template');
 
     template.innerHTML = `<style>${hostStyles}</style>` + SnapCarousel._template;

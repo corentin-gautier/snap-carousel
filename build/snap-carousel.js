@@ -76,7 +76,9 @@
      */
     constructor() {
       super();
+    }
 
+    connectedCallback() {
       const template = _document.createElement('template');
 
       template.innerHTML = `<style>${css_248z}</style>` + SnapCarousel._template;
