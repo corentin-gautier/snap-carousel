@@ -196,7 +196,8 @@
         return this._maybeParse(this.attributes.options.value);
       }
       return Array.from(this.attributes).reduce((object, next) => {
-        const name = next.name.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+        let name = next.name.replace('data-', '');
+        name = name.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
         if (options.includes(name)) {
           object[name] = this._maybeParse(next.value);
         }
