@@ -50,6 +50,7 @@
 
     static get _defaultConfig() {
       return {
+        autoplay: 0,
         displayed: 1,
         perPage: 1,
         gap: 0,
@@ -61,6 +62,7 @@
         debug: false,
         behavior: 'smooth',
         stop: false,
+        usePause: true,
         responsive: []
       };
     }
@@ -120,6 +122,8 @@
         index: 0,
         itemsCount: items.length,
         pageCount: 0,
+        isVisible: false,
+        autoplayInterval: null,
         breakpoint: undefined
       };
 
@@ -141,8 +145,9 @@
 
       this._addGlobalStyles();
       this._identify();
+      this._setup();
+
       this._observe();
-      this._waitForWidth();
     }
 
     /**
@@ -180,9 +185,9 @@
     /**
      * Wait for the scroller to have width
      */
-    _waitForWidth() {
+    _waitForWidth(callback) {
       if (this._elements.scroller.clientWidth) {
-        this._setup();
+        callback();
       } else {
         requestAnimationFrame(() => {
           this._waitForWidth();
@@ -252,18 +257,20 @@
      * Setup everything
      */
     _init() {
-      this._setPages();
-      this._createStyles();
-      this._createPagination();
-      this._createControls();
-      this._computePadding();
-      this._updateState(0);
-      this._loop();
+      this._waitForWidth(() => {
+        this._setPages();
+        this._createStyles();
+        this._createPagination();
+        this._createControls();
+        this._computePadding();
+        this._updateState(0);
+        this._loop();
+      });
     }
 
     _computePadding() {
       // Store the computed padding of the scroller for later
-      this._state.computedPadding = parseInt(getComputedStyle(this._elements.scroller)['padding-left'], '10');
+      this._state.computedPadding = parseInt(getComputedStyle(this._elements.scroller)['padding-left'], 10);
     }
 
     /**
@@ -297,6 +304,29 @@
     _observe() {
       const { items, scroller } = this._elements;
 
+      const mio = new IntersectionObserver(obs => {
+        let entry = obs[0];
+        this._state.isVisible = entry.intersectionRatio > .1;
+        this._state.pause = !this._state.isVisible;
+        this._setPlayPause();
+      }, {
+        threshold: [.1, .9]
+      });
+
+      mio.observe(this);
+
+      if (this._configs.current.usePause) {
+        this.addEventListener('mouseenter', () => {
+          this._state.pause = true;
+          this._setPlayPause();
+        });
+
+        this.addEventListener('mouseleave', () => {
+          this._state.pause = false;
+          this._setPlayPause();
+        });
+      }
+
       const io = new IntersectionObserver(observations => {
         observations.forEach(obs => {
           obs.target.toggleAttribute('visible', obs.isIntersecting);
@@ -310,7 +340,6 @@
       items.forEach(i => io.observe(i));
 
       const mo = new MutationObserver(list => {
-        console.log(list);
         list.forEach(record => {
           if (record.type === 'attributes') {
             if (SnapCarousel._defaultConfigKeys.includes(record.attributeName.replace('data-', ''))) {
@@ -400,6 +429,7 @@
       }
 
       this._loop();
+      this._setPlayPause();
     }
 
     /**
@@ -714,6 +744,22 @@
      */
     _formatCssValue(value) {
       return typeof value === 'string' ? value : value + 'px';
+    }
+
+    _setPlayPause() {
+      if (!this._configs.current.autoplay) return;
+
+      if (!this._state.pause && this._state.isVisible) {
+        if (!this._state.autoplayInterval) {
+          this._state.autoplayInterval = setTimeout(() => {
+            this._state.autoplayInterval = null;
+            this.goTo(this._state.index + 1);
+          }, this._configs.current.autoplay);
+        }
+      } else {
+        clearTimeout(this._state.autoplayInterval);
+        this._state.autoplayInterval = null;
+      }
     }
 
     getInfos() {
