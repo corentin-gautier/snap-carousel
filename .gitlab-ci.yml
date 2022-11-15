@@ -10,6 +10,7 @@ deploy:npm-set:
     - apk add --update nodejs npm
     - npm install -g npm-cli-login
     - npm-cli-login -u "${LYCANTHROP_NPM_USER}" -p "${LYCANTHROP_NPM_TOKEN}" -e "${NPM_MAIL}" -r "${LYCANTHROP_NPM_REPO}" -s @consertotech
+    - npm whoami
     - npm adduser --registry="https://repo.consertotech.pro/repository/npm-dev/" --scope=@consertotech --always-auth
     - npm publish
   rules:
