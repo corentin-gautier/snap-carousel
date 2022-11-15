@@ -13,7 +13,7 @@ deploy:npm-set:
 #    - npm adduser --registry="https://repo.consertotech.pro/repository/npm-dev/" --scope=@consertotech --always-auth
     - echo "@consertotech:registry=https://repo.consertotech.pro/repository/npm-dev/" >> .npmrc
     - echo "//https://repo.consertotech.pro/repository/npm-dev/:_auth=hU?-M<o:vx3po9i" >> .npmrc
-#    - echo "//https://repo.consertotech.pro/repository/npm-dev/:username=agence_web_npm" >> ~/.npmrc
+    - echo "//https://repo.consertotech.pro/repository/npm-dev/:username=agence_web_npm" >> .npmrc
 #    - echo "//https://repo.consertotech.pro/repository/npm-dev/:email=nomail@conserto.pro" >> ~/.npmrc
     - echo "//https://repo.consertotech.pro/repository/npm-dev/:alway-auth=true" >> .npmrc
     - cat .npmrc
