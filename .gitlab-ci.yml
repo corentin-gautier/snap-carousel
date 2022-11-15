@@ -6,7 +6,7 @@ variables:
 deploy:npm-set:
   stage: deploy
   script:
-    - apt install nodejs npm
+    - apk add --update nodejs npm
     - npm set registry "${LYCANTHROP_NPM_REPO}"
     - npm config set -- '//${LYCANTHROP_NPM_REPO}/:_authToken' "${LYCANTHROP_NPM_TOKEN}"
     - npm publish
