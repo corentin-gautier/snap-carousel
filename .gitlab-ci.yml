@@ -9,10 +9,7 @@ deploy:npm-set:
   script:
     - apk add --update nodejs npm
     - npm install -g npm-cli-login
-    - echo "@consertotech:registry=https://repo.consertotech.pro/repository/npm-dev/" >> ~/.npmrc
-    - echo "//https://repo.consertotech.pro/repository/npm-dev/:_authToken=hU?-M<o:vx3po9i" >> ~/.npmrc
-    - echo "//https://repo.consertotech.pro/repository/npm-dev/:username=agence_web_npm" >> ~/.npmrc
-    - echo "//https://repo.consertotech.pro/repository/npm-dev/:email=nomail@conserto.pro" >> ~/.npmrc
+    - npm-cli-login -u "${LYCANTHROP_NPM_USER}" -p "${LYCANTHROP_NPM_TOKEN}" -e "${NPM_MAIL}" -r "${LYCANTHROP_NPM_REPO}" -s @consertotech
     - npm adduser --registry="https://repo.consertotech.pro/repository/npm-dev/" --scope=@consertotech --always-auth
     - npm publish
   rules:
