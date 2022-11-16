@@ -3,7 +3,7 @@ stages:
 
 variables:
   NPM_MAIL: nomail@conserto.pro
-  NPM_SCOPE: @consertotech
+  NPM_SCOPE: "@consertotech"
 
 deploy:npm-publish:
   stage: deploy
