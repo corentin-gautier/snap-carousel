@@ -3,21 +3,20 @@ stages:
 
 variables:
   NPM_MAIL: nomail@conserto.pro
+  NPM_SCOPE: @consertotech
 
-deploy:npm-set:
+deploy:npm-publish:
   stage: deploy
   script:
     - apk add --update nodejs npm
-    - npm install -g npm-cli-login
-#    - npm-cli-login -u "${LYCANTHROP_NPM_USER}" -p "${LYCANTHROP_NPM_TOKEN}" -e "${NPM_MAIL}" -r "${LYCANTHROP_NPM_REPO}" -s @consertotech
-#    - npm adduser --registry="https://repo.consertotech.pro/repository/npm-dev/" --scope=@consertotech --always-auth
-    - echo "@consertotech:registry=https://repo.consertotech.pro/repository/npm-dev/" >> .npmrc
-    - echo "//https://repo.consertotech.pro/repository/npm-dev/:_auth=hU?-M<o:vx3po9i" >> .npmrc
-    - echo "//https://repo.consertotech.pro/repository/npm-dev/:username=agence_web_npm" >> .npmrc
-#    - echo "//https://repo.consertotech.pro/repository/npm-dev/:email=nomail@conserto.pro" >> ~/.npmrc
-    - echo "//https://repo.consertotech.pro/repository/npm-dev/:alway-auth=true" >> .npmrc
-    - cat .npmrc
+    - npm install -g npm-cli-login && npm install -g npm-cli-adduser
+    - npm-cli-login -u "${LYCANTHROP_NPM_USER}" -p "${LYCANTHROP_NPM_TOKEN}" -e "${NPM_MAIL}" -r "${LYCANTHROP_NPM_REPO}" -s ${NPM_SCOPE}
+    - npm-cli-adduser -u "${LYCANTHROP_NPM_USER}" -p "${LYCANTHROP_NPM_TOKEN}" -e "${NPM_MAIL}" -r "${LYCANTHROP_NPM_REPO}"
     - npm publish
   rules:
     - if: $CI_COMMIT_TAG
+      when: on_success
+    - if: '$CI_COMMIT_REF_NAME =~ "develop|main"'
+      when: on_success
+
 
