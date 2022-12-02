@@ -14,7 +14,6 @@
 
 ::slotted([slot="scroller"]) {
     position: relative;
-    touch-action: pan-y;
     margin: 0;
     display: flex;
     gap: var(--sc-gap);

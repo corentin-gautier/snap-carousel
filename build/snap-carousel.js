@@ -5,7 +5,7 @@
 
   var css_248z$1 = "snap-carousel:not([scrollbar]) .snp-c__scroller::-webkit-scrollbar{display:none}.snp-c__scroller{display:flex}.snp-c__scroller>*{display:block;flex:0 0 auto;max-width:100%;width:calc(100%/var(--sc-perpage, 1) - var(--sc-gap, 0) + var(--sc-gap, 0)/var(--sc-perpage, 1))}";
 
-  var css_248z = ":host{display:block;position:relative;width:100%}:host(:not([scrollbar])) ::slotted([slot=scroller]){scrollbar-width:none}:host(:not([scrollbar])) ::slotted([slot=scroller])::-webkit-scrollbar{display:none}::slotted([slot=scroller]){display:flex;gap:var(--sc-gap);margin:0;overflow-x:auto;overscroll-behavior-x:contain;padding:0 var(--sc-padding)!important;position:relative;scroll-behavior:var(--sc-behavior);scroll-padding-inline:var(--sc-padding);scroll-snap-type:x mandatory;touch-action:pan-y}";
+  var css_248z = ":host{display:block;position:relative;width:100%}:host(:not([scrollbar])) ::slotted([slot=scroller]){scrollbar-width:none}:host(:not([scrollbar])) ::slotted([slot=scroller])::-webkit-scrollbar{display:none}::slotted([slot=scroller]){display:flex;gap:var(--sc-gap);margin:0;overflow-x:auto;overscroll-behavior-x:contain;padding:0 var(--sc-padding)!important;position:relative;scroll-behavior:var(--sc-behavior);scroll-padding-inline:var(--sc-padding);scroll-snap-type:x mandatory}";
 
   /**
    * SnapCarousel 🚀
