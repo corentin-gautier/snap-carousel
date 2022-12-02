@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.1](https://gitlab.consertotech.pro/lycanthrop/snap-carousel/compare/v1.2.0...v1.2.1) (2022-12-02)
+
+
+### Bug Fixes
+
+* remove pan-y ([e226d2d](https://gitlab.consertotech.pro/lycanthrop/snap-carousel/commit/e226d2d25ce8bb70f752bdc6318169d84b322eae))
+
 ## [1.2.0](https://gitlab.consertotech.pro/lycanthrop/snap-carousel/compare/v1.0.6...v1.2.0) (2022-11-15)
 
 
