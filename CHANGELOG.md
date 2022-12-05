@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://gitlab.consertotech.pro/lycanthrop/snap-carousel/compare/v1.2.1...v1.3.0) (2022-12-05)
+
+
+### Features
+
+* add pager ([f0ef9b1](https://gitlab.consertotech.pro/lycanthrop/snap-carousel/commit/f0ef9b1ea6b2cd6a3e662569f0f7e0414ad45268))
+
 ### [1.2.1](https://gitlab.consertotech.pro/lycanthrop/snap-carousel/compare/v1.2.0...v1.2.1) (2022-12-02)
 
 
