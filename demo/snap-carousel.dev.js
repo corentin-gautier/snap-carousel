@@ -3,7 +3,7 @@
 (function () {
   'use strict';
 
-  var htmlTemplate = "<slot name=\"scroller\"><ul></ul></slot><slot name=\"controls\"><div slot=\"controls\" part=\"controls\"><slot name=\"prev-buttons\"><button part=\"button control-button\" type=\"button\" direction=\"prev\" aria-label=\"Previous\">Previous</button></slot><slot name=\"next-buttons\"><button part=\"button control-button\" type=\"button\" aria-label=\"Next\">Next</button></slot></div></slot><slot name=\"pagination\"><div part=\"nav\"></div></slot>";
+  var htmlTemplate = "<slot name=\"scroller\"><ul></ul></slot><slot name=\"controls\"><div part=\"controls\"><div part=\"buttons\"><slot name=\"prev-buttons\"><button part=\"button control-button\" type=\"button\" direction=\"prev\" aria-label=\"Previous\">Previous</button></slot><slot name=\"next-buttons\"><button part=\"button control-button\" type=\"button\" aria-label=\"Next\">Next</button></slot></div><slot name=\"pagination\"><nav part=\"nav\"></nav></slot><slot name=\"pager\"><div part=\"pager\"><slot name=\"current\"><span part=\"current\"></span></slot><slot name=\"sep\"><span part=\"page-sep\">&nbsp;/&nbsp;</span></slot><slot name=\"total\"><span part=\"total\"></span></slot></div></slot></div></slot>";
 
   var css_248z$1 = "snap-carousel:not([scrollbar]) .snp-c__scroller::-webkit-scrollbar{display:none}.snp-c__scroller{display:flex}.snp-c__scroller>*{display:block;flex:0 0 auto;max-width:100%;width:calc(100%/var(--sc-perpage, 1) - var(--sc-gap, 0) + var(--sc-gap, 0)/var(--sc-perpage, 1))}";
 
@@ -59,6 +59,7 @@
         padding: 0,
         controls: false,
         nav: false,
+        pager: false,
         loop: false,
         clone: false,
         debug: false,
@@ -112,6 +113,12 @@
           container: null,
           dots: [],
           active: null
+        },
+        pager: {
+          container: null,
+          current: null,
+          sep: null,
+          total: null
         }
       };
 
@@ -263,6 +270,7 @@
         this._setPages();
         this._createStyles();
         this._createPagination();
+        this._createPager();
         this._createControls();
         this._computePadding();
         this._updateState(0);
@@ -443,6 +451,7 @@
       this._state.index = index;
       this._synchronize();
       this._setActivePaginationItem();
+      this._setCurrentPage();
       this._setButtonsState();
     }
 
@@ -567,6 +576,27 @@
       }
     }
 
+    _createPager() {
+      const { pager } = this._elements;
+      const { current } = this._configs;
+
+      if (!pager.container) {
+        pager.container = this._getSlotElements('pager')[0];
+
+        ['current', 'sep', 'total'].forEach(key => {
+          pager[key] = this._getSlotElements(key)[0];
+        });
+      }
+
+      if (current.pager) {
+        console.log(pager);
+      }
+
+      pager.container.style.display = current.pager && this._state.pageCount > 1 ? '' : 'none';
+      pager.current.innerHTML = 1;
+      pager.total.innerHTML = this._state.pageCount;
+    }
+
     /**
      * Creates a button for page N
      * @param {Number} index
@@ -647,9 +677,10 @@
      * @param {Number} index
      */
     _setActivePaginationItem() {
+      if (!this._configs.current.nav) return;
+
       const { pagination } = this._elements;
       let { dots, active } = pagination;
-      if (!this._configs.current.nav) return;
       const next = dots[this._state.index];
 
       if (next) {
@@ -664,6 +695,12 @@
         next.setAttribute('aria-selected', true);
         pagination.active = next;
       }
+    }
+
+    _setCurrentPage() {
+      if (!this._configs.current.pager) return;
+      const { pager } = this._elements;
+      pager.current.innerHTML = this._state.index + 1;
     }
 
     /**

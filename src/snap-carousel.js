@@ -53,6 +53,7 @@ class SnapCarousel extends HTMLElement {
       padding: 0,
       controls: false,
       nav: false,
+      pager: false,
       loop: false,
       clone: false,
       debug: false,
@@ -106,6 +107,12 @@ class SnapCarousel extends HTMLElement {
         container: null,
         dots: [],
         active: null
+      },
+      pager: {
+        container: null,
+        current: null,
+        sep: null,
+        total: null
       }
     };
 
@@ -257,6 +264,7 @@ class SnapCarousel extends HTMLElement {
       this._setPages();
       this._createStyles();
       this._createPagination();
+      this._createPager();
       this._createControls();
       this._computePadding();
       this._updateState(0);
@@ -437,6 +445,7 @@ class SnapCarousel extends HTMLElement {
     this._state.index = index;
     this._synchronize();
     this._setActivePaginationItem();
+    this._setCurrentPage();
     this._setButtonsState();
   }
 
@@ -561,6 +570,27 @@ class SnapCarousel extends HTMLElement {
     }
   }
 
+  _createPager() {
+    const { pager } = this._elements;
+    const { current } = this._configs;
+
+    if (!pager.container) {
+      pager.container = this._getSlotElements('pager')[0];
+
+      ['current', 'sep', 'total'].forEach(key => {
+        pager[key] = this._getSlotElements(key)[0];
+      });
+    }
+
+    if (current.pager) {
+      console.log(pager);
+    }
+
+    pager.container.style.display = current.pager && this._state.pageCount > 1 ? '' : 'none';
+    pager.current.innerHTML = 1;
+    pager.total.innerHTML = this._state.pageCount;
+  }
+
   /**
    * Creates a button for page N
    * @param {Number} index
@@ -641,9 +671,10 @@ class SnapCarousel extends HTMLElement {
    * @param {Number} index
    */
   _setActivePaginationItem() {
+    if (!this._configs.current.nav) return;
+
     const { pagination } = this._elements;
     let { dots, active } = pagination;
-    if (!this._configs.current.nav) return;
     const next = dots[this._state.index];
 
     if (next) {
@@ -658,6 +689,12 @@ class SnapCarousel extends HTMLElement {
       next.setAttribute('aria-selected', true);
       pagination.active = next;
     }
+  }
+
+  _setCurrentPage() {
+    if (!this._configs.current.pager) return;
+    const { pager } = this._elements;
+    pager.current.innerHTML = this._state.index + 1;
   }
 
   /**

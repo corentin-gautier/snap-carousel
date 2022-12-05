@@ -89,7 +89,7 @@
       cursor: pointer;
     }
 
-    snap-carousel::part(controls) {
+    snap-carousel::part(buttons) {
       display: flex;
       justify-content: space-between;
       margin-bottom: .5rem;
@@ -106,6 +106,16 @@
     snap-carousel::part(active) {
       background: rebeccapurple;
       color: #FFF;
+    }
+
+    .custom-nav {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .custom-nav button[aria-selected="true"] {
+      background: chartreuse;
     }
 
     @media screen and (max-width: 1024px) {
@@ -148,8 +158,8 @@
 &gt;
 &lt;/snap-carousel&gt;</code></pre>
     </div>
-    <snap-carousel displayed="2" per-page="1" nav controls stop gap="16" padding="16" behavior="smooth" loop clone
-      debug autoplay="3000" use-pause>
+    <snap-carousel displayed="2" per-page="1" nav controls stop gap="16" padding="16" behavior="smooth" loop clone debug
+      autoplay="3000" use-pause>
       <ul slot="scroller">
         <li data-slide="1"></li>
         <li data-slide="2"></li>
@@ -236,7 +246,8 @@
 &lt;button slot="next-buttons" modifier="2"&gt;SUPER NEXT (+2)&lt;/button&gt;
 &lt;/snap-carousel&gt;</code></pre>
     </div>
-    <snap-carousel displayed="2" controls gap="16" nav>
+    <snap-carousel displayed="2" controls gap="16" nav pager
+      responsive='[{"breakpoint": 1024, "config": {"displayed": 2, "perPage": 2, "loop": true} }]'>
       <ul slot="scroller">
         <li data-slide="1"></li>
         <li data-slide="2"></li>
@@ -247,10 +258,15 @@
         <li data-slide="7"></li>
         <li data-slide="8"></li>
       </ul>
+
       <button slot="prev-buttons" direction="prev" modifier="2">SUPER PREV (-2)</button>
       <button slot="prev-buttons" direction="prev">PREV</button>
       <button slot="next-buttons">NEXT</button>
       <button slot="next-buttons" modifier="2">SUPER NEXT (+2)</button>
+
+      <div slot="pagination" class="custom-nav"></div>
+
+      <span slot="sep">&nbsp;of&nbsp;</span>
     </snap-carousel>
   </example>
 
