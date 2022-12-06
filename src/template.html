@@ -2,35 +2,29 @@
   <ul></ul>
 </slot>
 
-<slot name="controls">
-  <div part="controls">
-    <div part="buttons">
-      <slot name="prev-buttons">
-        <button part="button control-button" type="button" direction="prev" aria-label="Previous">Previous</button>
-      </slot>
-      <slot name="next-buttons">
-        <button part="button control-button" type="button" aria-label="Next">Next</button>
-      </slot>
-    </div>
-
-    <slot name="pagination">
-      <!-- Axe d'amélioration :
-        générer la part="nav" ou bien y ajouter le rôle="listitem" en js -->
-      <nav part="nav"></nav>
+<div part="controls">
+  <div part="buttons">
+    <slot name="prev-buttons">
+      <button part="button control-button" type="button" direction="prev" aria-label="Previous">Previous</button>
     </slot>
-
-    <slot name="pager">
-      <div part="pager">
-        <slot name="current">
-          <span part="current"></span>
-        </slot>
-        <slot name="sep">
-          <span part="page-sep">&nbsp;/&nbsp;</span>
-        </slot>
-        <slot name="total">
-          <span part="total"></span>
-        </slot>
-      </div>
+    <slot name="next-buttons">
+      <button part="button control-button" type="button" aria-label="Next">Next</button>
     </slot>
   </div>
-</slot>
+
+  <slot name="pagination">
+    <div part="nav"></div>
+  </slot>
+
+  <div part="pager">
+    <slot name="current">
+      <span part="current"></span>
+    </slot>
+    <slot name="sep">
+      <span part="page-sep">&nbsp;/&nbsp;</span>
+    </slot>
+    <slot name="total">
+      <span part="total"></span>
+    </slot>
+  </div>
+</div>
