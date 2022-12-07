@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.4.1](https://gitlab.consertotech.pro/lycanthrop/snap-carousel/compare/v1.4.0...v1.4.1) (2022-12-07)
+
+
+### Bug Fixes
+
+* reset preventUiUpdate when calling goTo ([791655a](https://gitlab.consertotech.pro/lycanthrop/snap-carousel/commit/791655aa34153d16b744f3274fad8c0face228ac))
+
 ## [1.3.0](https://gitlab.consertotech.pro/lycanthrop/snap-carousel/compare/v1.2.1...v1.3.0) (2022-12-05)
 
 
