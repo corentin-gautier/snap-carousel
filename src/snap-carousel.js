@@ -38,6 +38,10 @@ import hostStyles from './host.css';
   // Main class
   class SnapCarousel extends HTMLElement {
 
+    #preventUiUpdate;
+
+    #preventNextEvent;
+
     #elements = {
       controls: {
         buttons: [],
@@ -118,8 +122,7 @@ import hostStyles from './host.css';
       scroller.addEventListener('scrollend', this.#onscrollend.bind(this));
       window.addEventListener('resize', this.#resizeEvent.bind(this));
 
-      this.#elements.scroller = scroller;
-      this.#elements.items = items;
+      this.#elements = { ...this.#elements, ...{ scroller, items } };
 
       this.#state.itemsCount = count;
 
@@ -154,6 +157,7 @@ import hostStyles from './host.css';
      * @param {Number} page page index
      */
     goTo(page) {
+      this.#preventUiUpdate = false;
       const { scroller, items } = this.#elements;
       const { perPage } = this.#settings.current;
 
@@ -165,7 +169,7 @@ import hostStyles from './host.css';
 
       const left = this.#isDocumentLtr() ? target.offsetLeft : (target.offsetLeft + target.offsetWidth) - scroller.offsetWidth;
 
-      this.#state.preventScrollEvents = true;
+      this.#preventUiUpdate = true;
       requestIdleCallback(() => {
         scroller.scrollTo({ left });
       }, { timeout: 100 });
@@ -404,13 +408,11 @@ import hostStyles from './host.css';
      * On scroll, dispatch events, calculate the current slide
      */
     #onscroll() {
-      if (this.#state.preventNextEvent) return;
+      if (this.#preventNextEvent) return;
 
       this.#onscrollstart();
 
       this.newIndex = this.#state.index;
-
-      if (this.#state.preventScrollEvents) return;
 
       const current = this.#getCurrent();
 
@@ -448,9 +450,9 @@ import hostStyles from './host.css';
      * On scroll end
      */
     #onscrollend() {
-      if (this.#state.preventNextEvent) return;
+      if (this.#preventNextEvent) return;
       this.#triggerEvent('scrollend');
-      this.#state.preventScrollEvents = false;
+      this.#preventUiUpdate = false;
       this.#state.isMoving = false;
 
       if (typeof this.newIndex === 'number') {
@@ -472,8 +474,10 @@ import hostStyles from './host.css';
     #updateState(index) {
       this.#state.index = index;
       this.#synchronize();
-      this.#setActivePaginationItem();
-      this.#setCurrentPage();
+      if (!this.#preventUiUpdate) {
+        this.#setActivePaginationItem();
+        this.#setCurrentPage();
+      }
       this.#setButtonsState();
     }
 
@@ -517,7 +521,7 @@ import hostStyles from './host.css';
       // Wait before the carousel is completly stopped
       if (closest.distance > 1) return;
 
-      this.#state.preventNextEvent = true;
+      this.#preventNextEvent = true;
       const position = currentIndex * perPage;
       let targetMin = items[position];
       let targetMax = items[position + perPage - 1];
@@ -542,7 +546,7 @@ import hostStyles from './host.css';
 
       setTimeout(() => {
         requestIdleCallback(() => {
-          this.#state.preventNextEvent = false;
+          this.#preventNextEvent = false;
         }, { timeout: 200 });
       }, 200);
     }
@@ -804,9 +808,8 @@ import hostStyles from './host.css';
     #log(type, name, bg = 'cornflowerblue', color = '#FFF') {
       const css = 'font-weight: bold;padding: 3px 8px';
       const defCss = 'background: aliceblue; color: cornflowerblue;';
-      const { current } = this.#settings;
 
-      if (current.debug) console.log(`%c${type}%c${name}%c#${this.id}]`, defCss + css, `background: ${bg}; color: ${color};` + css, defCss + css);
+      if (this.#settings.current.debug) console.log(`%c${type}%c${name}%c#${this.id}]`, defCss + css, `background: ${bg}; color: ${color};` + css, defCss + css);
     }
   }
 
