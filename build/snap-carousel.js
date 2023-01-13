@@ -215,7 +215,7 @@
       }
 
       #computeChildren() {
-        const items = Array.from(this.#elements.scroller.children);
+        const items = Array.from(this.#elements.scroller.children).filter(i => !['absolute', 'fixed'].includes(getComputedStyle(i).position));
         const count = items.length;
         this.#elements.items = items;
         this.#state.itemsCount = count;
