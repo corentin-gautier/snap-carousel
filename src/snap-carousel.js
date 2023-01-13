@@ -76,11 +76,19 @@ import hostStyles from './host.css';
 
     #className = 'snp-c';
 
+    /**
+     * Set observed attributes
+     *
+     * Will be every keys from defaultConfig + every keys from defaultConfig prefixed by "data-"
+     */
     static get observedAttributes() {
       const keys = Object.keys(SnapCarousel.defaultConfig).map(k => k.replace(/[A-Z]/g, m => "-" + m.toLowerCase()));
       return [...keys, ...keys.map(k => 'data-' + k)];
     }
 
+    /**
+     * The default configuration
+     */
     static get defaultConfig() {
       return {
         autoplay: 0,
@@ -109,15 +117,19 @@ import hostStyles from './host.css';
       this.#settings.default = SnapCarousel.defaultConfig;
     }
 
+    /**
+     * Connected callback :
+     */
     connectedCallback() {
+      if (!this.isConnected) return;
       const template = document.createElement('template');
 
-      template.innerHTML = `<style>${hostStyles}</style>` + htmlTemplate;
+      template.innerHTML = `<style>${hostStyles}</style>${htmlTemplate}`;
 
       this.attachShadow({ mode: 'open' });
       this.shadowRoot.appendChild(template.content.cloneNode(true));
 
-      const scroller = this.#getSlotElements('scroller', true)[0];
+      const scroller = this.#getSlotElements('scroller', { fallback: true })[0];
 
       const observer = new MutationObserver(mutations => {
         mutations.forEach(mutation => {
@@ -130,13 +142,11 @@ import hostStyles from './host.css';
 
       observer.observe(scroller, { childList: true })
 
-      this.#prepare()
+      this.#prepare();
     }
 
     attributeChangedCallback() {
-      if (this.#state.ready) {
-        this.#setup();
-      }
+      if (this.#state.ready) this.#setup();
     }
 
     /**
@@ -197,6 +207,7 @@ import hostStyles from './host.css';
       this.#setup();
 
       this.#observe();
+      this.#state.ready = true;
     }
 
     #computeChildren() {
@@ -293,7 +304,6 @@ import hostStyles from './host.css';
      */
     #getCurrentConfig() {
       let match = { breakpoint: null };
-      const { items } = this.#elements;
       let { origin, current } = this.#settings;
 
       origin.responsive.forEach(conf => {
@@ -302,15 +312,10 @@ import hostStyles from './host.css';
 
       current = Object.assign({}, origin, (match.config || {}));
 
-      let { displayed, perPage, loop } = current;
-
-      perPage = loop ? displayed : Math.min(displayed, perPage);
+      let { displayed, perPage } = current;
 
       // Control the config object
-      current = Object.assign(current, {
-        perPage: perPage,
-        loop: loop ? items.length % perPage === 0 && items.length >= 3 * displayed : false
-      });
+      current.perPage = Math.min(displayed, perPage);
 
       this.#settings.current = current;
 
@@ -438,6 +443,10 @@ import hostStyles from './host.css';
       }
     }
 
+    /**
+     * Dispatch a custom event
+     * @param {String} name
+     */
     #triggerEvent(name) {
       const { current } = this.#settings;
 
@@ -484,7 +493,9 @@ import hostStyles from './host.css';
      * @param {Boolean} force
      */
     #updateState(index) {
-      this.#state.index = index;
+      if (typeof index !== 'undefined') {
+        this.#state.index = index;
+      }
       this.#synchronize();
       if (!this.#preventUiUpdate) {
         this.#setActivePaginationItem();
@@ -639,12 +650,21 @@ import hostStyles from './host.css';
       });
     }
 
-    #getSlotElements(slotName, useDefault = false) {
-      const slot = this.shadowRoot.querySelector([`[name="${slotName}"]`]), assigned = slot.assignedElements();
+    /**
+     * Retrieve the element assigned to a slot or the default one
+     * When use with fallback: true, will return the first child if it exists and is
+     * the only child
+     * @param {String} slotName
+     * @param {Object} options
+     * @returns [HtmlElement]
+     */
+    #getSlotElements(slotName, options = { fallback: false }) {
+      const slot = this.shadowRoot.querySelector([`[name="${slotName}"]`]);
+      let assigned = slot.assignedElements();
       // Fallback on the first child if nothing slotted
-      if (useDefault && !assigned.length && this.childElementCount === 1) {
+      if (options.fallback && !assigned.length && this.childElementCount === 1) {
         this.children[0].slot = 'scroller';
-        return [this.children[0]];
+        assigned = slot.assignedElements();
       }
       return Array.from(assigned.length ? assigned : slot.children);
     }
@@ -678,6 +698,9 @@ import hostStyles from './host.css';
       }
     }
 
+    /**
+     * Set the current page number in the pager
+     */
     #setCurrentPage() {
       if (!this.#settings.current.pager) return;
       this.#elements.pager.current.innerHTML = this.#state.index + 1;
@@ -709,6 +732,9 @@ import hostStyles from './host.css';
       }
     }
 
+    /**
+     * Synchronize every other carousel with the current index
+     */
     #synchronize() {
       const { sync } = this.#settings.current;
 
@@ -728,12 +754,11 @@ import hostStyles from './host.css';
      *
      * @param {string} css
      * @param {string} id
-     * @returns
+     * @returns HTMLStyleElement
      */
     #createStyleElement(css, id) {
       const styles = document.createElement('style');
       styles.id = id;
-      styles.type = 'text/css';
       styles.append(document.createTextNode(css));
       return styles;
     }
@@ -755,6 +780,9 @@ import hostStyles from './host.css';
       return typeof value === 'string' ? value : value + 'px';
     }
 
+    /**
+     * Activate/deactivate the automatic goTo
+     */
     #setPlayPause() {
       if (!this.#settings.current.autoplay) return;
 
