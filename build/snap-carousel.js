@@ -3,7 +3,7 @@
 
   var htmlTemplate = "<slot name=\"scroller\"><ul></ul></slot><div part=\"controls\"><div part=\"buttons\"><slot name=\"prev-buttons\"><button part=\"button control-button\" type=\"button\" direction=\"prev\" aria-label=\"Previous\">Previous</button></slot><slot name=\"next-buttons\"><button part=\"button control-button\" type=\"button\" aria-label=\"Next\">Next</button></slot></div><slot name=\"pagination\"><div part=\"nav\"></div></slot><div part=\"pager\"><slot name=\"current\"><span part=\"current\"></span></slot><slot name=\"sep\"><span part=\"page-sep\">&nbsp;/&nbsp;</span></slot><slot name=\"total\"><span part=\"total\"></span></slot></div></div>";
 
-  var css_248z$1 = "snap-carousel:not([scrollbar]) .snp-c__scroller::-webkit-scrollbar{display:none}.snp-c__scroller{display:flex}.snp-c__scroller>*{display:block;flex:0 0 auto;max-width:100%;width:calc(100%/var(--sc-perpage, 1) - var(--sc-gap, 0) + var(--sc-gap, 0)/var(--sc-perpage, 1))}";
+  var css_248z$1 = "snap-carousel:not([scrollbar]) [slot=scroller]::-webkit-scrollbar{display:none}snap-carousel [slot=scroller]{display:flex}snap-carousel [slot=scroller]>*{display:block;flex:0 0 auto;max-width:100%;width:calc(100%/var(--sc-perpage, 1) - var(--sc-gap, 0) + var(--sc-gap, 0)/var(--sc-perpage, 1))}";
 
   var css_248z = ":host{display:block;position:relative;width:100%}:host(:not([scrollbar])) ::slotted([slot=scroller]){scrollbar-width:none}:host(:not([scrollbar])) ::slotted([slot=scroller])::-webkit-scrollbar{display:none}::slotted([slot=scroller]){display:flex;gap:var(--sc-gap);margin:0;overflow-x:auto;overscroll-behavior-x:contain;padding:0 var(--sc-padding)!important;position:relative;scroll-behavior:var(--sc-behavior);scroll-padding-inline:var(--sc-padding);scroll-snap-type:x mandatory}";
 
@@ -250,11 +250,7 @@
        * Adds unique ids and classes
        */
       #identify() {
-        const { scroller } = this.#elements;
-        const suffix = '__scroller';
         this.id = this.#state.id = this.#className + '-' + (Math.random() + 1).toString(36).substring(4);
-        scroller.id = this.#state.id + suffix;
-        scroller.classList.add(this.#className + suffix);
       }
 
       #setup() {
@@ -371,7 +367,7 @@
 
         const { displayed, gap, padding, perPage, stop, behavior } = this.#settings.current;
         const selectRule = perPage > 1 ? `*:nth-child(${perPage}n + 1)` : '*';
-        const css = `#${this.#state.id} { --sc-perpage: ${displayed}; --sc-gap: ${this.#formatCssValue(gap)}; --sc-padding: ${this.#formatCssValue(padding)}; --sc-behavior: ${behavior}; } #${this.#state.id}__scroller > ${selectRule} { scroll-snap-align: start; scroll-snap-stop: ${stop ? 'always' : 'normal'} }`;
+        const css = `#${this.#state.id} { --sc-perpage: ${displayed}; --sc-gap: ${this.#formatCssValue(gap)}; --sc-padding: ${this.#formatCssValue(padding)}; --sc-behavior: ${behavior}; } #${this.#state.id} [slot="scroller"] > ${selectRule} { scroll-snap-align: start; scroll-snap-stop: ${stop ? 'always' : 'normal'} }`;
 
         this.styles = this.#createStyleElement(css, this.#state.id + '-styles');
         document.body.append(this.styles);

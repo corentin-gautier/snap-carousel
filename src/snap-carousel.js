@@ -246,11 +246,7 @@ import hostStyles from './host.css';
      * Adds unique ids and classes
      */
     #identify() {
-      const { scroller } = this.#elements;
-      const suffix = '__scroller';
       this.id = this.#state.id = this.#className + '-' + (Math.random() + 1).toString(36).substring(4);
-      scroller.id = this.#state.id + suffix;
-      scroller.classList.add(this.#className + suffix);
     }
 
     #setup() {
@@ -367,7 +363,7 @@ import hostStyles from './host.css';
 
       const { displayed, gap, padding, perPage, stop, behavior } = this.#settings.current;
       const selectRule = perPage > 1 ? `*:nth-child(${perPage}n + 1)` : '*';
-      const css = `#${this.#state.id} { --sc-perpage: ${displayed}; --sc-gap: ${this.#formatCssValue(gap)}; --sc-padding: ${this.#formatCssValue(padding)}; --sc-behavior: ${behavior}; } #${this.#state.id}__scroller > ${selectRule} { scroll-snap-align: start; scroll-snap-stop: ${stop ? 'always' : 'normal'} }`;
+      const css = `#${this.#state.id} { --sc-perpage: ${displayed}; --sc-gap: ${this.#formatCssValue(gap)}; --sc-padding: ${this.#formatCssValue(padding)}; --sc-behavior: ${behavior}; } #${this.#state.id} [slot="scroller"] > ${selectRule} { scroll-snap-align: start; scroll-snap-stop: ${stop ? 'always' : 'normal'} }`;
 
       this.styles = this.#createStyleElement(css, this.#state.id + '-styles');
       document.body.append(this.styles);
