@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.6.0](https://gitlab.consertotech.pro/lycanthrop/snap-carousel/compare/v1.5.0...v1.6.0) (2023-01-13)
+
+
+### Features
+
+* add resync on childlist mutation ([a066390](https://gitlab.consertotech.pro/lycanthrop/snap-carousel/commit/a0663909e124978c3a1aad4b3e774376565a6975))
+
 ## [1.5.0](https://gitlab.consertotech.pro/lycanthrop/snap-carousel/compare/v1.4.1...v1.5.0) (2023-01-13)
 
 
