@@ -28,7 +28,6 @@
    * - controls (boolean),
    * - nav (boolean),
    * - loop (boolean),
-   * - clone (boolean),
    * - behaviour (string),
    * - stop (boolean)
    * - responsive (array)
@@ -61,7 +60,9 @@
           current: null,
           sep: null,
           total: null
-        }
+        },
+        scroller: null,
+        items: null
       };
 
       #settings = {
@@ -97,7 +98,6 @@
           nav: false,
           pager: false,
           loop: false,
-          clone: false,
           behavior: 'smooth',
           stop: false,
           usePause: true,
@@ -125,45 +125,18 @@
 
         const scroller = this.#getSlotElements('scroller', true)[0];
 
-        if (!scroller) {
-          return;
-        }
-
-        const items = Array.from(scroller.children);
-        const count = items.length;
-
-        scroller.onscroll = this.#onscroll.bind(this);
-        scroller.addEventListener('scrollend', this.#onscrollend.bind(this));
-        window.addEventListener('resize', this.#resizeEvent.bind(this));
-
-        this.#elements = { ...this.#elements, ...{ scroller, items } };
-
-        this.#state.itemsCount = count;
-
-        this.elements = this.#elements;
-        this.settings = this.#settings;
-        this.state = this.#state;
-
-        this.ariaRoleDescription = 'carousel';
-
-        Object.assign(scroller, { role: 'group', ariaLive: 'polite', ariaAtomic: false });
-
-        // Store item index in a data attribute
-        items.forEach((item, i) => {
-          item.dataset.index = i;
-          Object.assign(item, {
-            ariaSetSize: count,
-            ariaPosInSet: i + 1,
-            ariaRoleDescription: 'slide',
-            role: 'listitem'
+        const observer = new MutationObserver(mutations => {
+          mutations.forEach(mutation => {
+            if ((mutation.addedNodes.length || mutation.removedNodes.length)) {
+              this.#computeChildren();
+              this.#init();
+            }
           });
         });
 
-        this.#addGlobalStyles();
-        this.#identify();
-        this.#setup();
+        observer.observe(scroller, { childList: true });
 
-        this.#observe();
+        this.#prepare();
       }
 
       attributeChangedCallback() {
@@ -201,6 +174,53 @@
 
       next() {
         this.goTo(this.state.index + 1);
+      }
+
+      #prepare() {
+        const scroller = this.#getSlotElements('scroller', true)[0];
+
+        if (!scroller) {
+          return;
+        }
+
+        scroller.onscroll = this.#onscroll.bind(this);
+        scroller.addEventListener('scrollend', this.#onscrollend.bind(this));
+        window.addEventListener('resize', this.#resizeEvent.bind(this));
+
+        this.#elements.scroller = scroller;
+
+        this.elements = this.#elements;
+        this.settings = this.#settings;
+        this.state = this.#state;
+
+        this.ariaRoleDescription = 'carousel';
+
+        Object.assign(scroller, { role: 'group', ariaLive: 'polite', ariaAtomic: false });
+
+        this.#computeChildren();
+        this.#addGlobalStyles();
+        this.#identify();
+        this.#setup();
+
+        this.#observe();
+      }
+
+      #computeChildren() {
+        const items = Array.from(this.#elements.scroller.children);
+        const count = items.length;
+        this.#elements.items = items;
+        this.#state.itemsCount = count;
+
+        // Store item index in a data attribute
+        items.forEach((item, i) => {
+          item.dataset.index = i;
+          Object.assign(item, {
+            ariaSetSize: count,
+            ariaPosInSet: i + 1,
+            ariaRoleDescription: 'slide',
+            role: 'listitem'
+          });
+        });
       }
 
       /**
@@ -318,7 +338,6 @@
           this.#createControls();
           this.#computePadding();
           this.#updateState(0);
-          this.#loop();
         });
       }
 
@@ -462,7 +481,6 @@
           this.#updateState(this.#state.index);
         }
 
-        this.#loop();
         this.#setPlayPause();
       }
 
@@ -502,53 +520,6 @@
         if (node) return closest;
 
         return Math.ceil(closest.index / perPage);
-      }
-
-      #loop() {
-        /**
-         * After every slide : make sure half the pages are before and half are after given the current index
-         */
-        const { perPage, clone } = this.#settings.current;
-        const currentIndex = this.#state.index;
-        const count = this.#state.itemsCount - 1;
-
-        if (!clone) return;
-
-        const { scroller, items } = this.#elements;
-
-        const closest = this.#getCurrent(true);
-
-        // Wait before the carousel is completly stopped
-        if (closest.distance > 1) return;
-
-        this.#preventNextEvent = true;
-        const position = currentIndex * perPage;
-        let targetMin = items[position];
-        let targetMax = items[position + perPage - 1];
-
-        // Make sure half the pages are before, half after
-        const half = Math.floor(this.#state.pageCount / 2);
-
-        for (let page = 0; page < half; page++) {
-          for (let index = 0; index < perPage; index++) {
-            if (!targetMin.previousElementSibling) {
-              this.#triggerEvent('clonebefore', 'bisque', 'chocolate');
-              scroller.prepend(scroller.children[count]);
-              targetMin = scroller.children[0];
-            }
-            if (!targetMax.nextElementSibling) {
-              this.#triggerEvent('cloneafter', 'bisque', 'chocolate');
-              scroller.append(scroller.children[0]);
-              targetMax = scroller.children[count];
-            }
-          }
-        }
-
-        setTimeout(() => {
-          requestIdleCallback(() => {
-            this.#preventNextEvent = false;
-          }, { timeout: 200 });
-        }, 200);
       }
 
       /**
