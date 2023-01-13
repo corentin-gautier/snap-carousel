@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.7.1](https://gitlab.consertotech.pro/lycanthrop/snap-carousel/compare/v1.7.0...v1.7.1) (2023-01-13)
+
+
+### Bug Fixes
+
+* remove class based styling ([7c4968b](https://gitlab.consertotech.pro/lycanthrop/snap-carousel/commit/7c4968b2e4732e2cfba5b18ad42ae8661c5e3e42))
+
 ## [1.7.0](https://gitlab.consertotech.pro/lycanthrop/snap-carousel/compare/v1.6.2...v1.7.0) (2023-01-13)
 
 
