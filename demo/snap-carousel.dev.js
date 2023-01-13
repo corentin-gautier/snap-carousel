@@ -30,17 +30,16 @@
    * - loop (boolean),
    * - clone (boolean),
    * - behaviour (string),
-   * - debug (boolean),
    * - stop (boolean)
    * - responsive (array)
    *   - breakpoint (number)
    *   - config : any of the previous options
    */
 
-  ((window, document, Array, Object, Element, IntersectionObserver, requestAnimationFrame, clearTimeout, setTimeout) => {
+  ((window, document, Array, Object, Element, IntersectionObserver, clearTimeout, setTimeout, requestIdleCallback) => {
 
     // Scrollend polyfill
-    if (!('onscrollend' in window)) { const s = new Event('scrollend'), i = new Set; document.addEventListener('touchstart', e => { for (let t of e.changedTouches) i.add(t.identifier); }, { passive: !0 }), document.addEventListener('touchend', e => { for (let t of e.changedTouches) i.delete(t.identifier); }, { passive: !0 }); let l = new WeakMap; function e(e, t, n) { let o = e[t]; e[t] = function () { let e = Array.prototype.slice.apply(arguments, [0]); o.apply(this, e), e.unshift(o), n.apply(this, e); }; } function t(e, t, n, o) { if ('scroll' != t && 'scrollend' != t) return; let r = this, d = l.get(r); if (void 0 === d) { let t = 0; d = { scrollListener: e => { clearTimeout(t), t = setTimeout(() => { i.size ? setTimeout(d.scrollListener, 100) : (r.dispatchEvent(s), t = 0); }, 100); }, listeners: 0 }, e.apply(r, ['scroll', d.scrollListener]), l.set(r, d); } d.listeners++; } function n(e, t, n) { if ('scroll' != t && 'scrollend' != t) return; let o = this, s = l.get(o); void 0 !== s && (s[t]--, --s.listeners > 0 || (e.apply(o, ['scroll', s.scrollListener]), l.delete(o))); } e(Element.prototype, 'addEventListener', t), e(window, 'addEventListener', t), e(document, 'addEventListener', t), e(Element.prototype, 'removeEventListener', n), e(window, 'removeEventListener', n), e(document, 'removeEventListener', n); }
+    if (!("onscrollend" in window)) { const s = new Event("scrollend"), i = new Set; document.addEventListener("touchstart", e => { for (let t of e.changedTouches) i.add(t.identifier); }, { passive: !0 }), document.addEventListener("touchend", e => { for (let t of e.changedTouches) i.delete(t.identifier); }, { passive: !0 }); let l = new WeakMap; function e(e, t, n) { let o = e[t]; e[t] = function () { let e = Array.prototype.slice.apply(arguments, [0]); o.apply(this, e), e.unshift(o), n.apply(this, e); }; } function t(e, t, n, o) { if ("scroll" != t && "scrollend" != t) return; let r = this, d = l.get(r); if (void 0 === d) { let t = 0; d = { scrollListener: e => { clearTimeout(t), t = setTimeout(() => { i.size ? setTimeout(d.scrollListener, 100) : (r.dispatchEvent(s), t = 0); }, 100); }, listeners: 0 }, e.apply(r, ["scroll", d.scrollListener]), l.set(r, d); } d.listeners++; } function n(e, t, n) { if ("scroll" != t && "scrollend" != t) return; let o = this, s = l.get(o); void 0 !== s && (s[t]--, --s.listeners > 0 || (e.apply(o, ["scroll", s.scrollListener]), l.delete(o))); } e(Element.prototype, "addEventListener", t), e(window, "addEventListener", t), e(document, "addEventListener", t), e(Element.prototype, "removeEventListener", n), e(window, "removeEventListener", n), e(document, "removeEventListener", n); }
     // Main class
     class SnapCarousel extends HTMLElement {
 
@@ -66,23 +65,7 @@
       };
 
       #settings = {
-        default: {
-          autoplay: 0,
-          displayed: 1,
-          perPage: 1,
-          gap: 0,
-          padding: 0,
-          controls: false,
-          nav: false,
-          pager: false,
-          loop: false,
-          clone: false,
-          debug: false,
-          behavior: 'smooth',
-          stop: false,
-          usePause: true,
-          responsive: []
-        },
+        default: {},
         origin: {},
         current: {}
       };
@@ -98,6 +81,30 @@
 
       #className = 'snp-c';
 
+      static get observedAttributes() {
+        const keys = Object.keys(SnapCarousel.defaultConfig).map(k => k.replace(/[A-Z]/g, m => "-" + m.toLowerCase()));
+        return [...keys, ...keys.map(k => 'data-' + k)];
+      }
+
+      static get defaultConfig() {
+        return {
+          autoplay: 0,
+          displayed: 1,
+          perPage: 1,
+          gap: 0,
+          padding: 0,
+          controls: false,
+          nav: false,
+          pager: false,
+          loop: false,
+          clone: false,
+          behavior: 'smooth',
+          stop: false,
+          usePause: true,
+          responsive: []
+        }
+      }
+
       /**
        * Carousel constructor
        * @param {NodeElement} element
@@ -105,6 +112,7 @@
        */
       constructor() {
         super();
+        this.#settings.default = SnapCarousel.defaultConfig;
       }
 
       connectedCallback() {
@@ -115,7 +123,7 @@
         this.attachShadow({ mode: 'open' });
         this.shadowRoot.appendChild(template.content.cloneNode(true));
 
-        const scroller = this.#getSlotElements('scroller')[0];
+        const scroller = this.#getSlotElements('scroller', true)[0];
 
         if (!scroller) {
           return;
@@ -156,6 +164,12 @@
         this.#setup();
 
         this.#observe();
+      }
+
+      attributeChangedCallback() {
+        if (this.#state.ready) {
+          this.#setup();
+        }
       }
 
       /**
@@ -343,7 +357,6 @@
 
       #observe() {
         const { items, scroller } = this.#elements;
-        const defaults = Object.keys(this.#settings.default);
 
         const mio = new IntersectionObserver(obs => {
           let entry = obs[0];
@@ -379,24 +392,6 @@
         });
 
         items.forEach(i => io.observe(i));
-
-        const mo = new MutationObserver(list => {
-          list.forEach(record => {
-            if (record.type === 'attributes') {
-              if (defaults.includes(record.attributeName.replace('data-', ''))) {
-                this.#setup();
-              }
-            }
-            if (record.type === 'childList') {
-              console.log(record);
-            }
-          });
-        });
-
-        mo.observe(this, {
-          attributes: true,
-          childList: true
-        });
       }
 
       /**
@@ -430,9 +425,8 @@
         }
       }
 
-      #triggerEvent(name, bg, color) {
+      #triggerEvent(name) {
         const { current } = this.#settings;
-        this.#log('Event', name, bg, color);
 
         this.dispatchEvent(
           new CustomEvent(name, {
@@ -680,8 +674,13 @@
         });
       }
 
-      #getSlotElements(slotName) {
+      #getSlotElements(slotName, useDefault = false) {
         const slot = this.shadowRoot.querySelector([`[name="${slotName}"]`]), assigned = slot.assignedElements();
+        // Fallback on the first child if nothing slotted
+        if (useDefault && !assigned.length && this.childElementCount === 1) {
+          this.children[0].slot = 'scroller';
+          return [this.children[0]];
+        }
         return Array.from(assigned.length ? assigned : slot.children);
       }
 
@@ -802,26 +801,17 @@
               this.#state.autoplayInterval = null;
               this.goTo(this.#state.index + 1);
             }, this.#settings.current.autoplay);
-            this.#log('Play/Pause', 'Set Timeout');
           }
         } else {
           clearTimeout(this.#state.autoplayInterval);
           this.#state.autoplayInterval = null;
-          this.#log('Play/Pause', 'Remove Timeout');
         }
-      }
-
-      #log(type, name, bg = 'cornflowerblue', color = '#FFF') {
-        const css = 'font-weight: bold;padding: 3px 8px';
-        const defCss = 'background: aliceblue; color: cornflowerblue;';
-
-        if (this.#settings.current.debug) console.log(`%c${type}%c${name}%c#${this.id}]`, defCss + css, `background: ${bg}; color: ${color};` + css, defCss + css);
       }
     }
 
     if (window.customElements) {
       customElements.define('snap-carousel', SnapCarousel);
     }
-  })(window, document, Array, Object, Element, IntersectionObserver, requestAnimationFrame, clearTimeout, setTimeout);
+  })(window, document, Array, Object, Element, IntersectionObserver, clearTimeout, setTimeout, requestIdleCallback);
 
 })();
