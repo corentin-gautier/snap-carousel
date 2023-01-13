@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.5.0](https://gitlab.consertotech.pro/lycanthrop/snap-carousel/compare/v1.4.1...v1.5.0) (2023-01-13)
+
+
+### Features
+
+* make using slot scroller attribut optional ([699eb8b](https://gitlab.consertotech.pro/lycanthrop/snap-carousel/commit/699eb8b28f42ea3b08633424ac8bba0114dc3c52))
+
 ### [1.4.1](https://gitlab.consertotech.pro/lycanthrop/snap-carousel/compare/v1.4.0...v1.4.1) (2022-12-07)
 
 
