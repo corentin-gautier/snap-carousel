@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.7.0](https://gitlab.consertotech.pro/lycanthrop/snap-carousel/compare/v1.6.2...v1.7.0) (2023-01-13)
+
+
+### Features
+
+* exclude absolute and fixed elements from the items list ([233fa1f](https://gitlab.consertotech.pro/lycanthrop/snap-carousel/commit/233fa1fb725ecff33281fb8d620e760d4ea1dcf2))
+
 ### [1.6.2](https://gitlab.consertotech.pro/lycanthrop/snap-carousel/compare/v1.6.1...v1.6.2) (2023-01-13)
 
 
