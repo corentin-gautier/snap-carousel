@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.6.1](https://gitlab.consertotech.pro/lycanthrop/snap-carousel/compare/v1.6.0...v1.6.1) (2023-01-13)
+
+
+### Bug Fixes
+
+* remove loop related computing ([8301d74](https://gitlab.consertotech.pro/lycanthrop/snap-carousel/commit/8301d74b6dd282dce80cedde40356f7b0fc99532))
+
 ## [1.6.0](https://gitlab.consertotech.pro/lycanthrop/snap-carousel/compare/v1.5.0...v1.6.0) (2023-01-13)
 
 
