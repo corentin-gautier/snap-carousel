@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  var htmlTemplate = "<slot name=\"scroller\"><ul></ul></slot><div part=\"controls\"><div part=\"buttons\"><slot name=\"prev-buttons\"><button part=\"button control-button\" type=\"button\" direction=\"prev\" aria-label=\"Previous\">Previous</button></slot><slot name=\"next-buttons\"><button part=\"button control-button\" type=\"button\" aria-label=\"Next\">Next</button></slot></div><slot name=\"pagination\"><div part=\"nav\"></div></slot><div part=\"pager\"><slot name=\"current\"><span part=\"current\"></span></slot><slot name=\"sep\"><span part=\"page-sep\">&nbsp;/&nbsp;</span></slot><slot name=\"total\"><span part=\"total\"></span></slot></div></div>";
+  var htmlTemplate = "<slot name=\"scroller\"><ul></ul></slot><div part=\"controls\"><div part=\"buttons\"><slot name=\"prev-buttons\"><button part=\"button control-button prev-button\" type=\"button\" direction=\"prev\" aria-label=\"Previous\">Previous</button></slot><slot name=\"next-buttons\"><button part=\"button control-button next-button\" type=\"button\" direction=\"next\" aria-label=\"Next\">Next</button></slot></div><slot name=\"pagination\"><div part=\"nav\"></div></slot><div part=\"pager\"><slot name=\"current\"><span part=\"current\"></span></slot><slot name=\"sep\"><span part=\"page-sep\">&nbsp;/&nbsp;</span></slot><slot name=\"total\"><span part=\"total\"></span></slot></div></div>";
 
   var css_248z$1 = "snap-carousel:not([scrollbar]) [slot=scroller]::-webkit-scrollbar{display:none}snap-carousel [slot=scroller]{display:flex}snap-carousel [slot=scroller]>*{display:block;flex:0 0 auto;max-width:100%;width:calc(100%/var(--sc-perpage, 1) - var(--sc-gap, 0) + var(--sc-gap, 0)/var(--sc-perpage, 1))}";
 
@@ -662,9 +662,11 @@
         const slot = this.shadowRoot.querySelector([`[name="${slotName}"]`]);
         let assigned = slot.assignedElements();
         // Fallback on the first child if nothing slotted
-        if (options.fallback && !assigned.length && this.childElementCount === 1) {
-          this.children[0].slot = 'scroller';
-          assigned = slot.assignedElements();
+        if (options.fallback && !assigned.length) {
+          if (this.children[0].slot === '') {
+            this.children[0].slot = 'scroller';
+            assigned = slot.assignedElements();
+          }
         }
         return Array.from(assigned.length ? assigned : slot.children);
       }

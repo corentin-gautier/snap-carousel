@@ -658,9 +658,11 @@ import hostStyles from './host.css';
       const slot = this.shadowRoot.querySelector([`[name="${slotName}"]`]);
       let assigned = slot.assignedElements();
       // Fallback on the first child if nothing slotted
-      if (options.fallback && !assigned.length && this.childElementCount === 1) {
-        this.children[0].slot = 'scroller';
-        assigned = slot.assignedElements();
+      if (options.fallback && !assigned.length) {
+        if (this.children[0].slot === '') {
+          this.children[0].slot = 'scroller';
+          assigned = slot.assignedElements();
+        }
       }
       return Array.from(assigned.length ? assigned : slot.children);
     }
