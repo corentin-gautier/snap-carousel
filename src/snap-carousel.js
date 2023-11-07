@@ -103,6 +103,7 @@ import hostStyles from './host.css';
         behavior: 'smooth',
         stop: false,
         usePause: true,
+        vertical: false,
         responsive: []
       }
     }
@@ -156,7 +157,7 @@ import hostStyles from './host.css';
     goTo(page) {
       this.#preventUiUpdate = false;
       const { scroller, items } = this.#elements;
-      const { perPage } = this.#settings.current;
+      const { perPage, vertical } = this.#settings.current;
 
       const index = page > this.#state.pageCount - 1 ? 0 : (page < 0 ? this.#state.pageCount - 1 : page);
       const target = items[index * perPage];
@@ -164,11 +165,17 @@ import hostStyles from './host.css';
       this.#updateState(index);
       this.#state.ready = true;
 
-      const left = this.#isDocumentLtr() ? target.offsetLeft : (target.offsetLeft + target.offsetWidth) - scroller.offsetWidth;
+      let top = 0, left = 0;
+
+      if (vertical) {
+        top = target.offsetTop;
+      } else {
+        left = this.#isDocumentLtr() ? target.offsetLeft : (target.offsetLeft + target.offsetWidth) - scroller.offsetWidth;
+      }
 
       this.#preventUiUpdate = true;
       requestIdleCallback(() => {
-        scroller.scrollTo({ left });
+        scroller.scrollTo({ top, left });
       }, { timeout: 100 });
     }
 
@@ -337,8 +344,10 @@ import hostStyles from './host.css';
     }
 
     #computePadding() {
+      const { vertical } = this.#settings.current;
+      const property = vertical ? 'padding-top' : 'padding-left';
       // Store the computed padding of the scroller for later
-      this.#state.computedPadding = parseInt(getComputedStyle(this.#elements.scroller)['padding-left'], 10);
+      this.#state.computedPadding = parseInt(getComputedStyle(this.#elements.scroller)[property], 10);
     }
 
     /**
@@ -506,15 +515,28 @@ import hostStyles from './host.css';
      */
     #getCurrent(node) {
       const { scroller, items } = this.#elements;
-      const { perPage } = this.#settings.current;
+      const { perPage, vertical } = this.#settings.current;
 
       const isLtr = this.#isDocumentLtr();
 
-      const refPoint = isLtr ? scroller.scrollLeft : scroller.scrollLeft + scroller.clientWidth;
+      let refPoint = 0;
+
+      if (vertical) {
+        refPoint = scroller.scrollTop;
+      } else {
+        refPoint = isLtr ? scroller.scrollLeft : scroller.scrollLeft + scroller.clientWidth;
+      }
+
       let closest = items.map(i => {
+        let distance = 0;
+        if (vertical) {
+          distance = i.offsetTop - (this.#state.computedPadding || 0) - refPoint;
+        } else {
+          distance = (isLtr ? i.offsetLeft : i.offsetLeft + i.clientWidth) - (this.#state.computedPadding || 0) - refPoint;
+        }
         return {
           index: parseInt(i.dataset.index, 10),
-          distance: Math.abs((isLtr ? i.offsetLeft : i.offsetLeft + i.clientWidth) - (this.#state.computedPadding || 0) - refPoint)
+          distance: Math.abs(distance)
         };
       }).reduce((a, b) => !a || b.distance < a.distance ? b : a, null);
 

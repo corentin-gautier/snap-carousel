@@ -5,9 +5,9 @@
 
   var htmlTemplate = "<slot name=\"scroller\"><ul></ul></slot><div part=\"controls\"><div part=\"buttons\"><slot name=\"prev-buttons\"><button part=\"button control-button prev-button\" type=\"button\" direction=\"prev\" aria-label=\"Previous\">Previous</button></slot><slot name=\"next-buttons\"><button part=\"button control-button next-button\" type=\"button\" direction=\"next\" aria-label=\"Next\">Next</button></slot></div><slot name=\"pagination\"><div part=\"nav\"></div></slot><div part=\"pager\"><slot name=\"current\"><span part=\"current\"></span></slot><slot name=\"sep\"><span part=\"page-sep\">&nbsp;/&nbsp;</span></slot><slot name=\"total\"><span part=\"total\"></span></slot></div></div>";
 
-  var css_248z$1 = "snap-carousel:not([scrollbar]) [slot=scroller]::-webkit-scrollbar{display:none}snap-carousel [slot=scroller]{display:flex}snap-carousel [slot=scroller]>*{display:block;flex:0 0 auto;max-width:100%;width:calc(100%/var(--sc-perpage, 1) - var(--sc-gap, 0) + var(--sc-gap, 0)/var(--sc-perpage, 1))}";
+  var css_248z$1 = "snap-carousel:not([scrollbar]) [slot=scroller]::-webkit-scrollbar{display:none}snap-carousel [slot=scroller]{display:flex}snap-carousel[vertical]{display:flex;flex-direction:column}snap-carousel[vertical] [slot=scroller]{flex-direction:column;height:100%}snap-carousel [slot=scroller]>*{display:block;flex:0 0 auto}snap-carousel:not([vertical]) [slot=scroller]>*{max-width:100%;width:calc(100%/var(--sc-perpage, 1) - var(--sc-gap, 0) + var(--sc-gap, 0)/var(--sc-perpage, 1))}snap-carousel[vertical] [slot=scroller]>*{height:calc(100%/var(--sc-perpage, 1) - var(--sc-gap, 0) + var(--sc-gap, 0)/var(--sc-perpage, 1));max-height:100%}";
 
-  var css_248z = ":host{display:block;position:relative;width:100%}:host(:not([scrollbar])) ::slotted([slot=scroller]){scrollbar-width:none}:host(:not([scrollbar])) ::slotted([slot=scroller])::-webkit-scrollbar{display:none}::slotted([slot=scroller]){display:flex;gap:var(--sc-gap);margin:0;overflow-x:auto;overscroll-behavior-x:contain;padding:0 var(--sc-padding)!important;position:relative;scroll-behavior:var(--sc-behavior);scroll-padding-inline:var(--sc-padding);scroll-snap-type:x mandatory}";
+  var css_248z = ":host{display:block;position:relative;width:100%}:host(:not([scrollbar])) ::slotted([slot=scroller]){scrollbar-width:none}:host(:not([scrollbar])) ::slotted([slot=scroller])::-webkit-scrollbar{display:none}::slotted([slot=scroller]){display:flex;gap:var(--sc-gap);margin:0;position:relative;scroll-behavior:var(--sc-behavior)}:host(:not([vertical])) ::slotted([slot=scroller]){overflow-x:auto;overscroll-behavior-x:contain;padding:0 var(--sc-padding)!important;scroll-padding-inline:var(--sc-padding);scroll-snap-type:x mandatory}:host([vertical]) ::slotted([slot=scroller]){flex-direction:column;overflow-y:auto;overscroll-behavior-y:contain;padding:var(--sc-padding) 0!important;scroll-padding-block:var(--sc-padding);scroll-snap-type:y mandatory}";
 
   /**
    * SnapCarousel 🚀
@@ -109,6 +109,7 @@
           behavior: 'smooth',
           stop: false,
           usePause: true,
+          vertical: false,
           responsive: []
         }
       }
@@ -162,7 +163,7 @@
       goTo(page) {
         this.#preventUiUpdate = false;
         const { scroller, items } = this.#elements;
-        const { perPage } = this.#settings.current;
+        const { perPage, vertical } = this.#settings.current;
 
         const index = page > this.#state.pageCount - 1 ? 0 : (page < 0 ? this.#state.pageCount - 1 : page);
         const target = items[index * perPage];
@@ -170,11 +171,17 @@
         this.#updateState(index);
         this.#state.ready = true;
 
-        const left = this.#isDocumentLtr() ? target.offsetLeft : (target.offsetLeft + target.offsetWidth) - scroller.offsetWidth;
+        let top = 0, left = 0;
+
+        if (vertical) {
+          top = target.offsetTop;
+        } else {
+          left = this.#isDocumentLtr() ? target.offsetLeft : (target.offsetLeft + target.offsetWidth) - scroller.offsetWidth;
+        }
 
         this.#preventUiUpdate = true;
         requestIdleCallback(() => {
-          scroller.scrollTo({ left });
+          scroller.scrollTo({ top, left });
         }, { timeout: 100 });
       }
 
@@ -343,8 +350,10 @@
       }
 
       #computePadding() {
+        const { vertical } = this.#settings.current;
+        const property = vertical ? 'padding-top' : 'padding-left';
         // Store the computed padding of the scroller for later
-        this.#state.computedPadding = parseInt(getComputedStyle(this.#elements.scroller)['padding-left'], 10);
+        this.#state.computedPadding = parseInt(getComputedStyle(this.#elements.scroller)[property], 10);
       }
 
       /**
@@ -512,15 +521,28 @@
        */
       #getCurrent(node) {
         const { scroller, items } = this.#elements;
-        const { perPage } = this.#settings.current;
+        const { perPage, vertical } = this.#settings.current;
 
         const isLtr = this.#isDocumentLtr();
 
-        const refPoint = isLtr ? scroller.scrollLeft : scroller.scrollLeft + scroller.clientWidth;
+        let refPoint = 0;
+
+        if (vertical) {
+          refPoint = scroller.scrollTop;
+        } else {
+          refPoint = isLtr ? scroller.scrollLeft : scroller.scrollLeft + scroller.clientWidth;
+        }
+
         let closest = items.map(i => {
+          let distance = 0;
+          if (vertical) {
+            distance = i.offsetTop - (this.#state.computedPadding || 0) - refPoint;
+          } else {
+            distance = (isLtr ? i.offsetLeft : i.offsetLeft + i.clientWidth) - (this.#state.computedPadding || 0) - refPoint;
+          }
           return {
             index: parseInt(i.dataset.index, 10),
-            distance: Math.abs((isLtr ? i.offsetLeft : i.offsetLeft + i.clientWidth) - (this.#state.computedPadding || 0) - refPoint)
+            distance: Math.abs(distance)
           };
         }).reduce((a, b) => !a || b.distance < a.distance ? b : a, null);
 
