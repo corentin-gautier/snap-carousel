@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.8.0](https://gitlab.consertotech.pro/lycanthrop/snap-carousel/compare/v1.7.2...v1.8.0) (2023-11-07)
+
+
+### Features
+
+* add vertical option ([ad058e9](https://gitlab.consertotech.pro/lycanthrop/snap-carousel/commit/ad058e9cb8a27683d9d6db723f82fef2c09914cb))
+
 ### [1.7.2](https://gitlab.consertotech.pro/lycanthrop/snap-carousel/compare/v1.7.1...v1.7.2) (2023-02-10)
 
 
