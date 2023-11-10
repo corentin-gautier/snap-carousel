@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.8.1](https://gitlab.consertotech.pro/lycanthrop/snap-carousel/compare/v1.8.0...v1.8.1) (2023-11-10)
+
+
+### Bug Fixes
+
+* missing callback from waitForWidth ([8ed908d](https://gitlab.consertotech.pro/lycanthrop/snap-carousel/commit/8ed908d1d6af3944d540788fdc4d0196e660c266))
+
 ## [1.8.0](https://gitlab.consertotech.pro/lycanthrop/snap-carousel/compare/v1.7.2...v1.8.0) (2023-11-07)
 
 
