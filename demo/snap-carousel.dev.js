@@ -277,7 +277,7 @@
           callback();
         } else {
           requestAnimationFrame(() => {
-            this.#waitForWidth();
+            this.#waitForWidth(callback);
           });
         }
       }

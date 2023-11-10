@@ -271,7 +271,7 @@ import hostStyles from './host.css';
         callback();
       } else {
         requestAnimationFrame(() => {
-          this.#waitForWidth();
+          this.#waitForWidth(callback);
         });
       }
     }
