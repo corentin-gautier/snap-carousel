@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.8.2](https://gitlab.consertotech.pro/lycanthrop/snap-carousel/compare/v1.8.1...v1.8.2) (2024-04-04)
+
+
+### Bug Fixes
+
+* add carousels styles to the document head instead of the body ([85fd73c](https://gitlab.consertotech.pro/lycanthrop/snap-carousel/commit/85fd73ce349800b7249954d4e20c01d428fa56f6))
+
 ### [1.8.1](https://gitlab.consertotech.pro/lycanthrop/snap-carousel/compare/v1.8.0...v1.8.1) (2023-11-10)
 
 
