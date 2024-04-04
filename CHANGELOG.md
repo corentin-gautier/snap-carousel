@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.8.3](///compare/v1.8.2...v1.8.3) (2024-04-04)
+
+
+### Bug Fixes
+
+* demo page 5734918
+* remove vertical on last example d7d8ae3
+
 ### [1.8.2](https://gitlab.consertotech.pro/lycanthrop/snap-carousel/compare/v1.8.1...v1.8.2) (2024-04-04)
 
 
