@@ -375,7 +375,7 @@ import hostStyles from './host.css';
       const css = `#${this.#state.id} { --sc-perpage: ${displayed}; --sc-gap: ${this.#formatCssValue(gap)}; --sc-padding: ${this.#formatCssValue(padding)}; --sc-behavior: ${behavior}; } #${this.#state.id} [slot="scroller"] > ${selectRule} { scroll-snap-align: start; scroll-snap-stop: ${stop ? 'always' : 'normal'} }`;
 
       this.styles = this.#createStyleElement(css, this.#state.id + '-styles');
-      document.body.append(this.styles);
+      document.head.append(this.styles);
     }
 
     #observe() {
