@@ -16,7 +16,7 @@ export default {
   input: 'src/snap-carousel.js',
   output: [
     {
-      file: 'demo/snap-carousel.dev.js',
+      file: 'docs/snap-carousel.dev.js',
       format: 'iife',
       plugins: [
         livereload({
@@ -50,7 +50,7 @@ export default {
       }
     }),
     serve({
-      contentBase: './demo'
+      contentBase: './docs'
     })
   ]
 }
