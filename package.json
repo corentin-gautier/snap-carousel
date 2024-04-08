@@ -29,8 +29,5 @@
     },
     "homepage": "",
     "author": "Corentin Gautier",
-    "license": "MIT",
-    "publishConfig": {
-        "registry": "https://repo.consertotech.pro/repository/npm-dev/"
-    }
+    "license": "GPLv3"
 }
