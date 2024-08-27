@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.8.4](https://github.com/corentin-gautier/snap-carousel/compare/v1.8.3...v1.8.4) (2024-08-27)
+
+
+### Bug Fixes
+
+* padding not allowing multiple values ([445e7e8](https://github.com/corentin-gautier/snap-carousel/commit/445e7e833d0af322c5f42d453bdb46e3daad8bc9))
+
 ### [1.8.3](///compare/v1.8.2...v1.8.3) (2024-04-04)
 
 
