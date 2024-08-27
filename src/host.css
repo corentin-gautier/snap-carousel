@@ -25,7 +25,7 @@
   scroll-snap-type: x mandatory;
   overscroll-behavior-x: contain;
   scroll-padding-inline: var(--sc-padding);
-  padding: 0 var(--sc-padding) !important;
+  padding-inline: var(--sc-padding) !important;
 }
 
 :host([vertical]) ::slotted([slot="scroller"]) {
@@ -33,6 +33,6 @@
   overflow-y: auto;
   scroll-snap-type: y mandatory;
   overscroll-behavior-y: contain;
-  padding: var(--sc-padding) 0 !important;
+  padding-block: var(--sc-padding) !important;
   scroll-padding-block: var(--sc-padding);
 }
