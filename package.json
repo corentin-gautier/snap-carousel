@@ -1,5 +1,5 @@
 {
-    "name": "@consertotech/snap-carousel",
+    "name": "@cgsoft/snap-carousel",
     "version": "1.8.4",
     "description": "A lightweight vanilla javascript library based on Web Components and Scroll Snap features",
     "main": "build/snap-carousel.js",
