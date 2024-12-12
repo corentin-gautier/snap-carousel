@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.9.0](https://github.com/corentin-gautier/snap-carousel/compare/v1.8.5...v1.9.0) (2024-12-12)
+
+
+### Features
+
+* add additional slots ([8bb4e74](https://github.com/corentin-gautier/snap-carousel/commit/8bb4e74e38125b7420bbd5f65d4149962c3585fb))
+
+
+### Bug Fixes
+
+* package.lock ([504345c](https://github.com/corentin-gautier/snap-carousel/commit/504345cda4fffd5ff5272c04dd88b9a2872784a2))
+
 ### [1.8.5](https://github.com/corentin-gautier/snap-carousel/compare/v1.8.4...v1.8.5) (2024-11-18)
 
 ### [1.8.4](https://github.com/corentin-gautier/snap-carousel/compare/v1.8.3...v1.8.4) (2024-08-27)
