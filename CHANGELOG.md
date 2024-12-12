@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.9.1](https://github.com/corentin-gautier/snap-carousel/compare/v1.9.0...v1.9.1) (2024-12-12)
+
+
+### Bug Fixes
+
+* build ([573a780](https://github.com/corentin-gautier/snap-carousel/commit/573a7801de898baeb0a6d2758cdeebda76e7573d))
+
 ## [1.9.0](https://github.com/corentin-gautier/snap-carousel/compare/v1.8.5...v1.9.0) (2024-12-12)
 
 
