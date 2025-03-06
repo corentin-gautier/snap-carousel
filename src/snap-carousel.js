@@ -24,14 +24,37 @@
  *   - config : any of the previous options
  */
 
-import htmlTemplate from './template.html';
-import globalStyles from './style.css';
 import hostStyles from './host.css';
+import globalStyles from './style.css';
+import htmlTemplate from './template.html';
 
 ((window, document, Array, Object, Element, IntersectionObserver, clearTimeout, setTimeout, requestIdleCallback) => {
 
   // Scrollend polyfill
-  if (!("onscrollend" in window)) { const s = new Event("scrollend"), i = new Set; document.addEventListener("touchstart", e => { for (let t of e.changedTouches) i.add(t.identifier) }, { passive: !0 }), document.addEventListener("touchend", e => { for (let t of e.changedTouches) i.delete(t.identifier) }, { passive: !0 }); let l = new WeakMap; function e(e, t, n) { let o = e[t]; e[t] = function () { let e = Array.prototype.slice.apply(arguments, [0]); o.apply(this, e), e.unshift(o), n.apply(this, e) } } function t(e, t, n, o) { if ("scroll" != t && "scrollend" != t) return; let r = this, d = l.get(r); if (void 0 === d) { let t = 0; d = { scrollListener: e => { clearTimeout(t), t = setTimeout(() => { i.size ? setTimeout(d.scrollListener, 100) : (r.dispatchEvent(s), t = 0) }, 100) }, listeners: 0 }, e.apply(r, ["scroll", d.scrollListener]), l.set(r, d) } d.listeners++ } function n(e, t, n) { if ("scroll" != t && "scrollend" != t) return; let o = this, s = l.get(o); void 0 !== s && (s[t]--, --s.listeners > 0 || (e.apply(o, ["scroll", s.scrollListener]), l.delete(o))) } e(Element.prototype, "addEventListener", t), e(window, "addEventListener", t), e(document, "addEventListener", t), e(Element.prototype, "removeEventListener", n), e(window, "removeEventListener", n), e(document, "removeEventListener", n) } var o = { __proto__: null };
+  if (!("onscrollend" in window)) {
+    const s = new Event("scrollend"), i = new Set;
+    document.addEventListener("touchstart", e => { for (let t of e.changedTouches) i.add(t.identifier) }, { passive: !0 });
+    document.addEventListener("touchend", e => { for (let t of e.changedTouches) i.delete(t.identifier) }, { passive: !0 });
+    const l = new WeakMap;
+    function e(e, t, n) { let o = e[t]; e[t] = function() { n.apply(this, [o, ...arguments]) } }
+    function t(e, t, n) {
+      if (t !== "scroll" && t !== "scrollend") return;
+      const r = this, d = l.get(r) || { scrollListener: e => { clearTimeout(d.t); d.t = setTimeout(() => { i.size ? setTimeout(d.scrollListener, 100) : (r.dispatchEvent(s), d.t = 0) }, 100) }, t: 0, listeners: 0 };
+      if (!l.has(r)) { e.apply(r, ["scroll", d.scrollListener]); l.set(r, d) }
+      d.listeners++;
+    }
+    function n(e, t, n) {
+      if (t !== "scroll" && t !== "scrollend") return;
+      const o = this, s = l.get(o);
+      if (s) { s.listeners--; if (s.listeners <= 0) { e.apply(o, ["scroll", s.scrollListener]); l.delete(o) } }
+    }
+    e(Element.prototype, "addEventListener", t);
+    e(window, "addEventListener", t);
+    e(document, "addEventListener", t);
+    e(Element.prototype, "removeEventListener", n);
+    e(window, "removeEventListener", n);
+    e(document, "removeEventListener", n);
+  }
 
   // Main class
   class SnapCarousel extends HTMLElement {
@@ -278,27 +301,17 @@ import hostStyles from './host.css';
 
     #getNodeConfig() {
       const options = Object.keys(this.#settings.default);
-      if (this.attributes.options) {
-        return this.#maybeParse(this.attributes.options.value);
-      }
-      return Array.from(this.attributes).reduce((object, next) => {
-        const name = next.name.replace('data-', '').replace(/-([a-z])/g, (g) => g[1].toUpperCase());
-        if (options.includes(name)) {
-          object[name] = this.#maybeParse(next.value);
-        }
-        return object;
+      if (this.attributes.options) return this.#maybeParse(this.attributes.options.value);
+      return Array.from(this.attributes).reduce((o, a) => {
+        const n = a.name.replace('data-', '').replace(/-([a-z])/g, g => g[1].toUpperCase());
+        if (options.includes(n)) o[n] = this.#maybeParse(a.value);
+        return o;
       }, {});
     }
 
-    #maybeParse(string) {
-      let result;
-      if (string === '') return true;
-      try {
-        result = JSON.parse(string);
-      } catch (error) {
-        return string;
-      }
-      return result;
+    #maybeParse(s) {
+      if (s === '') return true;
+      try { return JSON.parse(s) } catch { return s }
     }
 
     /**
@@ -306,22 +319,11 @@ import hostStyles from './host.css';
      * then runs setup if the new breakpoint is different from the last one
      */
     #getCurrentConfig() {
-      let match = { breakpoint: null };
-      let { origin, current } = this.#settings;
-
-      origin.responsive.forEach(conf => {
-        if (conf.breakpoint < window.innerWidth) match = conf;
-      });
-
-      current = Object.assign({}, origin, (match.config || {}));
-
-      let { displayed, perPage } = current;
-
-      // Control the config object
-      current.perPage = Math.min(displayed, perPage);
-
+      const { origin } = this.#settings;
+      const match = origin.responsive.reduce((m, c) => c.breakpoint < window.innerWidth ? c : m, { breakpoint: null });
+      const current = Object.assign({}, origin, match.config || {});
+      current.perPage = Math.min(current.displayed, current.perPage);
       this.#settings.current = current;
-
       if (this.#state.breakpoint !== match.breakpoint) {
         this.#state.breakpoint = match.breakpoint;
         this.#init();
@@ -796,8 +798,8 @@ import hostStyles from './host.css';
      * @param {mixed} value
      * @returns string
      */
-    #formatCssValue(value) {
-      return typeof value === 'string' ? value : value + 'px';
+    #formatCssValue(v) {
+      return typeof v === 'string' ? v : v + 'px';
     }
 
     /**

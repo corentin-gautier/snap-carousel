@@ -3,8 +3,11 @@
     "version": "1.9.1",
     "description": "A lightweight vanilla javascript library based on Web Components and Scroll Snap features",
     "main": "build/snap-carousel.js",
+    "type": "module",
     "scripts": {
-        "start": "npx rollup -cw"
+        "start": "vite",
+        "build": "vite build",
+        "preview": "vite preview"
     },
     "keywords": [
         "carousel",
@@ -20,12 +23,13 @@
         "url": "https://github.com/corentin-gautier/snap-carousel"
     },
     "devDependencies": {
+        "@rollup/plugin-terser": "^0.4.4",
         "rollup": "*",
-        "rollup-plugin-serve": "*",
-        "rollup-plugin-livereload": "*",
-        "rollup-plugin-terser": "*",
         "rollup-plugin-html": "*",
-        "rollup-plugin-postcss": "*"
+        "rollup-plugin-livereload": "*",
+        "rollup-plugin-postcss": "*",
+        "rollup-plugin-terser": "*",
+        "vite": "*"
     },
     "homepage": "https://corentin-gautier.github.io/snap-carousel/",
     "author": "Corentin Gautier",

@@ -3,11 +3,11 @@
 (function () {
   'use strict';
 
+  var css_248z$1 = ":host{display:block;position:relative;width:100%}:host(:not([scrollbar])) ::slotted([slot=scroller]){scrollbar-width:none}:host(:not([scrollbar])) ::slotted([slot=scroller])::-webkit-scrollbar{display:none}::slotted([slot=scroller]){display:flex;gap:var(--sc-gap);margin:0;position:relative;scroll-behavior:var(--sc-behavior)}:host(:not([vertical])) ::slotted([slot=scroller]){overflow-x:auto;overscroll-behavior-x:contain;padding-inline:var(--sc-padding)!important;scroll-padding-inline:var(--sc-padding);scroll-snap-type:x mandatory}:host([vertical]) ::slotted([slot=scroller]){flex-direction:column;overflow-y:auto;overscroll-behavior-y:contain;padding-block:var(--sc-padding)!important;scroll-padding-block:var(--sc-padding);scroll-snap-type:y mandatory}";
+
+  var css_248z = "snap-carousel:not([scrollbar]) [slot=scroller]::-webkit-scrollbar{display:none}snap-carousel [slot=scroller]{display:flex}snap-carousel[vertical]{display:flex;flex-direction:column}snap-carousel[vertical] [slot=scroller]{flex-direction:column;height:100%}snap-carousel [slot=scroller]>*{display:block;flex:0 0 auto}snap-carousel:not([vertical]) [slot=scroller]>*{max-width:100%;width:calc(100%/var(--sc-perpage, 1) - var(--sc-gap, 0) + var(--sc-gap, 0)/var(--sc-perpage, 1))}snap-carousel[vertical] [slot=scroller]>*{height:calc(100%/var(--sc-perpage, 1) - var(--sc-gap, 0) + var(--sc-gap, 0)/var(--sc-perpage, 1));max-height:100%}";
+
   var htmlTemplate = "<slot name=\"scroller\"><ul></ul></slot><div part=\"controls\"><div part=\"buttons\"><slot name=\"before-prev\"></slot><slot name=\"prev-buttons\"><button part=\"button control-button prev-button\" type=\"button\" direction=\"prev\" aria-label=\"Previous\">Previous</button></slot><slot name=\"next-buttons\"><button part=\"button control-button next-button\" type=\"button\" direction=\"next\" aria-label=\"Next\">Next</button></slot><slot name=\"after-next\"></slot></div><slot name=\"pagination\"><div part=\"nav\"></div></slot><div part=\"pager\"><slot name=\"current\"><span part=\"current\"></span></slot><slot name=\"sep\"><span part=\"page-sep\">&nbsp;/&nbsp;</span></slot><slot name=\"total\"><span part=\"total\"></span></slot></div></div>";
-
-  var css_248z$1 = "snap-carousel:not([scrollbar]) [slot=scroller]::-webkit-scrollbar{display:none}snap-carousel [slot=scroller]{display:flex}snap-carousel[vertical]{display:flex;flex-direction:column}snap-carousel[vertical] [slot=scroller]{flex-direction:column;height:100%}snap-carousel [slot=scroller]>*{display:block;flex:0 0 auto}snap-carousel:not([vertical]) [slot=scroller]>*{max-width:100%;width:calc(100%/var(--sc-perpage, 1) - var(--sc-gap, 0) + var(--sc-gap, 0)/var(--sc-perpage, 1))}snap-carousel[vertical] [slot=scroller]>*{height:calc(100%/var(--sc-perpage, 1) - var(--sc-gap, 0) + var(--sc-gap, 0)/var(--sc-perpage, 1));max-height:100%}";
-
-  var css_248z = ":host{display:block;position:relative;width:100%}:host(:not([scrollbar])) ::slotted([slot=scroller]){scrollbar-width:none}:host(:not([scrollbar])) ::slotted([slot=scroller])::-webkit-scrollbar{display:none}::slotted([slot=scroller]){display:flex;gap:var(--sc-gap);margin:0;position:relative;scroll-behavior:var(--sc-behavior)}:host(:not([vertical])) ::slotted([slot=scroller]){overflow-x:auto;overscroll-behavior-x:contain;padding-inline:var(--sc-padding)!important;scroll-padding-inline:var(--sc-padding);scroll-snap-type:x mandatory}:host([vertical]) ::slotted([slot=scroller]){flex-direction:column;overflow-y:auto;overscroll-behavior-y:contain;padding-block:var(--sc-padding)!important;scroll-padding-block:var(--sc-padding);scroll-snap-type:y mandatory}";
 
   /**
    * SnapCarousel 🚀
@@ -38,7 +38,31 @@
   ((window, document, Array, Object, Element, IntersectionObserver, clearTimeout, setTimeout, requestIdleCallback) => {
 
     // Scrollend polyfill
-    if (!("onscrollend" in window)) { const s = new Event("scrollend"), i = new Set; document.addEventListener("touchstart", e => { for (let t of e.changedTouches) i.add(t.identifier); }, { passive: !0 }), document.addEventListener("touchend", e => { for (let t of e.changedTouches) i.delete(t.identifier); }, { passive: !0 }); let l = new WeakMap; function e(e, t, n) { let o = e[t]; e[t] = function () { let e = Array.prototype.slice.apply(arguments, [0]); o.apply(this, e), e.unshift(o), n.apply(this, e); }; } function t(e, t, n, o) { if ("scroll" != t && "scrollend" != t) return; let r = this, d = l.get(r); if (void 0 === d) { let t = 0; d = { scrollListener: e => { clearTimeout(t), t = setTimeout(() => { i.size ? setTimeout(d.scrollListener, 100) : (r.dispatchEvent(s), t = 0); }, 100); }, listeners: 0 }, e.apply(r, ["scroll", d.scrollListener]), l.set(r, d); } d.listeners++; } function n(e, t, n) { if ("scroll" != t && "scrollend" != t) return; let o = this, s = l.get(o); void 0 !== s && (s[t]--, --s.listeners > 0 || (e.apply(o, ["scroll", s.scrollListener]), l.delete(o))); } e(Element.prototype, "addEventListener", t), e(window, "addEventListener", t), e(document, "addEventListener", t), e(Element.prototype, "removeEventListener", n), e(window, "removeEventListener", n), e(document, "removeEventListener", n); }
+    if (!("onscrollend" in window)) {
+      const s = new Event("scrollend"), i = new Set;
+      document.addEventListener("touchstart", e => { for (let t of e.changedTouches) i.add(t.identifier); }, { passive: !0 });
+      document.addEventListener("touchend", e => { for (let t of e.changedTouches) i.delete(t.identifier); }, { passive: !0 });
+      const l = new WeakMap;
+      function e(e, t, n) { let o = e[t]; e[t] = function() { n.apply(this, [o, ...arguments]); }; }
+      function t(e, t, n) {
+        if (t !== "scroll" && t !== "scrollend") return;
+        const r = this, d = l.get(r) || { scrollListener: e => { clearTimeout(d.t); d.t = setTimeout(() => { i.size ? setTimeout(d.scrollListener, 100) : (r.dispatchEvent(s), d.t = 0); }, 100); }, t: 0, listeners: 0 };
+        if (!l.has(r)) { e.apply(r, ["scroll", d.scrollListener]); l.set(r, d); }
+        d.listeners++;
+      }
+      function n(e, t, n) {
+        if (t !== "scroll" && t !== "scrollend") return;
+        const o = this, s = l.get(o);
+        if (s) { s.listeners--; if (s.listeners <= 0) { e.apply(o, ["scroll", s.scrollListener]); l.delete(o); } }
+      }
+      e(Element.prototype, "addEventListener", t);
+      e(window, "addEventListener", t);
+      e(document, "addEventListener", t);
+      e(Element.prototype, "removeEventListener", n);
+      e(window, "removeEventListener", n);
+      e(document, "removeEventListener", n);
+    }
+
     // Main class
     class SnapCarousel extends HTMLElement {
 
@@ -131,7 +155,7 @@
         if (!this.isConnected) return;
         const template = document.createElement('template');
 
-        template.innerHTML = `<style>${css_248z}</style>${htmlTemplate}`;
+        template.innerHTML = `<style>${css_248z$1}</style>${htmlTemplate}`;
 
         this.attachShadow({ mode: 'open' });
         this.shadowRoot.appendChild(template.content.cloneNode(true));
@@ -251,7 +275,7 @@
         if (document.querySelector('#' + id)) {
           return;
         }
-        const css = css_248z$1;
+        const css = css_248z;
         document.head.append(this.#createStyleElement(css, id));
       }
 
@@ -284,27 +308,17 @@
 
       #getNodeConfig() {
         const options = Object.keys(this.#settings.default);
-        if (this.attributes.options) {
-          return this.#maybeParse(this.attributes.options.value);
-        }
-        return Array.from(this.attributes).reduce((object, next) => {
-          const name = next.name.replace('data-', '').replace(/-([a-z])/g, (g) => g[1].toUpperCase());
-          if (options.includes(name)) {
-            object[name] = this.#maybeParse(next.value);
-          }
-          return object;
+        if (this.attributes.options) return this.#maybeParse(this.attributes.options.value);
+        return Array.from(this.attributes).reduce((o, a) => {
+          const n = a.name.replace('data-', '').replace(/-([a-z])/g, g => g[1].toUpperCase());
+          if (options.includes(n)) o[n] = this.#maybeParse(a.value);
+          return o;
         }, {});
       }
 
-      #maybeParse(string) {
-        let result;
-        if (string === '') return true;
-        try {
-          result = JSON.parse(string);
-        } catch (error) {
-          return string;
-        }
-        return result;
+      #maybeParse(s) {
+        if (s === '') return true;
+        try { return JSON.parse(s) } catch { return s }
       }
 
       /**
@@ -312,22 +326,11 @@
        * then runs setup if the new breakpoint is different from the last one
        */
       #getCurrentConfig() {
-        let match = { breakpoint: null };
-        let { origin, current } = this.#settings;
-
-        origin.responsive.forEach(conf => {
-          if (conf.breakpoint < window.innerWidth) match = conf;
-        });
-
-        current = Object.assign({}, origin, (match.config || {}));
-
-        let { displayed, perPage } = current;
-
-        // Control the config object
-        current.perPage = Math.min(displayed, perPage);
-
+        const { origin } = this.#settings;
+        const match = origin.responsive.reduce((m, c) => c.breakpoint < window.innerWidth ? c : m, { breakpoint: null });
+        const current = Object.assign({}, origin, match.config || {});
+        current.perPage = Math.min(current.displayed, current.perPage);
         this.#settings.current = current;
-
         if (this.#state.breakpoint !== match.breakpoint) {
           this.#state.breakpoint = match.breakpoint;
           this.#init();
@@ -802,8 +805,8 @@
        * @param {mixed} value
        * @returns string
        */
-      #formatCssValue(value) {
-        return typeof value === 'string' ? value : value + 'px';
+      #formatCssValue(v) {
+        return typeof v === 'string' ? v : v + 'px';
       }
 
       /**
