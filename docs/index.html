@@ -10,24 +10,93 @@
     href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚀</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     * {
       box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --text: #1f2937;
+      --text-light: #6b7280;
+      --bg: #ffffff;
+      --bg-alt: #f8fafc;
+      --border: #e2e8f0;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+      --glow: 0 0 20px rgba(99, 102, 241, 0.15);
+      --radius-sm: 0.05rem;
+      --radius-md: 0.15rem;
+      --radius-lg: 0.25rem;
+      --radius-xl: .5rem;
     }
 
     body {
       font-family: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
       display: flex;
       flex-direction: column;
-      gap: 3rem;
+      gap: 4rem;
       margin: 0;
-      padding: 5vw;
+      padding: 2rem;
       min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 4rem;
+    }
+
+    header {
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: center;
+      padding: 3rem 0;
+      position: relative;
+    }
+
+    header::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--primary), transparent);
+      border-radius: var(--radius-sm);
     }
 
     h1 {
-      margin-top: 0;
+      font-size: 2.5rem;
+      margin: 0;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 700;
+    }
+
+    header p {
+      font-size: 1.1rem;
+      color: var(--text-light);
+      margin-top: 1rem;
+    }
+
+    header a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    header a:hover {
+      text-decoration: underline;
     }
 
     ul {
@@ -41,103 +110,316 @@
       display: flex;
       place-content: center;
       place-items: center;
-      background: aliceblue;
-      color: cornflowerblue;
+      background: var(--bg);
+      color: var(--primary);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
     }
 
     li[data-slide]::before {
       content: attr(data-slide);
-      font-size: 3rem;
+      font-size: 2rem;
       font-weight: bold;
-    }
-
-    small {
-      display: block;
-      margin-top: -1em;
-    }
-
-    pre code {
-      border-radius: 5px;
     }
 
     example {
       display: flex;
-      overflow: hidden;
+      flex-direction: column;
+      gap: 2.5rem;
       width: 100%;
-      gap: 4rem;
+      background: var(--bg-alt);
+      padding: 2.5rem;
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      transition: all 0.3s ease;
     }
 
     example>div {
       width: 100%;
-      max-width: 400px;
-      flex-shrink: 0;
     }
 
-    example snap-carousel {
+    example h2 {
+      margin: 0 0 0.5rem 0;
+      color: var(--text);
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+
+    example small {
+      display: block;
+      margin-bottom: 1rem;
+      color: var(--text-light);
+      font-size: 0.875rem;
+    }
+
+    pre {
+      border-radius: var(--radius-lg);
+      overflow-x: auto;
+      margin: 0;
+      border: 1px solid var(--border);
+    }
+
+    code {
+      font-family: 'SF Mono', 'Consolas', monospace;
+      font-size: 0.9rem;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+
+    snap-carousel {
       width: 100%;
+      position: relative;
     }
 
-    snap-carousel::part(button),
-    button {
-      border: none;
-      padding: 0.5rem;
-      display: inline-block;
-      min-width: 1.8rem;
-      border-radius: 2px;
-      text-transform: uppercase;
-      font-weight: bold;
-      font-size: .7rem;
+    snap-carousel::part(button) {
+      background: var(--bg);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 0.5rem 0.75rem;
+      border-radius: var(--radius-md);
+      font-weight: 500;
+      font-size: 0.875rem;
       cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 2.5rem;
+      height: 2.5rem;
+      position: relative;
+      z-index: 0;
+    }
+
+    snap-carousel::part(nav) {
+      display: flex;
+      margin-top: 1rem;
+      gap: 0.5rem;
+      justify-content: center;
+      align-items: center;
+    }
+
+    snap-carousel::part(active) {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+      transform: scale(1.1);
+      font-weight: 600;
+      box-shadow: var(--glow);
+      z-index: 1;
+    }
+
+    snap-carousel::part(button):hover {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+      transform: translateY(-1px);
+      box-shadow: var(--glow);
+    }
+
+    snap-carousel::part(button):disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
     }
 
     snap-carousel::part(buttons) {
       display: flex;
       justify-content: space-between;
-      margin-bottom: .5rem;
-      gap: .5rem;
+      margin-top: 1rem;
+      gap: 0.5rem;
     }
 
-    snap-carousel::part(nav) {
+    snap-carousel::part(buttons)::part(button) {
+      background: var(--bg);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 0.75rem;
+      border-radius: 50%;
+      font-weight: 500;
+      font-size: 1.25rem;
+      cursor: pointer;
+      transition: all 0.2s;
       display: flex;
-      margin-top: .5rem;
-      gap: .5rem;
+      align-items: center;
       justify-content: center;
+      width: 3rem;
+      height: 3rem;
+      box-shadow: var(--shadow);
+      position: relative;
     }
 
-    snap-carousel::part(active) {
-      background: rebeccapurple;
-      color: #FFF;
+    snap-carousel::part(buttons)::part(button):hover {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+      transform: translateY(-1px);
+      box-shadow: var(--glow);
     }
 
-    snap-carousel::part(pager) {
-      font-weight: bold;
-      font-size: 0.8em;
-      background: #FFF;
-      padding: 16px;
-      border-radius: 3px;
-      border: 1px solid #DDD;
-      margin-left: auto;
-      margin-top: 8px;
+    snap-carousel::part(buttons)::part(button):disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
     }
 
-    .custom-nav {
+    snap-carousel::part(buttons)::part(button)::before {
+      content: '';
+      position: absolute;
+      width: 1.5rem;
+      height: 1.5rem;
+      border-right: 2px solid currentColor;
+      border-bottom: 2px solid currentColor;
+      transform: rotate(45deg);
+    }
+
+    snap-carousel::part(buttons)::part(button:first-child)::before {
+      transform: rotate(135deg);
+    }
+
+    .product-card {
+      background: var(--bg);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem;
+      box-shadow: var(--shadow);
+      text-align: center;
+      border: 1px solid var(--border);
+      transition: all 0.3s;
+    }
+
+    .product-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--glow);
+    }
+
+    .product-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: var(--radius-sm);
+      margin-bottom: 1rem;
+    }
+
+    .product-card h3 {
+      margin: 0.5rem 0;
+      font-size: 1rem;
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .product-card .price {
+      color: var(--primary);
+      font-weight: 600;
+      font-size: 1.1rem;
+      margin: 0.5rem 0;
+    }
+
+    .product-card button {
+      background: var(--bg);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-md);
+      font-weight: 500;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 0.5rem;
+    }
+
+    .product-card button:hover {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+      transform: translateY(-1px);
+      box-shadow: var(--glow);
+    }
+
+    .testimonial-card {
+      background: var(--bg);
+      padding: 2rem;
+      border-radius: var(--radius-lg);
+      text-align: left;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    .testimonial-card .quote {
+      font-style: italic;
+      font-size: 1.1rem;
+      margin-bottom: 1.5rem;
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .testimonial-card .author {
       display: flex;
-      gap: 20px;
-      justify-content: center;
+      align-items: center;
+      gap: 1rem;
     }
 
-    .custom-nav button[aria-selected="true"] {
-      background: chartreuse;
+    .testimonial-card .author img {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+    }
+
+    .testimonial-card .author strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .testimonial-card .author span {
+      color: var(--text-light);
+      font-size: 0.875rem;
+    }
+
+    .gallery-item {
+      position: relative;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+    }
+
+    .gallery-item .caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(transparent, rgba(0,0,0,0.7));
+      color: white;
+      padding: 1.5rem;
+      text-align: center;
+      font-size: 0.875rem;
     }
 
     @media screen and (max-width: 1024px) {
-      example {
-        flex-direction: column;
+      body {
+        padding: 1rem;
+        gap: 3rem;
       }
 
-      snap-carousel[padding] ul {
-        margin-inline: -5vw;
-        width: auto;
+      .container {
+        gap: 3rem;
+      }
+
+      example {
+        padding: 2rem;
+        gap: 2rem;
+      }
+
+      h1 {
+        font-size: 2rem;
       }
     }
   </style>
@@ -146,19 +428,19 @@
 <body>
   <header>
     <h1>Snap Carousel</h1>
-    <p style="max-width: 800px;">Snap carousel is a lightweight vanilla js library for creating carousels. It is
-      based on the recent web technologies that are custom elements / scroll-snap / <a href="#">scroll-padding</a>.</p>
+    <p>A lightweight vanilla JavaScript carousel library built with modern web technologies. Based on custom elements, scroll-snap, and scroll-padding.</p>
   </header>
-  <example>
-    <div>
-      <h2>Basic example</h2>
-      <small>Every available options</small>
-      <pre><code class="language-html">&lt;snap-carousel
+
+  <div class="container">
+    <example>
+      <div>
+        <h2>Basic Example</h2>
+        <small>Core features with smooth scrolling and autoplay</small>
+        <pre><code class="language-html">&lt;snap-carousel
     displayed="2"
     per-page="1"
     nav
     controls
-    stop
     gap="16"
     padding="16"
     behavior="smooth"
@@ -167,145 +449,205 @@
     use-pause
 &gt;
 &lt;/snap-carousel&gt;</code></pre>
-    </div>
-    <snap-carousel displayed="2" per-page="1" nav controls stop gap="16" padding="16" behavior="smooth" loop>
-      <ul>
-        <li data-slide="1"></li>
-        <li data-slide="2"></li>
-        <li data-slide="3"></li>
-        <li data-slide="4"><a href="#">Focus</a></li>
-        <li data-slide="5"></li>
-        <li data-slide="6"></li>
-        <li data-slide="7"></li>
-        <li data-slide="8"></li>
-        <li data-slide="9"></li>
-        <li data-slide="10"></li>
-        <li data-slide="11"></li>
-        <li data-slide="12"></li>
-        <li data-slide="13"></li>
-        <li data-slide="14"></li>
-      </ul>
-    </snap-carousel>
-  </example>
-  <example>
-    <div>
-      <h2>Snap stop</h2>
-      <pre><code class="language-html">&lt;snap-carousel
-    displayed="2"
-    gap="16"
-    nav
-    controls
-    stop
-&gt;
-&lt;/snap-carousel&gt;</code></pre>
-    </div>
-    <snap-carousel displayed="2" nav controls stop gap="16">
-      <ul slot="scroller">
-        <li data-slide="1"></li>
-        <li data-slide="2"></li>
-        <li data-slide="3"></li>
-        <li data-slide="4"><a href="#">Focus</a></li>
-        <li data-slide="5"></li>
-        <li data-slide="6"></li>
-        <li data-slide="7"></li>
-        <li data-slide="8"></li>
-      </ul>
-    </snap-carousel>
-  </example>
+      </div>
+      <snap-carousel displayed="2" per-page="1" nav controls gap="16" padding="16" behavior="smooth" loop autoplay="3000" use-pause>
+        <ul>
+          <li data-slide="1"></li>
+          <li data-slide="2"></li>
+          <li data-slide="3"></li>
+          <li data-slide="4"></li>
+          <li data-slide="5"></li>
+          <li data-slide="6"></li>
+        </ul>
+      </snap-carousel>
+    </example>
 
-  <example>
-    <div>
-      <h2>Padding</h2>
-      <pre><code class="language-html">&lt;snap-carousel
-    displayed="2"
+    <example>
+      <div>
+        <h2>Product Showcase</h2>
+        <small>Responsive product grid with loop</small>
+        <pre><code class="language-html">&lt;snap-carousel
+    displayed="3"
     per-page="2"
-    gap="2.5vw"
-    padding="5vw"
+    gap="1rem"
+    padding="2rem"
     controls
     nav
+    loop
 &gt;
+&lt;ul slot="scroller"&gt;
+  &lt;li&gt;
+    &lt;div class="product-card"&gt;
+      &lt;img src="product.jpg" alt="Product"&gt;
+      &lt;h3&gt;Product Name&lt;/h3&gt;
+      &lt;p class="price"&gt;$99.99&lt;/p&gt;
+      &lt;button&gt;Add to Cart&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
 &lt;/snap-carousel&gt;</code></pre>
-    </div>
-    <snap-carousel displayed="2" per-page="2" controls gap="2.5vw" padding="5vw" nav>
-      <ul slot="scroller">
-        <li data-slide="1"></li>
-        <li data-slide="2"></li>
-        <li data-slide="3"></li>
-        <li data-slide="4"></li>
-        <li data-slide="5"></li>
-        <li data-slide="6"></li>
-        <li data-slide="7"></li>
-        <li data-slide="8"></li>
-      </ul>
-    </snap-carousel>
-  </example>
+      </div>
+      <snap-carousel displayed="3" per-page="2" gap="1rem" padding="2rem" controls nav loop>
+        <ul slot="scroller">
+          <li>
+            <div class="product-card">
+              <img src="https://picsum.photos/300/200" alt="Premium Headphones">
+              <h3>Premium Headphones</h3>
+              <p class="price">$299.99</p>
+              <button>Add to Cart</button>
+            </div>
+          </li>
+          <li>
+            <div class="product-card">
+              <img src="https://picsum.photos/300/200" alt="Wireless Earbuds">
+              <h3>Wireless Earbuds</h3>
+              <p class="price">$159.99</p>
+              <button>Add to Cart</button>
+            </div>
+          </li>
+          <li>
+            <div class="product-card">
+              <img src="https://picsum.photos/300/200" alt="Smart Watch">
+              <h3>Smart Watch</h3>
+              <p class="price">$399.99</p>
+              <button>Add to Cart</button>
+            </div>
+          </li>
+          <li>
+            <div class="product-card">
+              <img src="https://picsum.photos/300/200" alt="Fitness Tracker">
+              <h3>Fitness Tracker</h3>
+              <p class="price">$199.99</p>
+              <button>Add to Cart</button>
+            </div>
+          </li>
+        </ul>
+      </snap-carousel>
+    </example>
 
-  <example>
-    <div>
-      <h2>Custom Buttons / Pagination / Pager</h2>
-      <pre><code class="language-html">&lt;snap-carousel
-    displayed="2"
-    gap="16"
+    <example>
+      <div>
+        <h2>Testimonials</h2>
+        <small>Auto-playing testimonials with pause on hover</small>
+        <pre><code class="language-html">&lt;snap-carousel
+    displayed="1"
+    gap="2rem"
+    controls
+    nav
+    autoplay="5000"
+    use-pause
+&gt;
+&lt;ul slot="scroller"&gt;
+  &lt;li&gt;
+    &lt;div class="testimonial-card"&gt;
+      &lt;div class="quote"&gt;"Amazing product!"&lt;/div&gt;
+      &lt;div class="author"&gt;
+        &lt;img src="avatar.jpg" alt="Name"&gt;
+        &lt;div&gt;
+          &lt;strong&gt;Name&lt;/strong&gt;
+          &lt;span&gt;Title&lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;/snap-carousel&gt;</code></pre>
+      </div>
+      <snap-carousel displayed="1" gap="2rem" controls nav autoplay="5000" use-pause>
+        <ul slot="scroller">
+          <li>
+            <div class="testimonial-card">
+              <div class="quote">"Amazing product! Exactly what I needed."</div>
+              <div class="author">
+                <img src="https://picsum.photos/50/50" alt="John Doe">
+                <div>
+                  <strong>John Doe</strong>
+                  <span>CEO, TechCorp</span>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="testimonial-card">
+              <div class="quote">"The best solution we've found in the market."</div>
+              <div class="author">
+                <img src="https://picsum.photos/50/50" alt="Jane Smith">
+                <div>
+                  <strong>Jane Smith</strong>
+                  <span>Product Manager, DesignCo</span>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="testimonial-card">
+              <div class="quote">"Outstanding support and regular updates."</div>
+              <div class="author">
+                <img src="https://picsum.photos/50/50" alt="Mike Johnson">
+                <div>
+                  <strong>Mike Johnson</strong>
+                  <span>Developer, DevTeam</span>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </snap-carousel>
+    </example>
+
+    <example>
+      <div>
+        <h2>Image Gallery</h2>
+        <small>Full-width gallery with captions</small>
+        <pre><code class="language-html">&lt;snap-carousel
+    displayed="1"
+    gap="1rem"
     controls
     nav
     pager
 &gt;
-&lt;button slot="prev-buttons" direction="prev" modifier="2"&gt;SUPER PREV (-2)&lt;/button&gt;
-&lt;button slot="prev-buttons" direction="prev"&gt;PREV&lt;/button&gt;
-&lt;button slot="next-buttons"&gt;NEXT&lt;/button&gt;
-&lt;button slot="next-buttons" modifier="2"&gt;SUPER NEXT (+2)&lt;/button&gt;
-
-&lt;div slot="pagination" class="custom-nav"&gt;&lt;/div&gt;
-
+&lt;ul slot="scroller"&gt;
+  &lt;li&gt;
+    &lt;div class="gallery-item"&gt;
+      &lt;img src="image.jpg" alt="Gallery Image"&gt;
+      &lt;div class="caption"&gt;Image caption&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
 &lt;/snap-carousel&gt;</code></pre>
-    </div>
-    <snap-carousel style="height: 400px;" vertical displayed="2" controls gap="16" nav pager
-      responsive='[{"breakpoint": 1024, "config": {"displayed": 2, "perPage": 2, "loop": true} }]'>
-      <ul slot="scroller">
-        <li data-slide="1"></li>
-        <li data-slide="2"></li>
-        <li data-slide="3"></li>
-        <li data-slide="4"></li>
-        <li data-slide="5"></li>
-        <li data-slide="6"></li>
-        <li data-slide="7"></li>
-        <li data-slide="8"></li>
-      </ul>
+      </div>
+      <snap-carousel displayed="1" gap="1rem" controls nav pager>
+        <ul slot="scroller">
+          <li>
+            <div class="gallery-item">
+              <img src="https://picsum.photos/800/400" alt="Gallery Image">
+              <div class="caption">Beautiful landscape</div>
+            </div>
+          </li>
+          <li>
+            <div class="gallery-item">
+              <img src="https://picsum.photos/800/400" alt="Gallery Image">
+              <div class="caption">City architecture</div>
+            </div>
+          </li>
+          <li>
+            <div class="gallery-item">
+              <img src="https://picsum.photos/800/400" alt="Gallery Image">
+              <div class="caption">Nature photography</div>
+            </div>
+          </li>
+          <li>
+            <div class="gallery-item">
+              <img src="https://picsum.photos/800/400" alt="Gallery Image">
+              <div class="caption">Urban life</div>
+            </div>
+          </li>
+        </ul>
+      </snap-carousel>
+    </example>
+  </div>
 
-      <button slot="prev-buttons" direction="prev" modifier="2">SUPER PREV (-2)</button>
-      <button slot="prev-buttons" direction="prev">PREV</button>
-      <button slot="next-buttons">NEXT</button>
-      <button slot="next-buttons" modifier="2">SUPER NEXT (+2)</button>
-
-      <div slot="pagination" class="custom-nav"></div>
-
-    </snap-carousel>
-  </example>
-
-  <example>
-    <div>
-      <h2>Responsive</h2>
-      <pre><code class="language-html">&lt;snap-carousel gap="16" controls nav
-    responsive='[{"breakpoint": 1024, "config": {"controls": true, "displayed": 2, "perPage": 2, "loop": true} }]'
-&gt;
-&lt;/snap-carousel&gt;</code></pre>
-    </div>
-    <snap-carousel displayed="1" gap="16" nav
-      responsive='[{"breakpoint": 1024, "config": {"controls": true, "displayed": 2, "perPage": 2, "loop": true} }]'>
-      <ul slot="scroller">
-        <li data-slide="1"></li>
-        <li data-slide="2"></li>
-        <li data-slide="3"></li>
-        <li data-slide="4"></li>
-        <li data-slide="5"></li>
-        <li data-slide="6"></li>
-        <li data-slide="7"></li>
-        <li data-slide="8"></li>
-      </ul>
-    </snap-carousel>
-  </example>
-
-  <script src="snap-carousel.dev.js"></script>
+  <script src="/snap-carousel.min.js"></script>
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/dark.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script>
