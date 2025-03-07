@@ -2,7 +2,7 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
   root: 'docs',
-  base: './',
+  base: '/',
   server: {
     port: 10001,
     open: '/index.html',
