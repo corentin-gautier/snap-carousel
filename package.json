@@ -1,19 +1,29 @@
 {
     "name": "@cgsoft/snap-carousel",
     "version": "1.9.2",
-    "description": "A lightweight vanilla javascript library based on Web Components and Scroll Snap features",
-    "main": "build/snap-carousel.js",
+    "description": "A lightweight vanilla JavaScript carousel library built with modern web technologies",
+    "main": "build/snap-carousel.min.js",
+    "module": "build/snap-carousel.js",
     "type": "module",
+    "exports": {
+        ".": {
+            "import": "./build/snap-carousel.js",
+            "require": "./build/snap-carousel.min.js"
+        }
+    },
     "scripts": {
-        "start": "vite",
-        "build": "vite build",
-        "preview": "vite preview"
+        "dev": "vite -c vite.docs.config.js",
+        "build": "vite build && vite build -c vite.docs.config.js",
+        "preview": "vite preview -c vite.docs.config.js",
+        "watch": "vite build --watch"
     },
     "keywords": [
         "carousel",
-        "snap",
-        "web-component",
-        "vanilla"
+        "slider",
+        "vanilla",
+        "javascript",
+        "web-components",
+        "custom-elements"
     ],
     "files": [
         "build"
@@ -29,9 +39,10 @@
         "rollup-plugin-livereload": "*",
         "rollup-plugin-postcss": "*",
         "rollup-plugin-terser": "*",
-        "vite": "*"
+        "sass": "^1.71.1",
+        "vite": "^5.1.4"
     },
     "homepage": "https://corentin-gautier.github.io/snap-carousel/",
-    "author": "Corentin Gautier",
-    "license": "GPLv3"
+    "author": "Corentin Grall",
+    "license": "MIT"
 }
