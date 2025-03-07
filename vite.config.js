@@ -20,7 +20,11 @@ export default defineConfig(({ command, mode }) => {
         output: {
           globals: {
             window: 'window',
-            document: 'document'
+            document: 'document',
+            IntersectionObserver: 'IntersectionObserver',
+            MutationObserver: 'MutationObserver',
+            CustomEvent: 'CustomEvent',
+            requestIdleCallback: 'requestIdleCallback'
           }
         }
       },

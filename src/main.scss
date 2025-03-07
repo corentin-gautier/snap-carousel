@@ -1,6 +1,7 @@
 // Variables
 :root {
   --primary: #6366f1;
+  --secondary: #daed0a;
   --primary-dark: #4f46e5;
   --text: #1f2937;
   --text-light: #6b7280;
@@ -48,6 +49,11 @@ body {
 
 button {
   cursor: pointer;
+}
+
+svg {
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .container {
@@ -173,14 +179,12 @@ snap-carousel {
       background: var(--primary);
       color: white;
       border-color: var(--primary);
-      transform: translateY(-1px);
       box-shadow: var(--glow);
     }
 
     &:disabled {
       opacity: 0.5;
       cursor: not-allowed;
-      transform: none;
     }
   }
 

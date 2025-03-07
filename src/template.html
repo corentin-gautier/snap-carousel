@@ -6,11 +6,16 @@
   <div part="buttons">
     <slot name="before-prev"></slot>
     <slot name="prev-buttons">
-      <button part="button control-button prev-button" type="button" direction="prev"
-        aria-label="Previous">Previous</button>
+      <button part="button control-button prev-button" type="button" direction="prev" aria-label="Previous">
+        <slot name="prev-icon"></slot>
+        <slot name="prev-label">Previous</slot>
+      </button>
     </slot>
     <slot name="next-buttons">
-      <button part="button control-button next-button" type="button" direction="next" aria-label="Next">Next</button>
+      <button part="button control-button next-button" type="button" direction="next" aria-label="Next">
+        <slot name="next-label">Next</slot>
+        <slot name="next-icon"></slot>
+      </button>
     </slot>
     <slot name="after-next"></slot>
   </div>

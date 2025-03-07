@@ -12,8 +12,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/dark.min.css">
-  <script type="module" crossorigin src="./assets/index-Brf5Xv_N.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-D9P7sPwl.css">
+  <script type="module" crossorigin src="./assets/index-Bae1yXgB.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-C-bqffVJ.css">
 </head>
 
 <body>
@@ -854,35 +854,39 @@
     transform: none;
   }
 
-  .nav-button {
-    width: 3rem;
-    height: 3rem;
-    border-radius: var(--radius-lg);
+  .custom-nav-carousel::part(next-button) {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .custom-nav-button {
+    border-radius: 30px;
     pointer-events: auto;
-    background: var(--bg);
-    color: var(--text);
+    background: var(--secondary);
     box-shadow: var(--shadow);
+    color: #333;
+    padding: 8px;
 
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
     border: none;
-  }
-
-  .nav-button[direction="prev"] {
     left: 1rem;
   }
 
-  .nav-button[direction="next"] {
-    right: 1rem;
+  .custom-nav-button[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 
-  .nav-button[direction="next"][modifier] {
-    transform: translateY(60%);
+  .custom-nav-button:hover {
+    scale: 1.1;
   }
 
-  .nav-button[direction="prev"][modifier] {
-    transform: translateY(60%);
+  .custom-nav-button[modifier="2"] {
+    transform: translateY(50px);
   }
 
   .custom-nav-carousel::part(pager) {
@@ -898,7 +902,11 @@
 
   .custom-nav-carousel::part(current) {
     font-size: 2rem;
-    color: #FFF;
+    color: var(--text);
+  }
+
+  .custom-nav-carousel::part(buttons) {
+    margin: 0;
   }
 &lt;/style&gt;
 &lt;ul slot="scroller"&gt;
@@ -914,10 +922,26 @@
   &lt;!-- buttons will be added here automatically --&gt;
 &lt;/div&gt;
 
-&lt;button slot="prev-buttons" class="nav-button" direction="prev"&gt;Prev&lt;/button&gt;
-&lt;button slot="next-buttons" class="nav-button" direction="prev" modifier="2"&gt;Prev (x2)&lt;/button&gt;
-&lt;button slot="next-buttons" class="nav-button" direction="next"&gt;Next&lt;/button&gt;
-&lt;button slot="next-buttons" class="nav-button" direction="next" modifier="2"&gt;Next (x2)&lt;/button&gt;
+&lt;!-- Change the default prev button by a custom one --&gt;
+&lt;button slot="prev-buttons" class="custom-nav-button" direction="prev"&gt;
+  &lt;svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"&gt;&lt;path d="M220-240v-480h80v480h-80Zm520 0L380-480l360-240v480Zm-80-240Zm0 90v-180l-136 90 136 90Z"/&gt;&lt;/svg&gt;
+&lt;/button&gt;
+
+&lt;!-- Add a completely custom prev button which goes back 2 slides --&gt;
+&lt;button slot="prev-buttons" class="custom-nav-button" direction="prev" modifier="2"&gt;Prev (x2)&lt;/button&gt;
+
+&lt;!-- Change the next button icon --&gt;
+&lt;span slot="next-icon"&gt;
+  &lt;svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"&gt;&lt;path d="M660-240v-480h80v480h-80Zm-440 0v-480l360 240-360 240Zm80-240Zm0 90 136-90-136-90v180Z"/&gt;&lt;/svg&gt;
+&lt;/span&gt;
+
+&lt;!-- Change the separator text --&gt;
+&lt;span slot="sep"&gt;
+  OF
+&lt;/span&gt;
+
+&lt;!-- Remove the next buttton label --&gt;
+&lt;span slot="next-label"&gt;&lt;/span&gt;
 &lt;/snap-carousel&gt;</code></pre>
       </div>
       <snap-carousel displayed="1" controls nav pager gap="1rem" class="custom-nav-carousel">
@@ -961,35 +985,39 @@
             transform: none;
           }
 
-          .nav-button {
-            width: 3rem;
-            height: 3rem;
-            border-radius: var(--radius-lg);
+          .custom-nav-carousel::part(next-button) {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+          }
+
+          .custom-nav-button {
+            border-radius: 30px;
             pointer-events: auto;
-            background: var(--bg);
+            background: var(--secondary);
             box-shadow: var(--shadow);
-            color: var(--text);
+            color: #333;
+            padding: 8px;
 
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
             border: none;
-          }
-
-          .nav-button[direction="prev"] {
             left: 1rem;
           }
 
-          .nav-button[direction="next"] {
-            right: 1rem;
+          .custom-nav-button[disabled] {
+            opacity: 0.5;
+            cursor: not-allowed;
           }
 
-          .nav-button[direction="next"][modifier] {
-            transform: translateY(60%);
+          .custom-nav-button:hover {
+            scale: 1.1;
           }
 
-          .nav-button[direction="prev"][modifier] {
-            transform: translateY(60%);
+          .custom-nav-button[modifier="2"] {
+            transform: translateY(50px);
           }
 
           .custom-nav-carousel::part(pager) {
@@ -1005,7 +1033,7 @@
 
           .custom-nav-carousel::part(current) {
             font-size: 2rem;
-            color: #FFF;
+            color: var(--text);
           }
 
           .custom-nav-carousel::part(buttons) {
@@ -1038,6 +1066,7 @@
             margin: 0;
           }
         </style>
+
         <ul slot="scroller">
           <li>
             <div class="nav-demo-slide">
@@ -1069,10 +1098,26 @@
           <!-- pagination here -->
         </div>
 
-        <button slot="prev-buttons" class="nav-button" direction="prev">Prev</button>
-        <button slot="next-buttons" class="nav-button" direction="prev" modifier="2">Prev (x2)</button>
-        <button slot="next-buttons" class="nav-button" direction="next">Next</button>
-        <button slot="next-buttons" class="nav-button" direction="next" modifier="2">Next (x2)</button>
+        <!-- Change the default prev button by a custom one -->
+        <button slot="prev-buttons" class="custom-nav-button" direction="prev">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M220-240v-480h80v480h-80Zm520 0L380-480l360-240v480Zm-80-240Zm0 90v-180l-136 90 136 90Z"/></svg>
+        </button>
+
+        <!-- Add a completely custom prev button which goes back 2 slides -->
+        <button slot="prev-buttons" class="custom-nav-button" direction="prev" modifier="2">Prev (x2)</button>
+
+        <!-- Change the next button icon -->
+        <span slot="next-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M660-240v-480h80v480h-80Zm-440 0v-480l360 240-360 240Zm80-240Zm0 90 136-90-136-90v180Z"/></svg>
+        </span>
+
+        <!-- Change the separator text -->
+        <span slot="sep">
+          OF
+        </span>
+
+        <!-- Remove the next buttton label -->
+        <span slot="next-label"></span>
       </snap-carousel>
     </example>
 
