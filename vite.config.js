@@ -14,6 +14,7 @@ export default defineConfig(({ command, mode }) => {
         formats: ['es', 'iife'],
         fileName: (format) => `snap-carousel${format === 'iife' ? '.min' : ''}.js`
       },
+      outDir: '../dist',
       rollupOptions: {
         external: ['window', 'document'],
         output: {
