@@ -24,9 +24,9 @@
  *   - config : any of the previous options
  */
 
-import hostStyles from './host.css';
-import globalStyles from './style.css';
-import htmlTemplate from './template.html';
+import hostStyles from './host.css?inline';
+import globalStyles from './style.css?inline';
+import htmlTemplate from './template.html?raw';
 
 ((window, document, Array, Object, Element, IntersectionObserver, clearTimeout, setTimeout, requestIdleCallback) => {
 
