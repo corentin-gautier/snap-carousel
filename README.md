@@ -14,43 +14,5 @@ Check de [demo](https://corentin-gautier.github.io/snap-carousel/) for examples
 
 ## Documentation
 
-### How to use : Example
-```html
-<snap-carousel
-    displayed="2"
-    per-page="1"
-    nav
-    controls
-    stop
-    gap="16"
-    padding="16"
-    behavior="smooth"
-    loop
-    autoplay="3000"
-    use-pause
-    responsive="..."
->
-</snap-carousel>
-```
-
-### Options
-TODO
-| Attribute     | Signification |
-| ------------- | ------------- |
-| vertical     | ...  |
-| displayed     | ...  |
-| per-page      | ...  |
-| nav      | ...  |
-| controls      | ...  |
-| pager      | ...  |
-| stop      | ...  |
-| gap      | ...  |
-| padding      | ...  |
-| behaviour      | ...  |
-| loop      | ...  |
-| autoplay      | ...  |
-| use-pause      | ...  |
-| responsive      | ...  |
-
-## Customize the controls
-TODO
+### How to use
+See the [Demo page](https://corentin-gautier.github.io/snap-carousel/) for options and how to use
