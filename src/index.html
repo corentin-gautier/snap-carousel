@@ -37,11 +37,11 @@
     loop
     autoplay="3000"
     use-pause
-    responsive='[{"breakpoint": "1024", "settings": {"displayed": "2"}}]'
+    responsive='[{"breakpoint": "1025", "settings": {"displayed": "2"}}]'
 &gt;
 &lt;/snap-carousel&gt;</code></pre>
       </div>
-      <snap-carousel displayed="1" per-page="1" nav controls gap="16" padding="16" behavior="smooth" loop autoplay="3000" use-pause responsive='[{"breakpoint": "1024", "settings": {"displayed": "2"}}]'>
+      <snap-carousel displayed="1" per-page="1" nav controls gap="16" padding="16" behavior="smooth" loop autoplay="3000" use-pause responsive='[{"breakpoint": "1025", "settings": {"displayed": "2"}}]'>
         <ul>
           <li data-slide="1"></li>
           <li data-slide="2"></li>
@@ -799,6 +799,279 @@
             </div>
           </li>
         </ul>
+      </snap-carousel>
+    </example>
+
+    <example>
+      <div>
+        <h2>Custom Navigation</h2>
+        <small>Showcase of customized navigation styles and pagination layouts</small>
+        <pre><code class="language-html">&lt;snap-carousel
+    displayed="1"
+    controls
+    nav
+    pager
+    class="custom-nav-carousel"
+&gt;
+&lt;style&gt;
+  .custom-pagination {
+    gap: .7rem;
+    display: flex;
+    position: absolute;
+    bottom: 1rem;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .custom-pagination button {
+    font-size: 0;
+    border: none;
+    padding: 20px 0;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .custom-pagination button::after {
+    content: '';
+    display: block;
+    width: 3rem;
+    height: 0.3rem;
+    padding: 0;
+    border-radius: 0;
+    background: var(--border);
+    transition: all 0.3s ease;
+    font-size: 0px;
+    transform: translateY(2px);
+  }
+
+  .custom-pagination [aria-selected="true"]::after {
+    background: var(--primary);
+  }
+
+  .custom-pagination button:hover::after {
+    background: var(--primary-dark);
+    transform: none;
+  }
+
+  .nav-button {
+    width: 3rem;
+    height: 3rem;
+    border-radius: var(--radius-lg);
+    pointer-events: auto;
+    background: var(--bg);
+    color: var(--text);
+    box-shadow: var(--shadow);
+
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+  }
+
+  .nav-button[direction="prev"] {
+    left: 1rem;
+  }
+
+  .nav-button[direction="next"] {
+    right: 1rem;
+  }
+
+  .nav-button[direction="next"][modifier] {
+    transform: translateY(60%);
+  }
+
+  .nav-button[direction="prev"][modifier] {
+    transform: translateY(60%);
+  }
+
+  .custom-nav-carousel::part(pager) {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: var(--bg);
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+    margin: 0;
+  }
+
+  .custom-nav-carousel::part(current) {
+    font-size: 2rem;
+    color: #FFF;
+  }
+&lt;/style&gt;
+&lt;ul slot="scroller"&gt;
+  &lt;li&gt;
+    &lt;div class="nav-demo-slide"&gt;
+      &lt;h3&gt;Custom Navigation Demo&lt;/h3&gt;
+      &lt;p&gt;Showcasing different navigation styles&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div slot="pagination" class="custom-pagination"&gt;
+  &lt;!-- buttons will be added here automatically --&gt;
+&lt;/div&gt;
+
+&lt;button slot="prev-buttons" class="nav-button" direction="prev"&gt;Prev&lt;/button&gt;
+&lt;button slot="next-buttons" class="nav-button" direction="prev" modifier="2"&gt;Prev (x2)&lt;/button&gt;
+&lt;button slot="next-buttons" class="nav-button" direction="next"&gt;Next&lt;/button&gt;
+&lt;button slot="next-buttons" class="nav-button" direction="next" modifier="2"&gt;Next (x2)&lt;/button&gt;
+&lt;/snap-carousel&gt;</code></pre>
+      </div>
+      <snap-carousel displayed="1" controls nav pager gap="1rem" class="custom-nav-carousel">
+        <style>
+          .custom-pagination {
+            gap: .7rem;
+            display: flex;
+            position: absolute;
+            bottom: 1rem;
+            width: 100%;
+            justify-content: center;
+          }
+
+          .custom-pagination button {
+            font-size: 0;
+            border: none;
+            padding: 20px 0;
+            background: transparent;
+            cursor: pointer;
+          }
+
+          .custom-pagination button::after {
+            content: '';
+            display: block;
+            width: 3rem;
+            height: 0.3rem;
+            padding: 0;
+            border-radius: 0;
+            background: var(--border);
+            transition: all 0.3s ease;
+            font-size: 0px;
+            transform: translateY(2px);
+          }
+
+          .custom-pagination [aria-selected="true"]::after {
+            background: var(--primary);
+          }
+
+          .custom-pagination button:hover::after {
+            background: var(--primary-dark);
+            transform: none;
+          }
+
+          .nav-button {
+            width: 3rem;
+            height: 3rem;
+            border-radius: var(--radius-lg);
+            pointer-events: auto;
+            background: var(--bg);
+            box-shadow: var(--shadow);
+            color: var(--text);
+
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+          }
+
+          .nav-button[direction="prev"] {
+            left: 1rem;
+          }
+
+          .nav-button[direction="next"] {
+            right: 1rem;
+          }
+
+          .nav-button[direction="next"][modifier] {
+            transform: translateY(60%);
+          }
+
+          .nav-button[direction="prev"][modifier] {
+            transform: translateY(60%);
+          }
+
+          .custom-nav-carousel::part(pager) {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--bg);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            margin: 0;
+          }
+
+          .custom-nav-carousel::part(current) {
+            font-size: 2rem;
+            color: #FFF;
+          }
+
+          .custom-nav-carousel::part(buttons) {
+            margin: 0;
+          }
+
+          .nav-demo-slide {
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: var(--bg-alt);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+          }
+
+          .nav-demo-slide h3 {
+            font-size: 2rem;
+            margin: 0 0 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+          }
+
+          .nav-demo-slide p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            margin: 0;
+          }
+        </style>
+        <ul slot="scroller">
+          <li>
+            <div class="nav-demo-slide">
+              <h3>Modern Navigation</h3>
+              <p>Line indicators with floating controls</p>
+            </div>
+          </li>
+          <li>
+            <div class="nav-demo-slide">
+              <h3>Sleek Design</h3>
+              <p>Minimalist and functional</p>
+            </div>
+          </li>
+          <li>
+            <div class="nav-demo-slide">
+              <h3>Custom Styling</h3>
+              <p>Fully customizable navigation</p>
+            </div>
+          </li>
+          <li>
+            <div class="nav-demo-slide">
+              <h3>Responsive Layout</h3>
+              <p>Adapts to any screen size</p>
+            </div>
+          </li>
+        </ul>
+
+        <div slot="pagination" class="custom-pagination">
+          <!-- pagination here -->
+        </div>
+
+        <button slot="prev-buttons" class="nav-button" direction="prev">Prev</button>
+        <button slot="next-buttons" class="nav-button" direction="prev" modifier="2">Prev (x2)</button>
+        <button slot="next-buttons" class="nav-button" direction="next">Next</button>
+        <button slot="next-buttons" class="nav-button" direction="next" modifier="2">Next (x2)</button>
       </snap-carousel>
     </example>
 
