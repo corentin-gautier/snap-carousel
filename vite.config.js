@@ -1,60 +1,38 @@
 import { resolve } from 'path';
 import { defineConfig } from 'vite';
 
-export default defineConfig(({ command }) => {
-  const isLibraryBuild = command === 'build' && process.env.NODE_ENV !== 'development';
+export default defineConfig(({ command, mode }) => {
+  const isLibrary = mode === 'library';
 
   return {
-    root: 'docs',
-    base: './',
-    server: {
-      port: 10001,
-      open: '/index.html',
-      cors: true
-    },
-    preview: {
-      port: 10002,
-      open: true
-    },
-    publicDir: 'public',
-    build: isLibraryBuild ? {
-      outDir: 'build',
+    root: 'src',
+    build: isLibrary ? {
       lib: {
         entry: resolve(__dirname, 'src/snap-carousel.js'),
         name: 'SnapCarousel',
-        formats: ['iife']
+        formats: ['es', 'iife'],
+        fileName: (format) => `snap-carousel${format === 'iife' ? '.min' : ''}.js`
       },
       rollupOptions: {
-        external: ['window', 'document', 'Array', 'Object', 'Element', 'IntersectionObserver', 'clearTimeout', 'setTimeout', 'requestIdleCallback'],
+        external: ['window', 'document'],
         output: {
           globals: {
             window: 'window',
-            document: 'document',
-            Array: 'Array',
-            Object: 'Object',
-            Element: 'Element',
-            IntersectionObserver: 'IntersectionObserver',
-            clearTimeout: 'clearTimeout',
-            setTimeout: 'setTimeout',
-            requestIdleCallback: 'requestIdleCallback'
-          },
-          entryFileNames: 'snap-carousel[hash].js',
-          chunkFileNames: '[name].[hash].js',
-          assetFileNames: '[name].[hash][extname]'
+            document: 'document'
+          }
         }
       },
-      sourcemap: false,
-      minify: true
+      minify: 'esbuild',
+      sourcemap: false
     } : {
-      outDir: '../dist',
+      outDir: '../docs',
       emptyOutDir: true
     },
-    css: {
-      preprocessorOptions: {
-        scss: {
-          additionalData: '@use "sass:math"; @use "sass:color";'
-        }
-      }
+    server: {
+      open: '/index.html'
+    },
+    preview: {
+      open: true
     }
   };
 });

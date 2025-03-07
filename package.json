@@ -2,20 +2,23 @@
     "name": "@cgsoft/snap-carousel",
     "version": "1.9.2",
     "description": "A lightweight vanilla JavaScript carousel library built with modern web technologies",
-    "main": "build/snap-carousel.min.js",
-    "module": "build/snap-carousel.js",
     "type": "module",
+    "main": "dist/snap-carousel.min.js",
+    "module": "dist/snap-carousel.js",
     "exports": {
         ".": {
-            "import": "./build/snap-carousel.js",
-            "require": "./build/snap-carousel.min.js"
+            "import": "./dist/snap-carousel.js",
+            "require": "./dist/snap-carousel.min.js"
         }
     },
+    "files": [
+        "dist"
+    ],
     "scripts": {
-        "dev": "vite -c vite.docs.config.js",
-        "build": "vite build && vite build -c vite.docs.config.js",
-        "preview": "vite preview -c vite.docs.config.js",
-        "watch": "vite build --watch"
+        "dev": "vite",
+        "build": "vite build --mode library",
+        "build:docs": "vite build",
+        "preview": "vite preview"
     },
     "keywords": [
         "carousel",
@@ -25,24 +28,13 @@
         "web-components",
         "custom-elements"
     ],
-    "files": [
-        "build"
-    ],
     "repository": {
         "type": "git",
         "url": "https://github.com/corentin-gautier/snap-carousel"
     },
     "devDependencies": {
-        "@rollup/plugin-terser": "^0.4.4",
-        "rollup": "*",
-        "rollup-plugin-html": "*",
-        "rollup-plugin-livereload": "*",
-        "rollup-plugin-postcss": "*",
-        "rollup-plugin-terser": "*",
-        "sass": "^1.71.1",
         "vite": "^5.1.4"
     },
-    "homepage": "https://corentin-gautier.github.io/snap-carousel/",
     "author": "Corentin Grall",
     "license": "MIT"
 }
