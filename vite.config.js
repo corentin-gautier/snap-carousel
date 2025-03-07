@@ -6,6 +6,7 @@ export default defineConfig(({ command, mode }) => {
 
   return {
     root: 'src',
+    base: isLibrary ? '/' : '',
     build: isLibrary ? {
       lib: {
         entry: resolve(__dirname, 'src/snap-carousel.js'),
