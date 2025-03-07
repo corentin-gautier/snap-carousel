@@ -321,7 +321,7 @@ import htmlTemplate from './template.html?raw';
     #getCurrentConfig() {
       const { origin } = this.#settings;
       const match = origin.responsive.reduce((m, c) => c.breakpoint < window.innerWidth ? c : m, { breakpoint: null });
-      const current = Object.assign({}, origin, match.config || {});
+      const current = Object.assign({}, origin, match.settings || {});
       current.perPage = Math.min(current.displayed, current.perPage);
       this.#settings.current = current;
       if (this.#state.breakpoint !== match.breakpoint) {

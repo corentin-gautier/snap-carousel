@@ -235,7 +235,7 @@ const yt = ':host{display:block;position:relative;width:100%}:host(:not([scrollb
    * then runs setup if the new breakpoint is different from the last one
    */
   V = function() {
-    const { origin: e } = t(this, d), i = e.responsive.reduce((a, l) => l.breakpoint < f.innerWidth ? l : a, { breakpoint: null }), r = b.assign({}, e, i.config || {});
+    const { origin: e } = t(this, d), i = e.responsive.reduce((a, l) => l.breakpoint < f.innerWidth ? l : a, { breakpoint: null }), r = b.assign({}, e, i.settings || {});
     r.perPage = Math.min(r.displayed, r.perPage), t(this, d).current = r, t(this, o).breakpoint !== i.breakpoint && (t(this, o).breakpoint = i.breakpoint, n(this, s, F).call(this));
   }, /**
    * Setup everything
