@@ -1,69 +1,63 @@
 /**
  * SnapCarousel 🚀
- * A carousel using scroll-snap features
+ * A lightweight vanilla JavaScript carousel library using modern web technologies
+ *
+ * Features:
+ * - Smooth scrolling with snap points
+ * - Responsive breakpoints
+ * - Touch and keyboard navigation
+ * - Autoplay with pause on hover
+ * - RTL support
+ * - Vertical mode
  *
  * Events:
- * Using addEeventListener on the element you can listen to the following events
- * - scrollstart
- * - scrollupdate
- * - scrollend
+ * - scrollstart: Fired when scrolling begins
+ * - scrollupdate: Fired during scroll with updated state
+ * - scrollend: Fired when scrolling ends
  *
- * Configuration:
- * the available options are
- * - displayed (number),
- * - perPage (number),
- * - gap (string|number),
- * - padding (string|number),
- * - controls (boolean),
- * - nav (boolean),
- * - loop (boolean),
- * - behaviour (string),
- * - stop (boolean)
- * - responsive (array)
- *   - breakpoint (number)
- *   - config : any of the previous options
+ * @example
+ * <snap-carousel displayed="3" gap="20" controls nav>
+ *   <div slot="scroller">
+ *     <div>Slide 1</div>
+ *     <div>Slide 2</div>
+ *     <div>Slide 3</div>
+ *   </div>
+ * </snap-carousel>
  */
 
+import 'scrollyfills';
 import hostStyles from './host.css?inline';
 import globalStyles from './style.css?inline';
 import htmlTemplate from './template.html?raw';
 
-// Scrollend polyfill
-if (!("onscrollend" in window)) {
-  const s = new Event("scrollend"), i = new Set;
-  document.addEventListener("touchstart", e => { for (let t of e.changedTouches) i.add(t.identifier) }, { passive: !0 });
-  document.addEventListener("touchend", e => { for (let t of e.changedTouches) i.delete(t.identifier) }, { passive: !0 });
-  const l = new WeakMap;
-  function e(e, t, n) { let o = e[t]; e[t] = function() { n.apply(this, [o, ...arguments]) } }
-  function t(e, t, n) {
-    if (t !== "scroll" && t !== "scrollend") return;
-    const r = this, d = l.get(r) || { scrollListener: e => { clearTimeout(d.t); d.t = setTimeout(() => { i.size ? setTimeout(d.scrollListener, 100) : (r.dispatchEvent(s), d.t = 0) }, 100) }, t: 0, listeners: 0 };
-    if (!l.has(r)) { e.apply(r, ["scroll", d.scrollListener]); l.set(r, d) }
-    d.listeners++;
-  }
-  function n(e, t, n) {
-    if (t !== "scroll" && t !== "scrollend") return;
-    const o = this, s = l.get(o);
-    if (s) { s.listeners--; if (s.listeners <= 0) { e.apply(o, ["scroll", s.scrollListener]); l.delete(o) } }
-  }
-  e(Element.prototype, "addEventListener", t);
-  e(window, "addEventListener", t);
-  e(document, "addEventListener", t);
-  e(Element.prototype, "removeEventListener", n);
-  e(window, "removeEventListener", n);
-  e(document, "removeEventListener", n);
-}
+// -----------------------------------------------------------------------------
+// Main Carousel Class
+// -----------------------------------------------------------------------------
 
-// Main class
 class SnapCarousel extends HTMLElement {
+  // Private fields
+  #preventUiUpdate = false;
+  #preventNextEvent = false;
+  #className = 'snp-c';
 
-  #preventUiUpdate;
+  // State management
+  #state = {
+    index: 0,
+    itemsCount: 0,
+    pageCount: 0,
+    isVisible: false,
+    autoplayInterval: null,
+    breakpoint: undefined,
+    ready: false,
+    isMoving: false,
+    pause: false,
+    computedPadding: 0
+  };
 
-  #preventNextEvent;
-
+  // DOM Elements
   #elements = {
     controls: {
-      buttons: [],
+      buttons: []
     },
     pagination: {
       container: null,
@@ -77,62 +71,51 @@ class SnapCarousel extends HTMLElement {
       total: null
     },
     scroller: null,
-    items: null
+    items: null,
+    sync: null
   };
 
+  // Configuration
   #settings = {
     default: {},
     origin: {},
     current: {}
   };
 
-  #state = {
-    index: 0,
-    itemsCount: 0,
-    pageCount: 0,
-    isVisible: false,
-    autoplayInterval: null,
-    breakpoint: undefined
-  };
-
-  #className = 'snp-c';
+  /**
+   * Default configuration options
+   */
+  static get defaultConfig() {
+    return {
+      autoplay: 0,          // Autoplay interval in ms (0 = disabled)
+      displayed: 1,         // Number of items visible at once
+      perPage: 1,          // Number of items to scroll per page
+      gap: 0,              // Gap between items
+      padding: 0,          // Padding around the carousel
+      controls: false,      // Show prev/next buttons
+      nav: false,          // Show navigation dots
+      pager: false,        // Show page numbers
+      loop: false,         // Loop around when reaching the end
+      behavior: 'smooth',  // Scroll behavior
+      stop: false,        // Stop at each item
+      usePause: true,     // Pause autoplay on hover
+      vertical: false,    // Vertical orientation
+      responsive: []      // Breakpoint configurations
+    };
+  }
 
   /**
-   * Set observed attributes
-   *
-   * Will be every keys from defaultConfig + every keys from defaultConfig prefixed by "data-"
+   * Observed attributes for the web component
+   * Includes all config options and their data- prefixed versions
    */
   static get observedAttributes() {
-    const keys = Object.keys(SnapCarousel.defaultConfig).map(k => k.replace(/[A-Z]/g, m => "-" + m.toLowerCase()));
+    const keys = Object.keys(SnapCarousel.defaultConfig)
+      .map(k => k.replace(/[A-Z]/g, m => "-" + m.toLowerCase()));
     return [...keys, ...keys.map(k => 'data-' + k)];
   }
 
   /**
-   * The default configuration
-   */
-  static get defaultConfig() {
-    return {
-      autoplay: 0,
-      displayed: 1,
-      perPage: 1,
-      gap: 0,
-      padding: 0,
-      controls: false,
-      nav: false,
-      pager: false,
-      loop: false,
-      behavior: 'smooth',
-      stop: false,
-      usePause: true,
-      vertical: false,
-      responsive: []
-    }
-  }
-
-  /**
-   * Carousel constructor
-   * @param {NodeElement} element
-   * @param {object} config
+   * Constructor: Initialize default settings
    */
   constructor() {
     super();
@@ -140,102 +123,165 @@ class SnapCarousel extends HTMLElement {
   }
 
   /**
-   * Connected callback :
+   * Connected callback: Setup the carousel when added to DOM
    */
   connectedCallback() {
     if (!this.isConnected) return;
+
+    // Create and attach shadow DOM
     const template = document.createElement('template');
-
     template.innerHTML = `<style>${hostStyles}</style>${htmlTemplate}`;
-
     this.attachShadow({ mode: 'open' });
     this.shadowRoot.appendChild(template.content.cloneNode(true));
 
+    // Setup mutation observer for dynamic content
     const scroller = this.#getSlotElements('scroller', { fallback: true })[0];
-
     const observer = new MutationObserver(mutations => {
       mutations.forEach(mutation => {
-        if ((mutation.addedNodes.length || mutation.removedNodes.length)) {
+        if (mutation.addedNodes.length || mutation.removedNodes.length) {
           this.#computeChildren();
           this.#init();
         }
       });
     });
+    observer.observe(scroller, { childList: true });
 
-    observer.observe(scroller, { childList: true })
-
+    // Initial setup
     this.#prepare();
   }
 
+  /**
+   * Attribute changed callback: Update settings when attributes change
+   */
   attributeChangedCallback() {
     if (this.#state.ready) this.#setup();
   }
 
+  // -----------------------------------------------------------------------------
+  // Public API
+  // -----------------------------------------------------------------------------
+
   /**
-   * Go to a given page number
-   * @param {Number} page page index
+   * Navigate to a specific page
+   * @param {number} page - Page index to navigate to
    */
   goTo(page) {
     this.#preventUiUpdate = false;
     const { scroller, items } = this.#elements;
     const { perPage, vertical } = this.#settings.current;
 
-    const index = page > this.#state.pageCount - 1 ? 0 : (page < 0 ? this.#state.pageCount - 1 : page);
+    // Calculate target page
+    const index = page > this.#state.pageCount - 1
+      ? 0
+      : (page < 0 ? this.#state.pageCount - 1 : page);
+
     const target = items[index * perPage];
 
     this.#updateState(index);
     this.#state.ready = true;
 
+    // Calculate scroll position
     let top = 0, left = 0;
-
     if (vertical) {
       top = target.offsetTop;
     } else {
-      left = this.#isDocumentLtr() ? target.offsetLeft : (target.offsetLeft + target.offsetWidth) - scroller.offsetWidth;
+      left = this.#isDocumentLtr()
+        ? target.offsetLeft
+        : (target.offsetLeft + target.offsetWidth) - scroller.offsetWidth;
     }
 
+    // Perform scroll
     this.#preventUiUpdate = true;
     requestIdleCallback(() => {
       scroller.scrollTo({ top, left });
     }, { timeout: 100 });
   }
 
+  /**
+   * Navigate to previous page
+   */
   prev() {
     this.goTo(this.state.index - 1);
   }
 
+  /**
+   * Navigate to next page
+   */
   next() {
     this.goTo(this.state.index + 1);
   }
 
+  // -----------------------------------------------------------------------------
+  // Private Methods: Setup & Initialization
+  // -----------------------------------------------------------------------------
+
+  /**
+   * Initial carousel preparation
+   */
   #prepare() {
     const scroller = this.#getSlotElements('scroller', true)[0];
+    if (!scroller) return;
 
-    if (!scroller) {
-      return;
-    }
-
+    // Setup event listeners
     scroller.onscroll = this.#onscroll.bind(this);
     scroller.addEventListener('scrollend', this.#onscrollend.bind(this));
     window.addEventListener('resize', this.#resizeEvent.bind(this));
 
     this.#elements.scroller = scroller;
 
+    // Expose elements and settings
     this.elements = this.#elements;
     this.settings = this.#settings;
     this.state = this.#state;
 
+    // Setup accessibility
     this.ariaRoleDescription = 'carousel';
+    Object.assign(scroller, {
+      role: 'group',
+      ariaLive: 'polite',
+      ariaAtomic: false
+    });
 
-    Object.assign(scroller, { role: 'group', ariaLive: 'polite', ariaAtomic: false });
-
+    // Initialize carousel
     this.#computeChildren();
     this.#addGlobalStyles();
     this.#identify();
     this.#setup();
-
     this.#observe();
+
     this.#state.ready = true;
+  }
+
+  /**
+   * Setup carousel configuration
+   */
+  #setup() {
+    this.#state.breakpoint = undefined;
+    this.#settings.origin = Object.assign({},
+      this.#settings.default,
+      this.#getNodeConfig()
+    );
+
+    // Sort responsive breakpoints
+    this.#settings.origin.responsive = (this.#settings.origin.responsive || [])
+      .sort((a, b) => a.breakpoint - b.breakpoint);
+
+    this.#getCurrentConfig();
+  }
+
+  /**
+   * Initialize carousel after setup
+   */
+  #init() {
+    this.#waitForWidth(() => {
+      this.#setPages();
+      this.#createStyles();
+      this.#createPagination();
+      this.#createPager();
+      this.#createControls();
+      this.#computePadding();
+      this.#updateState(0);
+    });
   }
 
   #computeChildren() {
@@ -277,15 +323,10 @@ class SnapCarousel extends HTMLElement {
     this.id = this.#state.id = this.#className + '-' + (Math.random() + 1).toString(36).substring(4);
   }
 
-  #setup() {
-    this.#state.breakpoint = undefined;
-    this.#settings.origin = Object.assign({}, this.#settings.default, this.#getNodeConfig());
-    this.#settings.origin.responsive = (this.#settings.origin.responsive || []).sort((a, b) => a.breakpoint - b.breakpoint);
-    this.#getCurrentConfig();
-  }
-
   /**
-   * Wait for the scroller to have width
+   * Wait for the scroller element to have a width before initializing
+   * Uses requestAnimationFrame for efficient polling
+   * @param {Function} callback - Function to call once width is available
    */
   #waitForWidth(callback) {
     if (this.#elements.scroller.clientWidth) {
@@ -297,31 +338,69 @@ class SnapCarousel extends HTMLElement {
     }
   }
 
+  /**
+   * Get configuration from element attributes
+   * Supports both regular and data- prefixed attributes
+   * @returns {Object} Configuration object from attributes
+   */
   #getNodeConfig() {
     const options = Object.keys(this.#settings.default);
-    if (this.attributes.options) return this.#maybeParse(this.attributes.options.value);
-    return Array.from(this.attributes).reduce((o, a) => {
-      const n = a.name.replace('data-', '').replace(/-([a-z])/g, g => g[1].toUpperCase());
-      if (options.includes(n)) o[n] = this.#maybeParse(a.value);
-      return o;
+
+    // Check for options attribute first
+    if (this.attributes.options) {
+      return this.#maybeParse(this.attributes.options.value);
+    }
+
+    // Process individual attributes
+    return Array.from(this.attributes).reduce((config, attr) => {
+      // Convert kebab-case to camelCase and remove data- prefix
+      const name = attr.name.replace('data-', '')
+        .replace(/-([a-z])/g, g => g[1].toUpperCase());
+
+      // Only include valid options
+      if (options.includes(name)) {
+        config[name] = this.#maybeParse(attr.value);
+      }
+      return config;
     }, {});
   }
 
-  #maybeParse(s) {
-    if (s === '') return true;
-    try { return JSON.parse(s) } catch { return s }
+  /**
+   * Safely parse a string value into a JavaScript value
+   * @param {string} value - The string to parse
+   * @returns {any} Parsed value or original string if parsing fails
+   */
+  #maybeParse(value) {
+    if (value === '') return true;
+    try {
+      return JSON.parse(value);
+    } catch {
+      return value;
+    }
   }
 
   /**
-   * Sets the config according to the current breakpoint match
-   * then runs setup if the new breakpoint is different from the last one
+   * Get configuration for current breakpoint
+   * Merges default config with responsive breakpoint settings
    */
   #getCurrentConfig() {
     const { origin } = this.#settings;
-    const match = origin.responsive.reduce((m, c) => c.breakpoint < window.innerWidth ? c : m, { breakpoint: null });
+
+    // Find matching breakpoint
+    const match = origin.responsive.reduce((match, config) =>
+      config.breakpoint < window.innerWidth ? config : match,
+      { breakpoint: null }
+    );
+
+    // Merge configurations
     const current = Object.assign({}, origin, match.settings || {});
+
+    // Ensure perPage doesn't exceed displayed items
     current.perPage = Math.min(current.displayed, current.perPage);
+
     this.#settings.current = current;
+
+    // Reinitialize if breakpoint changed
     if (this.#state.breakpoint !== match.breakpoint) {
       this.#state.breakpoint = match.breakpoint;
       this.#init();
@@ -329,69 +408,94 @@ class SnapCarousel extends HTMLElement {
   }
 
   /**
-   * Setup everything
-   */
-  #init() {
-    this.#waitForWidth(() => {
-      this.#setPages();
-      this.#createStyles();
-      this.#createPagination();
-      this.#createPager();
-      this.#createControls();
-      this.#computePadding();
-      this.#updateState(0);
-    });
-  }
-
-  #computePadding() {
-    const { vertical } = this.#settings.current;
-    const property = vertical ? 'padding-top' : 'padding-left';
-    // Store the computed padding of the scroller for later
-    this.#state.computedPadding = parseInt(getComputedStyle(this.#elements.scroller)[property], 10);
-  }
-
-  /**
-   * Calculate the number of pages
+   * Calculate and store the number of pages
+   * Accounts for displayed items and items per page
    */
   #setPages() {
     const { current } = this.#settings;
     const { itemsCount } = this.#state;
-    const unecessaryPagesCount = Math.floor((current.displayed - current.perPage) / current.perPage);
+
+    // Calculate unnecessary pages when displayed > perPage
+    const unecessaryPagesCount = Math.floor(
+      (current.displayed - current.perPage) / current.perPage
+    );
+
     this.#state.pageCount = Math.ceil(itemsCount / current.perPage) - unecessaryPagesCount;
   }
 
   /**
-   * Generates CSS given the config
+   * Create and apply carousel styles
+   * Generates CSS variables and scroll-snap rules
    */
   #createStyles() {
+    // Remove previous styles if they exist
     const previousStyles = document.querySelector('#' + this.#state.id + '-styles');
-
     if (previousStyles) {
       previousStyles.remove();
     }
 
     const { displayed, gap, padding, perPage, stop, behavior } = this.#settings.current;
-    const selectRule = perPage > 1 ? `*:nth-child(${perPage}n + 1)` : '*';
-    const css = `#${this.#state.id} { --sc-perpage: ${displayed}; --sc-gap: ${this.#formatCssValue(gap)}; --sc-padding: ${this.#formatCssValue(padding)}; --sc-behavior: ${behavior}; } #${this.#state.id} [slot="scroller"] > ${selectRule} { scroll-snap-align: start; scroll-snap-stop: ${stop ? 'always' : 'normal'} }`;
 
+    // Create selector for scroll-snap alignment
+    const selectRule = perPage > 1 ? `*:nth-child(${perPage}n + 1)` : '*';
+
+    // Generate CSS
+    const css = `
+      #${this.#state.id} {
+        --sc-perpage: ${displayed};
+        --sc-gap: ${this.#formatCssValue(gap)};
+        --sc-padding: ${this.#formatCssValue(padding)};
+        --sc-behavior: ${behavior};
+      }
+      #${this.#state.id} [slot="scroller"] > ${selectRule} {
+        scroll-snap-align: start;
+        scroll-snap-stop: ${stop ? 'always' : 'normal'}
+      }
+    `;
+
+    // Create and append style element
     this.styles = this.#createStyleElement(css, this.#state.id + '-styles');
     document.head.append(this.styles);
   }
 
+  /**
+   * Calculate and store the computed padding
+   * Used for scroll position calculations
+   */
+  #computePadding() {
+    const { vertical } = this.#settings.current;
+    const property = vertical ? 'padding-top' : 'padding-left';
+
+    this.#state.computedPadding = parseInt(
+      getComputedStyle(this.#elements.scroller)[property],
+      10
+    );
+  }
+
+  // -----------------------------------------------------------------------------
+  // Private Methods: Event Handling & Observation
+  // -----------------------------------------------------------------------------
+
+  /**
+   * Setup intersection and mutation observers
+   * Handles visibility changes and content updates
+   */
   #observe() {
     const { items, scroller } = this.#elements;
 
-    const mio = new IntersectionObserver(obs => {
-      let entry = obs[0];
-      this.#state.isVisible = entry.intersectionRatio > .1;
+    // Intersection observer for carousel visibility
+    const visibilityObserver = new IntersectionObserver(entries => {
+      const entry = entries[0];
+      this.#state.isVisible = entry.intersectionRatio > 0.1;
       this.#state.pause = !this.#state.isVisible;
       this.#setPlayPause();
     }, {
-      threshold: [.1, .9]
+      threshold: [0.1, 0.9]
     });
 
-    mio.observe(this);
+    visibilityObserver.observe(this);
 
+    // Setup pause on hover if enabled
     if (this.#settings.current.usePause) {
       this.addEventListener('mouseenter', () => {
         this.#state.pause = true;
@@ -404,21 +508,23 @@ class SnapCarousel extends HTMLElement {
       });
     }
 
-    const io = new IntersectionObserver(observations => {
-      observations.forEach(obs => {
-        obs.target.toggleAttribute('visible', obs.isIntersecting);
-        obs.target.toggleAttribute('inert', !obs.isIntersecting);
+    // Intersection observer for slide visibility
+    const slideObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        entry.target.toggleAttribute('visible', entry.isIntersecting);
+        entry.target.toggleAttribute('inert', !entry.isIntersecting);
       });
     }, {
       scroller,
-      threshold: 0.6,
+      threshold: 0.6
     });
 
-    items.forEach(i => io.observe(i));
+    items.forEach(item => slideObserver.observe(item));
   }
 
   /**
-   * On window resize : reinit the carousel
+   * Handle window resize events
+   * Debounces updates to prevent excessive recalculation
    */
   #resizeEvent() {
     clearTimeout(this.resizeTm);
@@ -429,42 +535,27 @@ class SnapCarousel extends HTMLElement {
   }
 
   /**
-   * On scroll, dispatch events, calculate the current slide
+   * Handle scroll events
+   * Updates state and triggers events during scrolling
    */
   #onscroll() {
     if (this.#preventNextEvent) return;
 
     this.#onscrollstart();
-
     this.newIndex = this.#state.index;
 
     const current = this.#getCurrent();
 
-    if (current != this.#state.index) {
+    if (current !== this.#state.index) {
       this.newIndex = current;
-
       this.#updateState(current);
       this.#triggerEvent('scrollupdate');
     }
   }
 
   /**
-   * Dispatch a custom event
-   * @param {String} name
-   */
-  #triggerEvent(name) {
-    const { current } = this.#settings;
-
-    this.dispatchEvent(
-      new CustomEvent(name, {
-        detail: this.#state
-      })
-    );
-    if (current['on' + name]) current['on' + name](this);
-  }
-
-  /**
-   * On scroll start
+   * Handle scroll start
+   * Triggers scrollstart event when scrolling begins
    */
   #onscrollstart() {
     if (!this.#state.isMoving) {
@@ -474,10 +565,12 @@ class SnapCarousel extends HTMLElement {
   }
 
   /**
-   * On scroll end
+   * Handle scroll end
+   * Updates state and triggers events when scrolling ends
    */
   #onscrollend() {
     if (this.#preventNextEvent) return;
+
     this.#triggerEvent('scrollend');
     this.#preventUiUpdate = false;
     this.#state.isMoving = false;
@@ -490,6 +583,49 @@ class SnapCarousel extends HTMLElement {
     }
 
     this.#setPlayPause();
+  }
+
+  /**
+   * Handle keyboard navigation in pagination
+   * @param {KeyboardEvent} event - Keyboard event
+   */
+  #handleKeyDown(event) {
+    const isLtr = this.#isDocumentLtr();
+    const activeDot = this.#elements.pagination.dots[this.#state.index] || 0;
+
+    switch (event.key) {
+      case 'ArrowRight':
+      case 'ArrowLeft':
+        const direction = event.key === 'ArrowRight'
+          ? (isLtr ? 'next' : 'previous')
+          : (isLtr ? 'previous' : 'next');
+
+        const target = activeDot[`${direction}ElementSibling`];
+        if (target) {
+          target.click();
+          target.focus();
+        }
+        break;
+    }
+  }
+
+  /**
+   * Dispatch a custom event
+   * @param {string} name - Event name to trigger
+   */
+  #triggerEvent(name) {
+    const { current } = this.#settings;
+
+    this.dispatchEvent(
+      new CustomEvent(name, {
+        detail: this.#state
+      })
+    );
+
+    // Call event handler if defined in settings
+    if (current['on' + name]) {
+      current['on' + name](this);
+    }
   }
 
   /**
@@ -546,26 +682,30 @@ class SnapCarousel extends HTMLElement {
   }
 
   /**
-   * Create the dots nav (page numbers)
+   * Create pagination dots
+   * Handles creation and setup of navigation dots
    */
   #createPagination() {
     const { pagination } = this.#elements;
     let { container, dots } = pagination;
-    let { current } = this.#settings;
+    const { current } = this.#settings;
 
+    // Initialize container if not exists
     if (!container) {
       container = this.#getSlotElements('pagination')[0];
       container.addEventListener('keydown', this.#handleKeyDown.bind(this));
       pagination.container = container;
     } else {
-      // Reset nav content
-      container.innerHTML = null;
-      dots.forEach(d => d.remove());
+      // Reset existing pagination
+      container.innerHTML = '';
+      dots.forEach(dot => dot.remove());
       this.#elements.pagination.dots = [];
     }
 
+    // Show/hide container based on settings
     container.style.display = current.nav && this.#state.pageCount > 1 ? '' : 'none';
 
+    // Create dots for each page
     if (current.nav && container) {
       for (let index = 0; index < this.#state.pageCount; index++) {
         this.#createMarker(index);
@@ -573,10 +713,15 @@ class SnapCarousel extends HTMLElement {
     }
   }
 
+  /**
+   * Create page number display
+   * Shows current page number and total pages
+   */
   #createPager() {
     const { pager } = this.#elements;
     const { current } = this.#settings;
 
+    // Initialize pager elements if not exists
     if (!pager.current) {
       ['current', 'sep', 'total'].forEach(key => {
         pager[key] = this.#getSlotElements(key)[0];
@@ -584,22 +729,67 @@ class SnapCarousel extends HTMLElement {
       pager.container = this.shadowRoot.querySelector('[part="pager"]');
     }
 
+    // Show/hide pager based on settings
     pager.container.style.display = current.pager && this.#state.pageCount > 1 ? '' : 'none';
     pager.current.innerHTML = 1;
     pager.total.innerHTML = this.#state.pageCount;
   }
 
   /**
-   * Creates a button for page N
-   * @param {Number} index
+   * Create navigation controls
+   * Sets up previous and next buttons
+   */
+  #createControls() {
+    const { controls } = this.#elements;
+    const { current } = this.#settings;
+
+    const hideButtons = !current.controls || this.#state.pageCount < 2;
+
+    // Get all control buttons
+    controls.buttons = [
+      ...this.#getSlotElements('prev-buttons'),
+      ...this.#getSlotElements('next-buttons')
+    ];
+
+    controls.buttons.forEach(button => {
+      // Show/hide buttons based on settings
+      button.style = hideButtons ? 'display: none !important;' : '';
+
+      if (button.hasListener) return;
+
+      // Setup button properties
+      button.direction = button.getAttribute('direction') || 'next';
+      button.modifier = (button.direction === 'next' ? 1 : -1) *
+        (parseInt(button.getAttribute('modifier'), 10) || 1);
+      button.hasListener = true;
+
+      // Add click handler
+      button.addEventListener('click', () => {
+        if (!current.controls) return;
+        this.goTo(this.#state.index + button.modifier);
+      });
+
+      // Setup accessibility
+      Object.assign(button, {
+        ariaControls: this.#elements.scroller.id
+      });
+    });
+  }
+
+  /**
+   * Create a pagination marker (dot)
+   * @param {number} index - Page index for the marker
    */
   #createMarker(index) {
     const { pagination } = this.#elements;
     const { container, dots } = pagination;
+
+    // Create button element
     const dot = document.createElement('button');
     dot.innerHTML = index + 1;
     dot.addEventListener('click', () => this.goTo(index));
 
+    // Setup accessibility attributes
     Object.assign(dot, {
       type: 'button',
       part: 'button nav-button',
@@ -612,86 +802,7 @@ class SnapCarousel extends HTMLElement {
   }
 
   /**
-   * Handle prev/next arrows on pagination
-   * @param {KeyboardEvent} event
-   * @returns
-   */
-  #handleKeyDown(event) {
-    const isLtr = this.#isDocumentLtr();
-
-    const activeDot = this.#elements.pagination.dots[this.#state.index] || 0;
-
-    switch (event.key) {
-      case 'ArrowRight':
-      case 'ArrowLeft':
-        let selector = event.key === 'ArrowRight' ? (isLtr ? 'next' : 'previous') : (isLtr ? 'previous' : 'next');
-        const target = activeDot[`${selector}ElementSibling`];
-        if (target) {
-          target.click();
-          target.focus();
-        }
-        break;
-    }
-  }
-
-  /**
-   * Add prev next buttons event listener
-   */
-  #createControls() {
-    const { controls } = this.#elements;
-    const { current } = this.#settings;
-
-    const hideButtons = !current.controls || this.#state.pageCount < 2;
-
-    controls.buttons = [
-      ...this.#getSlotElements('prev-buttons'),
-      ...this.#getSlotElements('next-buttons')
-    ];
-
-    controls.buttons.forEach(button => {
-      button.style = hideButtons ? 'display: none !important;' : '';
-
-      if (button.hasListener) return;
-
-      button.direction = button.getAttribute('direction') || 'next';
-      button.modifier = (button.direction === 'next' ? 1 : -1) * (parseInt(button.getAttribute('modifier'), 10) || 1);
-      button.hasListener = true;
-
-      button.addEventListener('click', () => {
-        if (!current.controls) return;
-        this.goTo(this.#state.index + button.modifier);
-      });
-
-      Object.assign(button, {
-        ariaControls: this.#elements.scroller.id
-      });
-    });
-  }
-
-  /**
-   * Retrieve the element assigned to a slot or the default one
-   * When use with fallback: true, will return the first child if it exists and is
-   * the only child
-   * @param {String} slotName
-   * @param {Object} options
-   * @returns [HtmlElement]
-   */
-  #getSlotElements(slotName, options = { fallback: false }) {
-    const slot = this.shadowRoot.querySelector([`[name="${slotName}"]`]);
-    let assigned = slot.assignedElements();
-    // Fallback on the first child if nothing slotted
-    if (options.fallback && !assigned.length) {
-      if (this.children[0].slot === '') {
-        this.children[0].slot = 'scroller';
-        assigned = slot.assignedElements();
-      }
-    }
-    return Array.from(assigned.length ? assigned : slot.children);
-  }
-
-  /**
-   * Set active state on the nav dots
-   * @param {Number} index
+   * Update active pagination dot
    */
   #setActivePaginationItem() {
     if (!this.#settings.current.nav) return;
@@ -701,6 +812,7 @@ class SnapCarousel extends HTMLElement {
     const next = dots[this.#state.index];
 
     if (next) {
+      // Update previous active dot
       if (active) {
         Object.assign(active, {
           tabIndex: 0,
@@ -709,6 +821,7 @@ class SnapCarousel extends HTMLElement {
         active.part = 'button nav-button';
       }
 
+      // Update new active dot
       next.part = 'button nav-button active';
       Object.assign(next, {
         tabIndex: -1,
@@ -719,7 +832,7 @@ class SnapCarousel extends HTMLElement {
   }
 
   /**
-   * Set the current page number in the pager
+   * Update current page number display
    */
   #setCurrentPage() {
     if (!this.#settings.current.pager) return;
@@ -727,8 +840,7 @@ class SnapCarousel extends HTMLElement {
   }
 
   /**
-   * Set button disable attribute if needed
-   * @returns
+   * Update navigation button states
    */
   #setButtonsState() {
     const { loop } = this.#settings.current;
@@ -737,13 +849,22 @@ class SnapCarousel extends HTMLElement {
     let shouldShiftFocus = false;
 
     buttons.forEach(button => {
-      const isDisabled = !loop && (button.direction === 'next' ? index >= pageCount - button.modifier : index < Math.abs(button.modifier));
+      // Determine if button should be disabled
+      const isDisabled = !loop && (
+        button.direction === 'next'
+          ? index >= pageCount - button.modifier
+          : index < Math.abs(button.modifier)
+      );
+
+      // Track if focus needs to be moved
       if (button === this.shadowRoot.activeElement && isDisabled) {
         shouldShiftFocus = true;
       }
+
       button.disabled = isDisabled ? 'disabled' : '';
     });
 
+    // Move focus if needed
     if (shouldShiftFocus) {
       const active = buttons.filter(b => !b.disabled);
       if (active.length) {
@@ -753,7 +874,7 @@ class SnapCarousel extends HTMLElement {
   }
 
   /**
-   * Synchronize every other carousel with the current index
+   * Synchronize other carousels with current index
    */
   #synchronize() {
     const { sync } = this.#settings.current;
@@ -770,11 +891,32 @@ class SnapCarousel extends HTMLElement {
   }
 
   /**
-   * Create a style element
-   *
-   * @param {string} css
-   * @param {string} id
-   * @returns HTMLStyleElement
+   * Retrieve elements assigned to a slot or default elements
+   * @param {string} slotName - Name of the slot to query
+   * @param {Object} options - Options object
+   * @param {boolean} [options.fallback=false] - Whether to fallback to first child if slot is empty
+   * @returns {Array<HTMLElement>} Array of elements
+   */
+  #getSlotElements(slotName, options = { fallback: false }) {
+    const slot = this.shadowRoot.querySelector(`[name="${slotName}"]`);
+    let assigned = slot.assignedElements();
+
+    // Fallback to first child if slot is empty and fallback is enabled
+    if (options.fallback && !assigned.length) {
+      if (this.children[0].slot === '') {
+        this.children[0].slot = 'scroller';
+        assigned = slot.assignedElements();
+      }
+    }
+
+    return Array.from(assigned.length ? assigned : slot.children);
+  }
+
+  /**
+   * Create a style element with given CSS
+   * @param {string} css - CSS content
+   * @param {string} id - ID for the style element
+   * @returns {HTMLStyleElement} Created style element
    */
   #createStyleElement(css, id) {
     const styles = document.createElement('style');
@@ -784,20 +926,20 @@ class SnapCarousel extends HTMLElement {
   }
 
   /**
-   * Is the current document LTR
-   * @returns {boolean}
+   * Check if document is in LTR mode
+   * @returns {boolean} True if document is LTR
    */
   #isDocumentLtr() {
     return document.firstElementChild.getAttribute('dir') !== 'rtl';
   }
 
   /**
-   * Add 'px' to a value if it's not a string
-   * @param {mixed} value
-   * @returns string
+   * Format a CSS value, adding 'px' if needed
+   * @param {string|number} value - Value to format
+   * @returns {string} Formatted CSS value
    */
-  #formatCssValue(v) {
-    return typeof v === 'string' ? v : v + 'px';
+  #formatCssValue(value) {
+    return typeof value === 'string' ? value : value + 'px';
   }
 
   /**
