@@ -919,3 +919,237 @@ snap-carousel li[data-slide] {
     grid-template-columns: 1fr;
   }
 }
+
+// Documentation navigation
+.doc-nav {
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  padding: 1rem 0;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--border);
+  z-index: 100;
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 2rem;
+    max-width: var(--container);
+    margin: 0 auto;
+
+    ul {
+      display: none;
+      position: absolute;
+      background: var(--bg);
+      padding: 1rem;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      white-space: nowrap;
+    }
+  }
+
+  li {
+    position: relative;
+
+    &:hover > ul {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+  }
+
+  a {
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+
+    &:hover {
+      color: var(--primary);
+    }
+  }
+}
+
+// Documentation sections
+section {
+  display: flex;
+  flex-direction: column;
+
+  scroll-margin-top: 5rem;
+
+  example {
+    scroll-margin-top: 5rem;
+
+    &:not(:last-child) {
+      margin-bottom: 4rem;
+    }
+  }
+
+  > h2 {
+    font-size: 2.5rem;
+    margin-bottom: 0rem;
+    margin-top: 0rem;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  > small {
+    display: block;
+    color: var(--text-light);
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+  }
+}
+
+// Module slides
+.module-slide {
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: var(--bg-alt);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+
+  h3 {
+    font-size: 2rem;
+    margin: 0 0 1rem;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  p {
+    color: var(--text-light);
+    font-size: 1.1rem;
+    margin: 0;
+  }
+}
+
+// Custom navigation demo
+.custom-pagination {
+  gap: .7rem;
+  display: flex;
+  position: absolute;
+  bottom: 1rem;
+  width: 100%;
+  justify-content: center;
+
+  button {
+    font-size: 0;
+    border: none;
+    padding: 20px 0;
+    background: transparent;
+    cursor: pointer;
+
+    &::after {
+      content: '';
+      display: block;
+      width: 3rem;
+      height: 0.3rem;
+      padding: 0;
+      border-radius: 0;
+      background: var(--border);
+      transition: all 0.3s ease;
+      font-size: 0px;
+      transform: translateY(2px);
+    }
+
+    &[aria-selected="true"]::after {
+      background: var(--primary);
+    }
+
+    &:hover::after {
+      background: var(--primary-dark);
+      transform: none;
+    }
+  }
+}
+
+.custom-nav-carousel {
+  &::part(next-button) {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  &::part(pager) {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: var(--bg);
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+    margin: 0;
+  }
+
+  &::part(current) {
+    font-size: 2rem;
+    color: var(--text);
+  }
+
+  &::part(buttons) {
+    margin: 0;
+  }
+}
+
+.custom-nav-button {
+  border-radius: 30px;
+  pointer-events: auto;
+  background: var(--secondary);
+  box-shadow: var(--shadow);
+  color: #333;
+  padding: 8px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  left: 1rem;
+
+  &[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &:hover {
+    scale: 1.1;
+  }
+
+  &[modifier="2"] {
+    transform: translateY(50px);
+  }
+}
+
+.nav-demo-slide {
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: var(--bg-alt);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+
+  h3 {
+    font-size: 2rem;
+    margin: 0 0 1rem;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  p {
+    color: var(--text-light);
+    font-size: 1.1rem;
+    margin: 0;
+  }
+}

@@ -1,5 +1,5 @@
-import terser from '@rollup/plugin-terser';
 import { resolve } from 'path';
+import { terser } from 'rollup-plugin-terser';
 import { defineConfig } from 'vite';
 
 export default defineConfig(({ command, mode }) => {
@@ -10,44 +10,43 @@ export default defineConfig(({ command, mode }) => {
     base: isLibrary ? '/' : '',
     build: isLibrary ? {
       lib: {
-        entry: resolve(__dirname, 'src/snap-carousel.js'),
-        name: 'SnapCarousel',
-        formats: ['es', 'iife'],
-        fileName: (format) => `snap-carousel${format === 'iife' ? '.min' : ''}.js`
+        entry: {
+          'snap-carousel': resolve(__dirname, 'src/snap-carousel.js'),
+          'base-carousel': resolve(__dirname, 'src/base-carousel.js'),
+          'features/controls': resolve(__dirname, 'src/features/controls.js'),
+          'features/nav': resolve(__dirname, 'src/features/nav.js'),
+          'features/pager': resolve(__dirname, 'src/features/pager.js')
+        },
+        formats: ['es'],
+        fileName: (format, entryName) => `${entryName}.${format}.js`
       },
       outDir: '../dist',
       rollupOptions: {
         external: ['window', 'document', 'IntersectionObserver', 'MutationObserver', 'CustomEvent', 'requestIdleCallback'],
-        output: [
-          {
-            format: 'es',
-            entryFileNames: 'snap-carousel.js'
-          },
-          {
+        output: {
+          preserveModules: true,
+          ...(mode === 'library' && {
             format: 'iife',
             name: 'SnapCarousel',
-            entryFileNames: 'snap-carousel.min.js',
-            plugins: [
-              terser({
-                format: {
-                  comments: false
-                },
-                compress: {
-                  drop_console: true,
-                  drop_debugger: true
-                }
-              })
-            ]
-          }
-        ],
-        globals: {
-          window: 'window',
-          document: 'document',
-          IntersectionObserver: 'IntersectionObserver',
-          MutationObserver: 'MutationObserver',
-          CustomEvent: 'CustomEvent',
-          requestIdleCallback: 'requestIdleCallback'
-        }
+            entryFileNames: '[name].iife.js',
+            extend: true,
+            globals: {
+              window: 'window',
+              document: 'document',
+              IntersectionObserver: 'IntersectionObserver',
+              MutationObserver: 'MutationObserver',
+              CustomEvent: 'CustomEvent',
+              requestIdleCallback: 'requestIdleCallback'
+            }
+          })
+        },
+        plugins: [
+          terser({
+            format: {
+              comments: false
+            }
+          })
+        ]
       },
       sourcemap: false
     } : {

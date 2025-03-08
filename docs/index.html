@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/dark.min.css">
-  <script type="module" crossorigin src="./assets/index-CnH4Ki45.js"></script>
+  <script type="module" crossorigin src="./assets/index-CjvHuPTr.js"></script>
   <link rel="stylesheet" crossorigin href="./assets/index-C-bqffVJ.css">
 </head>
 
@@ -1119,6 +1119,96 @@
         <!-- Remove the next buttton label -->
         <span slot="next-label"></span>
       </snap-carousel>
+    </example>
+
+    <example>
+      <div>
+        <h2>Module Structure</h2>
+        <small>Different ways to import and use the carousel features</small>
+
+        <h3>1. Basic Usage (All Features)</h3>
+        <pre><code class="language-html">&lt;!-- Using IIFE bundle in browser --&gt;
+&lt;script src="snap-carousel.iife.js"&gt;&lt;/script&gt;
+
+&lt;snap-carousel displayed="3" gap="20" controls nav&gt;
+  &lt;div slot="scroller"&gt;
+    &lt;div&gt;Slide 1&lt;/div&gt;
+    &lt;div&gt;Slide 2&lt;/div&gt;
+    &lt;div&gt;Slide 3&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/snap-carousel&gt;</code></pre>
+
+        <h3>2. ES Modules Usage</h3>
+        <pre><code class="language-javascript">// Import everything
+import { SnapCarousel } from '@snap-carousel/snap-carousel';
+
+// Register the web component
+customElements.define('snap-carousel', SnapCarousel);</code></pre>
+
+        <h3>3. Custom Build with Selected Features</h3>
+        <pre><code class="language-javascript">// Import base and features
+import { BaseCarousel, createCarousel } from '@snap-carousel/base-carousel';
+import { NavFeature } from '@snap-carousel/features/nav';
+import { PagerFeature } from '@snap-carousel/features/pager';
+
+// Create custom carousel with only navigation and pager
+const CustomCarousel = createCarousel(NavFeature, PagerFeature);
+customElements.define('custom-carousel', CustomCarousel);
+
+// Use in HTML
+&lt;custom-carousel displayed="3" nav pager&gt;
+  &lt;div slot="scroller"&gt;...&lt;/div&gt;
+&lt;/custom-carousel&gt;</code></pre>
+
+        <h3>4. Individual Features</h3>
+        <pre><code class="language-javascript">// Import specific features
+import { ControlsFeature } from '@snap-carousel/features/controls';
+import { NavFeature } from '@snap-carousel/features/nav';
+import { PagerFeature } from '@snap-carousel/features/pager';
+
+// Create different variants
+const MinimalCarousel = createCarousel(ControlsFeature);
+const FullCarousel = createCarousel(
+  ControlsFeature,
+  NavFeature,
+  PagerFeature
+);
+
+// Register custom elements
+customElements.define('minimal-carousel', MinimalCarousel);
+customElements.define('full-carousel', FullCarousel);</code></pre>
+
+        <h3>5. With Module Bundlers</h3>
+        <pre><code class="language-javascript">// vite.config.js
+export default defineConfig({
+  build: {
+    lib: {
+      entry: 'src/main.js',
+      formats: ['es']
+    }
+  }
+});
+
+// main.js
+import { BaseCarousel, createCarousel } from '@snap-carousel/base-carousel';
+import { ControlsFeature } from '@snap-carousel/features/controls';
+
+// Tree-shaking will remove unused features
+const MyCarousel = createCarousel(ControlsFeature);
+customElements.define('my-carousel', MyCarousel);</code></pre>
+
+        <h3>6. Available Imports</h3>
+        <pre><code class="language-javascript">// Base carousel and composition
+import { BaseCarousel, createCarousel } from '@snap-carousel/base-carousel';
+
+// Individual features
+import { ControlsFeature } from '@snap-carousel/features/controls';
+import { NavFeature } from '@snap-carousel/features/nav';
+import { PagerFeature } from '@snap-carousel/features/pager';
+
+// Full bundle with all features
+import { SnapCarousel } from '@snap-carousel/snap-carousel';</code></pre>
+      </div>
     </example>
 
     <example>
