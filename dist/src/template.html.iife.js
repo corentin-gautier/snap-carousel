@@ -3,16 +3,16 @@ const n = `<slot name="scroller">
 </slot>
 
 <div part="controls">
-  <div part="buttons">
+  <div part="buttons" style="display: none;">
     <slot name="before-prev"></slot>
     <slot name="prev-buttons">
-      <button part="button control-button prev-button" type="button" direction="prev" aria-label="Previous">
+      <button style="display: none;" part="button control-button prev-button" type="button" direction="prev" aria-label="Previous">
         <slot name="prev-icon"></slot>
         <slot name="prev-label">Previous</slot>
       </button>
     </slot>
     <slot name="next-buttons">
-      <button part="button control-button next-button" type="button" direction="next" aria-label="Next">
+      <button style="display: none;" part="button control-button next-button" type="button" direction="next" aria-label="Next">
         <slot name="next-label">Next</slot>
         <slot name="next-icon"></slot>
       </button>
@@ -21,10 +21,10 @@ const n = `<slot name="scroller">
   </div>
 
   <slot name="pagination">
-    <div part="nav"></div>
+    <div part="nav" style="display: none;"></div>
   </slot>
 
-  <div part="pager">
+  <div part="pager" style="display: none;">
     <slot name="current">
       <span part="current"></span>
     </slot>

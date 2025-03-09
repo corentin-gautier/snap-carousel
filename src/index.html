@@ -126,13 +126,14 @@
     padding="16"
     behavior="smooth"
     loop
+    pager
     autoplay="3000"
     use-pause
     responsive='[{"breakpoint": "1025", "settings": {"displayed": "2"}}]'
 &gt;
 &lt;/snap-carousel&gt;</code></pre>
         </div>
-        <snap-carousel displayed="1" per-page="1" nav controls gap="16" padding="16" behavior="smooth" loop autoplay="3000" use-pause responsive='[{"breakpoint": "1025", "settings": {"displayed": "2"}}]'>
+        <snap-carousel displayed="1" per-page="1" nav controls pager gap="16" padding="16" behavior="smooth" loop autoplay="3000" use-pause responsive='[{"breakpoint": "1025", "settings": {"displayed": "2"}}]'>
           <ul>
             <li data-slide="1"></li>
             <li data-slide="2"></li>
@@ -282,14 +283,12 @@
           <small>Full-width gallery with captions</small>
           <pre><code class="language-html">&lt;snap-carousel
   displayed="1"
-  controls
   nav
-  pager
 &gt;
 ...
 &lt;/snap-carousel&gt;</code></pre>
         </div>
-        <snap-carousel displayed="1" controls nav pager class="gallery">
+        <snap-carousel displayed="1" nav class="gallery">
           <ul slot="scroller">
             <li>
               <div class="gallery-item">
@@ -1128,7 +1127,7 @@ import { SnapCarousel } from '@snap-carousel/snap-carousel';</code></pre>
         </div>
 
         <div class="demo">
-          <snap-carousel displayed="1" controls nav pager>
+          <custom-carousel displayed="1" controls nav>
             <ul slot="scroller">
               <li>
                 <div class="module-slide">
@@ -1149,7 +1148,7 @@ import { SnapCarousel } from '@snap-carousel/snap-carousel';</code></pre>
                 </div>
               </li>
             </ul>
-          </snap-carousel>
+          </custom-carousel>
         </div>
       </example>
     </section>
@@ -1266,13 +1265,18 @@ import { SnapCarousel } from '@snap-carousel/snap-carousel';</code></pre>
     hljs.highlightAll();
   </script>
   <script type="module">
-    import { BaseCarousel, createCarousel } from './snap-carousel.js';
-    import { ControlsFeature } from './features/controls.js';
-    import { PagerFeature } from './features/pager.js';
-    import { NavFeature } from './features/nav.js';
+    // Test 1: Direct import (all features)
+    import { SnapCarousel } from '../dist/snap-carousel.iife.js';
+    customElements.define('snap-carousel', SnapCarousel);
 
-    const myCustomCarousel = createCarousel(ControlsFeature, PagerFeature, NavFeature);
-    BaseCarousel.registerElement('snap-carousel', myCustomCarousel);
+    // Test 2: Custom import (controls only)
+    import { BaseCarousel, createCarousel } from '../dist/base-carousel.iife.js';
+    import { ControlsFeature } from '../dist/features/controls.iife.js';
+    import { NavFeature } from '../dist/features/nav.iife.js';
+
+    // Create custom carousel with only controls feature
+    const CustomCarousel = createCarousel(ControlsFeature, NavFeature);
+    customElements.define('custom-carousel', CustomCarousel);
   </script>
 </body>
 

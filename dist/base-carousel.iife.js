@@ -1,13 +1,13 @@
-var V = (c) => {
+var U = (c) => {
   throw TypeError(c);
 };
-var S = (c, u, t) => u.has(c) || V("Cannot " + t);
-var e = (c, u, t) => (S(c, u, "read from private field"), t ? t.call(c) : u.get(c)), m = (c, u, t) => u.has(c) ? V("Cannot add the same private member more than once") : u instanceof WeakSet ? u.add(c) : u.set(c, t), E = (c, u, t, i) => (S(c, u, "write to private field"), i ? i.call(c, t) : u.set(c, t), t), r = (c, u, t) => (S(c, u, "access private method"), t);
+var S = (c, u, t) => u.has(c) || U("Cannot " + t);
+var e = (c, u, t) => (S(c, u, "read from private field"), t ? t.call(c) : u.get(c)), m = (c, u, t) => u.has(c) ? U("Cannot add the same private member more than once") : u instanceof WeakSet ? u.add(c) : u.set(c, t), E = (c, u, t, i) => (S(c, u, "write to private field"), i ? i.call(c, t) : u.set(c, t), t), r = (c, u, t) => (S(c, u, "access private method"), t);
 import "./node_modules/scrollyfills/dist/scrollyfills.modern.iife.js";
 import it from "./src/host.css.iife.js";
 import rt from "./src/style.css.iife.js";
 import nt from "./src/template.html.iife.js";
-var b, I, L, T, n, l, h, x, s, O, $, j, N, D, B, W, F, q, z, J, Z, R, G, K, Q, X, Y, P, C, _, tt, H, et, A, U, k;
+var b, I, L, T, n, l, h, x, s, O, $, j, N, D, B, W, F, q, z, J, Z, R, G, K, Q, X, Y, A, C, _, tt, V, et, P, H, k;
 const w = class w extends HTMLElement {
   constructor() {
     super();
@@ -35,10 +35,10 @@ const w = class w extends HTMLElement {
     return e(this, b);
   }
   getSlotElements(t, i = { fallback: !1 }) {
-    return r(this, s, H).call(this, t, i);
+    return r(this, s, V).call(this, t, i);
   }
   isDocumentLtr() {
-    return r(this, s, A).call(this);
+    return r(this, s, P).call(this);
   }
   registerHook(t, i) {
     e(this, x)[t] && e(this, x)[t].push(i);
@@ -53,7 +53,7 @@ const w = class w extends HTMLElement {
   connectedCallback() {
     if (!this.isConnected) return;
     const t = document.createElement("template");
-    t.innerHTML = `<style>${it}</style>${nt}`, this.attachShadow({ mode: "open" }), this.shadowRoot.appendChild(t.content.cloneNode(!0)), e(this, l).scroller = r(this, s, H).call(this, "scroller", { fallback: !0 })[0], e(this, l).scroller && (new MutationObserver((i) => {
+    t.innerHTML = `<style>${it}</style>${nt}`, this.attachShadow({ mode: "open" }), this.shadowRoot.appendChild(t.content.cloneNode(!0)), e(this, l).scroller = r(this, s, V).call(this, "scroller", { fallback: !0 })[0], e(this, l).scroller && (new MutationObserver((i) => {
       i.forEach((o) => {
         (o.addedNodes.length || o.removedNodes.length) && (r(this, s, N).call(this), r(this, s, j).call(this));
       });
@@ -64,11 +64,11 @@ const w = class w extends HTMLElement {
   }
   goTo(t) {
     E(this, b, !1);
-    const { scroller: i, items: o } = e(this, l), { perPage: a, vertical: d } = e(this, h).current, v = t > e(this, n).pageCount - 1 ? 0 : t < 0 ? e(this, n).pageCount - 1 : t, g = o[v * a];
-    r(this, s, C).call(this, v), e(this, n).ready = !0;
-    let y = 0, p = 0;
-    d ? y = g.offsetTop : p = r(this, s, A).call(this) ? g.offsetLeft : g.offsetLeft + g.offsetWidth - i.offsetWidth, E(this, b, !0), requestIdleCallback(() => {
-      i.scrollTo({ top: y, left: p });
+    const { scroller: i, items: o } = e(this, l), { perPage: a, vertical: d } = e(this, h).current, y = t > e(this, n).pageCount - 1 ? 0 : t < 0 ? e(this, n).pageCount - 1 : t, g = o[y * a];
+    r(this, s, C).call(this, y), e(this, n).ready = !0;
+    let v = 0, p = 0;
+    d ? v = g.offsetTop : p = r(this, s, P).call(this) ? g.offsetLeft : g.offsetLeft + g.offsetWidth - i.offsetWidth, E(this, b, !0), requestIdleCallback(() => {
+      i.scrollTo({ top: v, left: p });
     }, { timeout: 100 });
   }
   prev() {
@@ -76,6 +76,9 @@ const w = class w extends HTMLElement {
   }
   next() {
     this.goTo(this.state.index + 1);
+  }
+  static setVisibility(t, i) {
+    i ? t.removeAttribute("style") : t.setAttribute("style", "display: none!important;");
   }
   static registerElement(t, i) {
     window.customElements && customElements.define(t, i);
@@ -125,8 +128,8 @@ b = new WeakMap(), I = new WeakMap(), L = new WeakMap(), T = new WeakMap(), n = 
   const { current: t } = e(this, h), { itemsCount: i } = e(this, n), o = Math.floor((t.displayed - t.perPage) / t.perPage);
   e(this, n).pageCount = Math.ceil(i / t.perPage) - o;
 }, Z = function() {
-  const { displayed: t, gap: i, padding: o, perPage: a, stop: d, behavior: v } = e(this, h).current, g = r(this, s, U).call(this, i), y = r(this, s, U).call(this, o), p = "sc-anchor" + (d ? "-stop" : "");
-  this.style = `--perpage: ${t};--gap: ${g};--padding: ${y};--behavior: ${v};${e(this, T)}`, this.elements.items.forEach((f, st) => {
+  const { displayed: t, gap: i, padding: o, perPage: a, stop: d, behavior: y } = e(this, h).current, g = r(this, s, H).call(this, i), v = r(this, s, H).call(this, o), p = "sc-anchor" + (d ? "-stop" : "");
+  this.style = `--perpage: ${t};--gap: ${g};--padding: ${v};--behavior: ${y};${e(this, T)}`, this.elements.items.forEach((f, st) => {
     st % a == 0 ? f.classList.add(p) : f.classList.remove(p);
   });
 }, R = function() {
@@ -156,40 +159,40 @@ b = new WeakMap(), I = new WeakMap(), L = new WeakMap(), T = new WeakMap(), n = 
   if (e(this, I)) return;
   r(this, s, X).call(this), this.newIndex = e(this, n).index;
   const t = r(this, s, _).call(this);
-  t !== e(this, n).index && (this.newIndex = t, r(this, s, C).call(this, t), r(this, s, P).call(this, "scrollupdate"));
+  t !== e(this, n).index && (this.newIndex = t, r(this, s, C).call(this, t), r(this, s, A).call(this, "scrollupdate"));
 }, X = function() {
-  e(this, n).isMoving || r(this, s, P).call(this, "scrollstart"), e(this, n).isMoving = !0;
+  e(this, n).isMoving || r(this, s, A).call(this, "scrollstart"), e(this, n).isMoving = !0;
 }, Y = function() {
-  e(this, I) || (r(this, s, P).call(this, "scrollend"), E(this, b, !1), e(this, n).isMoving = !1, typeof this.newIndex == "number" ? (r(this, s, C).call(this, this.newIndex), this.newIndex = null) : r(this, s, C).call(this, e(this, n).index), r(this, s, k).call(this));
-}, P = function(t) {
+  e(this, I) || (r(this, s, A).call(this, "scrollend"), E(this, b, !1), e(this, n).isMoving = !1, typeof this.newIndex == "number" ? (r(this, s, C).call(this, this.newIndex), this.newIndex = null) : r(this, s, C).call(this, e(this, n).index), r(this, s, k).call(this));
+}, A = function(t) {
   const { current: i } = e(this, h);
   this.dispatchEvent(new CustomEvent(t, { detail: e(this, n) })), i["on" + t] && i["on" + t](this);
 }, C = function(t) {
   t !== void 0 && (e(this, n).index = t), r(this, s, tt).call(this), e(this, b) || r(this, s, O).call(this, "updateState", t);
 }, _ = function(t) {
-  const { scroller: i, items: o } = e(this, l), { perPage: a, vertical: d } = e(this, h).current, v = r(this, s, A).call(this);
+  const { scroller: i, items: o } = e(this, l), { perPage: a, vertical: d } = e(this, h).current, y = r(this, s, P).call(this);
   let g = 0;
-  g = d ? i.scrollTop : v ? i.scrollLeft : i.scrollLeft + i.clientWidth;
-  let y = o.map((p) => {
+  g = d ? i.scrollTop : y ? i.scrollLeft : i.scrollLeft + i.clientWidth;
+  let v = o.map((p) => {
     let f = 0;
-    return f = d ? p.offsetTop - (e(this, n).computedPadding || 0) - g : (v ? p.offsetLeft : p.offsetLeft + p.clientWidth) - (e(this, n).computedPadding || 0) - g, { index: parseInt(p.dataset.index, 10), distance: Math.abs(f) };
+    return f = d ? p.offsetTop - (e(this, n).computedPadding || 0) - g : (y ? p.offsetLeft : p.offsetLeft + p.clientWidth) - (e(this, n).computedPadding || 0) - g, { index: parseInt(p.dataset.index, 10), distance: Math.abs(f) };
   }).reduce((p, f) => !p || f.distance < p.distance ? f : p, null);
-  return t ? y : Math.ceil(y.index / a);
+  return t ? v : Math.ceil(v.index / a);
 }, tt = function() {
   const { sync: t } = e(this, h).current;
   t && e(this, n).ready && (e(this, l).sync = e(this, l).sync || Array.from(document.querySelectorAll(t)), e(this, l).sync.forEach((i) => {
     i instanceof w && i.goTo(e(this, n).index);
   }));
-}, H = function(t, i = { fallback: !1 }) {
+}, V = function(t, i = { fallback: !1 }) {
   const o = this.shadowRoot.querySelector(`[name="${t}"]`);
   let a = o.assignedElements();
   return i.fallback && !a.length && this.children[0].slot === "" && (this.children[0].slot = "scroller", a = o.assignedElements()), Array.from(a.length ? a : o.children);
 }, et = function(t, i) {
   const o = document.createElement("style");
   return o.id = i, o.append(document.createTextNode(t)), o;
-}, A = function() {
+}, P = function() {
   return document.firstElementChild.getAttribute("dir") !== "rtl";
-}, U = function(t) {
+}, H = function(t) {
   return typeof t == "string" ? t : t + "px";
 }, k = function() {
   if (!e(this, h).current.autoplay) return;

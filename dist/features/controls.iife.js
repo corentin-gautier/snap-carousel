@@ -1,38 +1,40 @@
-var b = (s) => {
-  throw TypeError(s);
+var f = (e) => {
+  throw TypeError(e);
 };
-var f = (s, t, i) => t.has(s) || b("Cannot " + i);
-var n = (s, t, i) => (f(s, t, "read from private field"), i ? i.call(s) : t.get(s)), c = (s, t, i) => t.has(s) ? b("Cannot add the same private member more than once") : t instanceof WeakSet ? t.add(s) : t.set(s, i);
-var d = (s, t, i) => (f(s, t, "access private method"), i);
-const E = (s) => {
-  var t, i, m, g, u;
-  return u = class extends s {
+var m = (e, t, s) => t.has(e) || f("Cannot " + s);
+var r = (e, t, s) => (m(e, t, "read from private field"), s ? s.call(e) : t.get(e)), u = (e, t, s) => t.has(e) ? f("Cannot add the same private member more than once") : t instanceof WeakSet ? t.add(e) : t.set(e, s);
+var d = (e, t, s) => (m(e, t, "access private method"), s);
+const C = (e) => {
+  var t, s, p, b, g;
+  return g = class extends e {
     constructor() {
       super();
-      c(this, i);
-      c(this, t, []);
-      this.elements.controls = n(this, t), this.registerHook("init", d(this, i, m).bind(this)), this.registerHook("updateState", d(this, i, g).bind(this));
+      u(this, s);
+      u(this, t, { container: null, buttons: [] });
+      this.elements.controls = r(this, t), this.registerHook("init", d(this, s, p).bind(this)), this.registerHook("updateState", d(this, s, b).bind(this));
     }
-  }, t = new WeakMap(), i = new WeakSet(), m = function() {
-    const { current: h } = this.settings, a = !h.controls || this.state.pageCount < 2, l = this.getSlotElements("prev-buttons"), o = this.getSlotElements("next-buttons");
-    (l.length || o.length) && (n(this, t).push(...l, ...o), n(this, t).forEach((e) => {
-      e.style = a ? "display: none !important;" : "", e.hasListener || (e.direction = e.getAttribute("direction") || "next", e.modifier = (e.direction === "next" ? 1 : -1) * (parseInt(e.getAttribute("modifier"), 10) || 1), e.hasListener = !0, e.addEventListener("click", () => {
-        h.controls && this.goTo(this.state.index + e.modifier);
-      }), Object.assign(e, { ariaControls: this.elements.scroller.id }));
-    }), d(this, i, g).call(this));
-  }, g = function() {
-    if (!n(this, t).length) return;
-    const { loop: h } = this.settings.current, { index: a, pageCount: l } = this.state;
-    let o = !1;
-    if (n(this, t).forEach((e) => {
-      const r = !h && (e.direction === "next" ? a >= l - e.modifier : a < Math.abs(e.modifier));
-      e === this.shadowRoot.activeElement && r && (o = !0), e.disabled = r, e.setAttribute("aria-disabled", r);
-    }), o) {
-      const e = n(this, t).filter((r) => !r.disabled);
-      e.length && e[0].focus();
+  }, t = new WeakMap(), s = new WeakSet(), p = function() {
+    const { current: a } = this.settings, c = !a.controls || this.state.pageCount < 2, l = this.getSlotElements("prev-buttons"), h = this.getSlotElements("next-buttons");
+    if (r(this, t).container = this.shadowRoot.querySelector('[part="buttons"]'), !r(this, t).container) return;
+    const { container: i, buttons: o } = r(this, t);
+    e.setVisibility(i, !c), (l.length || h.length) && (o.push(...l, ...h), o.forEach((n) => {
+      n.hasListener || (n.direction = n.getAttribute("direction") || "next", n.modifier = (n.direction === "next" ? 1 : -1) * (parseInt(n.getAttribute("modifier"), 10) || 1), n.hasListener = !0, n.addEventListener("click", () => {
+        a.controls && this.goTo(this.state.index + n.modifier);
+      }), Object.assign(n, { ariaControls: this.elements.scroller.id }));
+    }), d(this, s, b).call(this));
+  }, b = function() {
+    if (!r(this, t).buttons.length) return;
+    const { loop: a } = this.settings.current, { index: c, pageCount: l } = this.state;
+    let h = !1;
+    if (r(this, t).buttons.forEach((i) => {
+      const o = !a && (i.direction === "next" ? c >= l - i.modifier : c < Math.abs(i.modifier));
+      i === this.shadowRoot.activeElement && o && (h = !0), i.disabled = o, i.setAttribute("aria-disabled", o);
+    }), h) {
+      const i = r(this, t).buttons.filter((o) => !o.disabled);
+      i.length && i[0].focus();
     }
-  }, u;
+  }, g;
 };
 export {
-  E as ControlsFeature
+  C as ControlsFeature
 };

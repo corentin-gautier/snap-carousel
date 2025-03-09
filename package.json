@@ -3,23 +3,23 @@
     "version": "1.10.2",
     "description": "A lightweight vanilla JavaScript carousel library built with modern web technologies. Based on custom elements, scroll-snap, and scroll-padding.",
     "type": "module",
-    "main": "dist/snap-carousel.min.js",
-    "module": "dist/snap-carousel.js",
+    "main": "dist/snap-carousel.iife.js",
+    "module": "dist/snap-carousel.iife.js",
     "types": "dist/types/index.d.ts",
     "exports": {
         ".": {
-            "import": "./dist/snap-carousel.js",
-            "require": "./dist/snap-carousel.min.js",
+            "import": "./dist/snap-carousel.iife.js",
+            "require": "./dist/snap-carousel.iife.js",
             "types": "./dist/types/index.d.ts"
         },
         "./base-carousel": {
-            "import": "./dist/base-carousel.js",
-            "require": "./dist/base-carousel.min.js",
+            "import": "./dist/base-carousel.iife.js",
+            "require": "./dist/base-carousel.iife.js",
             "types": "./dist/types/base-carousel.d.ts"
         },
         "./features/*": {
-            "import": "./dist/features/*.js",
-            "require": "./dist/features/*.min.js",
+            "import": "./dist/features/*.iife.js",
+            "require": "./dist/features/*.iife.js",
             "types": "./dist/types/features/*.d.ts"
         }
     },

@@ -706,6 +706,10 @@ export class BaseCarousel extends HTMLElement {
     }
   }
 
+  static setVisibility(element, condition) {
+    condition ? element.removeAttribute('style') : element.setAttribute('style', 'display: none!important;');
+  }
+
   /**
    * Define a custom element
    * @param {string} name - Name of the custom element

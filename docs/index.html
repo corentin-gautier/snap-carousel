@@ -60,8 +60,8 @@
       "license": "https://opensource.org/licenses/MIT"
     }
   </script>
-  <script type="module" crossorigin src="./assets/index-C16Jjv0u.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-Bmq_ym-s.css">
+  <script type="module" crossorigin src="./assets/index-DR5zu4Wj.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-DldK4i5Q.css">
 </head>
 
 <body>
@@ -127,13 +127,14 @@
     padding="16"
     behavior="smooth"
     loop
+    pager
     autoplay="3000"
     use-pause
     responsive='[{"breakpoint": "1025", "settings": {"displayed": "2"}}]'
 &gt;
 &lt;/snap-carousel&gt;</code></pre>
         </div>
-        <snap-carousel displayed="1" per-page="1" nav controls gap="16" padding="16" behavior="smooth" loop autoplay="3000" use-pause responsive='[{"breakpoint": "1025", "settings": {"displayed": "2"}}]'>
+        <snap-carousel displayed="1" per-page="1" nav controls pager gap="16" padding="16" behavior="smooth" loop autoplay="3000" use-pause responsive='[{"breakpoint": "1025", "settings": {"displayed": "2"}}]'>
           <ul>
             <li data-slide="1"></li>
             <li data-slide="2"></li>
@@ -283,14 +284,12 @@
           <small>Full-width gallery with captions</small>
           <pre><code class="language-html">&lt;snap-carousel
   displayed="1"
-  controls
   nav
-  pager
 &gt;
 ...
 &lt;/snap-carousel&gt;</code></pre>
         </div>
-        <snap-carousel displayed="1" controls nav pager class="gallery">
+        <snap-carousel displayed="1" nav class="gallery">
           <ul slot="scroller">
             <li>
               <div class="gallery-item">
@@ -1129,7 +1128,7 @@ import { SnapCarousel } from '@snap-carousel/snap-carousel';</code></pre>
         </div>
 
         <div class="demo">
-          <snap-carousel displayed="1" controls nav pager>
+          <custom-carousel displayed="1" controls nav>
             <ul slot="scroller">
               <li>
                 <div class="module-slide">
@@ -1150,7 +1149,7 @@ import { SnapCarousel } from '@snap-carousel/snap-carousel';</code></pre>
                 </div>
               </li>
             </ul>
-          </snap-carousel>
+          </custom-carousel>
         </div>
       </example>
     </section>
