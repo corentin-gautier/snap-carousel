@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.11.0](https://github.com/corentin-gautier/snap-carousel/compare/v1.10.6...v1.11.0) (2025-03-09)
+
+
+### Features
+
+* add auto registering umd version ([9a392a7](https://github.com/corentin-gautier/snap-carousel/commit/9a392a74222b6f55073638fd1cd3fc4e65f7f3a7))
+
 ### [1.10.6](https://github.com/corentin-gautier/snap-carousel/compare/v1.10.5...v1.10.6) (2025-03-09)
 
 
