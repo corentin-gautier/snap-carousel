@@ -1,23 +1,42 @@
 {
     "name": "@cgsoft/snap-carousel",
     "version": "1.9.2",
-    "description": "A lightweight vanilla JavaScript carousel library built with modern web technologies",
+    "description": "A lightweight vanilla JavaScript carousel library built with modern web technologies. Based on custom elements, scroll-snap, and scroll-padding.",
     "type": "module",
     "main": "dist/snap-carousel.min.js",
     "module": "dist/snap-carousel.js",
+    "types": "dist/types/index.d.ts",
     "exports": {
         ".": {
             "import": "./dist/snap-carousel.js",
-            "require": "./dist/snap-carousel.min.js"
+            "require": "./dist/snap-carousel.min.js",
+            "types": "./dist/types/index.d.ts"
+        },
+        "./base-carousel": {
+            "import": "./dist/base-carousel.js",
+            "require": "./dist/base-carousel.min.js",
+            "types": "./dist/types/base-carousel.d.ts"
+        },
+        "./features/*": {
+            "import": "./dist/features/*.js",
+            "require": "./dist/features/*.min.js",
+            "types": "./dist/types/features/*.d.ts"
         }
     },
     "files": [
-        "dist"
+        "dist",
+        "src",
+        "LICENSE",
+        "README.md",
+        "CHANGELOG.md"
     ],
     "scripts": {
         "dev": "vite",
-        "build": "vite build --mode library && vite build",
-        "preview": "vite preview"
+        "build": "npm run build:types && vite build --mode library && vite build",
+        "build:types": "mkdir -p dist/types/features && cp src/types/*.d.ts dist/types/ && cp src/types/features/*.d.ts dist/types/features/",
+        "preview": "vite preview",
+        "prepublishOnly": "npm run build",
+        "test": "echo \"No tests specified\" && exit 0"
     },
     "keywords": [
         "carousel",
@@ -25,19 +44,44 @@
         "vanilla",
         "javascript",
         "web-components",
-        "custom-elements"
+        "custom-elements",
+        "scroll-snap",
+        "lightweight",
+        "responsive",
+        "modular",
+        "typescript",
+        "no-dependencies"
     ],
     "repository": {
         "type": "git",
         "url": "https://github.com/corentin-gautier/snap-carousel"
     },
+    "bugs": {
+        "url": "https://github.com/corentin-gautier/snap-carousel/issues"
+    },
+    "homepage": "https://corentin-gautier.github.io/snap-carousel",
     "devDependencies": {
         "@rollup/plugin-terser": "^0.4.4",
+        "@types/node": "^20.11.24",
         "rollup-plugin-terser": "^7.0.2",
         "scrollyfills": "^1.0.3",
         "terser": "^5.39.0",
+        "typescript": "^5.3.3",
         "vite": "^5.1.4"
     },
-    "author": "Corentin Grall",
-    "license": "MIT"
+    "peerDependencies": {
+        "scrollyfills": "^1.0.3"
+    },
+    "engines": {
+        "node": ">=14.0.0"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "author": {
+        "name": "Corentin Gautier",
+        "url": "https://github.com/corentin-gautier"
+    },
+    "license": "MIT",
+    "sideEffects": false
 }
