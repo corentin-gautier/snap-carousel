@@ -38,7 +38,7 @@ if (typeof window < "u" && !("onscrollend" in window)) {
   let t = /* @__PURE__ */ new WeakMap();
   i(Element.prototype, "addEventListener", c), i(window, "addEventListener", c), i(document, "addEventListener", c), i(Element.prototype, "removeEventListener", p), i(window, "removeEventListener", p), i(document, "removeEventListener", p);
 }
-const pt = ':host{display:block;position:relative;width:100%}:host(:not([scrollbar])) ::slotted([slot="scroller"]){scrollbar-width:none}:host(:not([scrollbar])) ::slotted([slot="scroller"])::-webkit-scrollbar{display:none}::slotted([slot="scroller"]){position:relative;margin:0;display:flex;gap:var(--sc-gap);scroll-behavior:var(--sc-behavior)}:host(:not([vertical])) ::slotted([slot="scroller"]){overflow-x:auto;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;scroll-padding-inline:var(--sc-padding);padding-inline:var(--sc-padding)!important}:host([vertical]) ::slotted([slot="scroller"]){flex-direction:column;overflow-y:auto;scroll-snap-type:y mandatory;overscroll-behavior-y:contain;padding-block:var(--sc-padding)!important;scroll-padding-block:var(--sc-padding)}', ft = "snap-carousel:not([scrollbar]) [slot=scroller]::-webkit-scrollbar{display:none}snap-carousel [slot=scroller]{display:flex}snap-carousel[vertical]{display:flex;flex-direction:column}snap-carousel[vertical] [slot=scroller]{flex-direction:column;height:100%}snap-carousel [slot=scroller]>*{display:block;flex:0 0 auto}snap-carousel:not([vertical]) [slot=scroller]>*{width:calc((100% / var(--sc-perpage, 1)) - var(--sc-gap, 0) + (var(--sc-gap, 0) / var(--sc-perpage, 1)));max-width:100%}snap-carousel[vertical] [slot=scroller]>*{max-height:100%;height:calc((100% / var(--sc-perpage, 1)) - var(--sc-gap, 0) + (var(--sc-gap, 0) / var(--sc-perpage, 1)))}", gt = `<slot name="scroller">
+const pt = ':host{display:block;position:relative;width:100%}:host(:not([scrollbar])) ::slotted([slot="scroller"]){scrollbar-width:none}:host(:not([scrollbar])) ::slotted([slot="scroller"])::-webkit-scrollbar{display:none}::slotted([slot="scroller"]){position:relative;margin:0;display:flex;gap:var(--gap);scroll-behavior:var(--behavior)}:host(:not([vertical])) ::slotted([slot="scroller"]){overflow-x:auto;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;scroll-padding-inline:var(--padding);padding-inline:var(--padding)!important}:host([vertical]) ::slotted([slot="scroller"]){flex-direction:column;overflow-y:auto;scroll-snap-type:y mandatory;overscroll-behavior-y:contain;padding-block:var(--padding)!important;scroll-padding-block:var(--padding)}', ft = "snap-carousel:not([scrollbar]) [slot=scroller]::-webkit-scrollbar{display:none}snap-carousel [slot=scroller]{display:flex}snap-carousel[vertical]{display:flex;flex-direction:column}snap-carousel[vertical] [slot=scroller]{flex-direction:column;height:100%}snap-carousel [slot=scroller]>*{display:block;flex:0 0 auto}snap-carousel:not([vertical]) [slot=scroller]>*{width:calc((100% / var(--perpage, 1)) - var(--gap, 0) + (var(--gap, 0) / var(--perpage, 1)));max-width:100%}snap-carousel[vertical] [slot=scroller]>*{max-height:100%;height:calc((100% / var(--perpage, 1)) - var(--gap, 0) + (var(--gap, 0) / var(--perpage, 1)))}", gt = `<slot name="scroller">
   <ul></ul>
 </slot>
 
@@ -515,10 +515,10 @@ rt = function() {
   t && t.remove();
   const { displayed: i, gap: c, padding: p, perPage: u, stop: d, behavior: v } = e(this, m).current, l = u > 1 ? `*:nth-child(${u}n + 1)` : "*", o = `
       #${e(this, a).id} {
-        --sc-perpage: ${i};
-        --sc-gap: ${r(this, s, V).call(this, c)};
-        --sc-padding: ${r(this, s, V).call(this, p)};
-        --sc-behavior: ${v};
+        --perpage: ${i};
+        --gap: ${r(this, s, V).call(this, c)};
+        --padding: ${r(this, s, V).call(this, p)};
+        --behavior: ${v};
       }
       #${e(this, a).id} [slot="scroller"] > ${l} {
         scroll-snap-align: start;
@@ -688,7 +688,8 @@ const B = yt(
 );
 window.customElements && customElements.define("snap-carousel", B);
 export {
-  $ as BaseCarousel,
-  yt as createCarousel,
-  B as default
+    $ as BaseCarousel,
+    yt as createCarousel,
+    B as default
 };
+

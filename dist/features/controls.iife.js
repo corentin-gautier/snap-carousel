@@ -1,38 +1,38 @@
-var f = (e) => {
-  throw TypeError(e);
+var b = (s) => {
+  throw TypeError(s);
 };
-var m = (e, t, s) => t.has(e) || f("Cannot " + s);
-var o = (e, t, s) => (m(e, t, "read from private field"), s ? s.call(e) : t.get(e)), u = (e, t, s) => t.has(e) ? f("Cannot add the same private member more than once") : t instanceof WeakSet ? t.add(e) : t.set(e, s);
-var c = (e, t, s) => (m(e, t, "access private method"), s);
-const C = (e) => {
-  var t, s, p, b, g;
-  return g = class extends e {
+var f = (s, e, i) => e.has(s) || b("Cannot " + i);
+var n = (s, e, i) => (f(s, e, "read from private field"), i ? i.call(s) : e.get(s)), d = (s, e, i) => e.has(s) ? b("Cannot add the same private member more than once") : e instanceof WeakSet ? e.add(s) : e.set(s, i);
+var c = (s, e, i) => (f(s, e, "access private method"), i);
+const E = (s) => {
+  var e, i, m, g, u;
+  return u = class extends s {
     constructor() {
       super();
-      u(this, s);
-      u(this, t, { buttons: [] });
-      this.elements.controls = o(this, t), this.registerHook("init", c(this, s, p).bind(this)), this.registerHook("updateState", c(this, s, b).bind(this));
+      d(this, i);
+      d(this, e, []);
+      this.elements.controls = n(this, e), this.registerHook("init", c(this, i, m).bind(this)), this.registerHook("updateState", c(this, i, g).bind(this));
     }
-  }, t = new WeakMap(), s = new WeakSet(), p = function() {
-    const { current: a } = this.settings, l = !a.controls || this.state.pageCount < 2, r = this.getSlotElements("prev-buttons"), d = this.getSlotElements("next-buttons");
-    (r.length || d.length) && (o(this, t).buttons = [...r, ...d], o(this, t).buttons.forEach((i) => {
-      i.style = l ? "display: none !important;" : "", i.hasListener || (i.direction = i.getAttribute("direction") || "next", i.modifier = (i.direction === "next" ? 1 : -1) * (parseInt(i.getAttribute("modifier"), 10) || 1), i.hasListener = !0, i.addEventListener("click", () => {
-        a.controls && this.goTo(this.state.index + i.modifier);
-      }), Object.assign(i, { ariaControls: this.elements.scroller.id }));
-    }), c(this, s, b).call(this));
-  }, b = function() {
-    if (!o(this, t).buttons.length) return;
-    const { loop: a } = this.settings.current, { buttons: l } = o(this, t), { index: r, pageCount: d } = this.state;
-    let i = !1;
-    if (l.forEach((n) => {
-      const h = !a && (n.direction === "next" ? r >= d - n.modifier : r < Math.abs(n.modifier));
-      n === this.shadowRoot.activeElement && h && (i = !0), n.disabled = h, n.setAttribute("aria-disabled", h);
-    }), i) {
-      const n = l.filter((h) => !h.disabled);
-      n.length && n[0].focus();
+  }, e = new WeakMap(), i = new WeakSet(), m = function() {
+    const { current: h } = this.settings, a = !h.controls || this.state.pageCount < 2, l = this.getSlotElements("prev-buttons"), o = this.getSlotElements("next-buttons");
+    (l.length || o.length) && (n(this, e).push(...l, ...o), n(this, e).forEach((t) => {
+      console.log(t), t.style = a ? "display: none !important;" : "", t.hasListener || (t.direction = t.getAttribute("direction") || "next", t.modifier = (t.direction === "next" ? 1 : -1) * (parseInt(t.getAttribute("modifier"), 10) || 1), t.hasListener = !0, t.addEventListener("click", () => {
+        h.controls && this.goTo(this.state.index + t.modifier);
+      }), Object.assign(t, { ariaControls: this.elements.scroller.id }));
+    }), c(this, i, g).call(this));
+  }, g = function() {
+    if (!n(this, e).length) return;
+    const { loop: h } = this.settings.current, { index: a, pageCount: l } = this.state;
+    let o = !1;
+    if (n(this, e).forEach((t) => {
+      const r = !h && (t.direction === "next" ? a >= l - t.modifier : a < Math.abs(t.modifier));
+      t === this.shadowRoot.activeElement && r && (o = !0), t.disabled = r, t.setAttribute("aria-disabled", r);
+    }), o) {
+      const t = n(this, e).filter((r) => !r.disabled);
+      t.length && t[0].focus();
     }
-  }, g;
+  }, u;
 };
 export {
-  C as ControlsFeature
+  E as ControlsFeature
 };

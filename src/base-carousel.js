@@ -12,6 +12,7 @@ export class BaseCarousel extends HTMLElement {
   #preventUiUpdate = false;
   #preventNextEvent = false;
   #className = 'snap-carousel';
+  #initialStyle = '';
 
   // State management
   #state = {
@@ -91,10 +92,11 @@ export class BaseCarousel extends HTMLElement {
       pager: false,        // Show page numbers
       loop: false,         // Loop around when reaching the end
       behavior: 'smooth',  // Scroll behavior
-      stop: false,        // Stop at each item
-      usePause: true,     // Pause autoplay on hover
-      vertical: false,    // Vertical orientation
-      responsive: []      // Breakpoint configurations
+      stop: false,         // Stop at each item
+      usePause: true,      // Pause autoplay on hover
+      vertical: false,     // Vertical orientation
+      responsive: [],      // Breakpoint configurations
+      sync: null           // Selector for other carousels to sync with
     };
   }
 
@@ -114,6 +116,9 @@ export class BaseCarousel extends HTMLElement {
   constructor() {
     super();
     this.#settings.default = BaseCarousel.defaultConfig;
+    // Store initial style to avoid overriding it
+    this.#initialStyle = this.getAttribute('style');
+    this.setAttribute('snpc', '');
   }
 
   /**
@@ -129,7 +134,11 @@ export class BaseCarousel extends HTMLElement {
     this.shadowRoot.appendChild(template.content.cloneNode(true));
 
     // Setup mutation observer for dynamic content
-    const scroller = this.#getSlotElements('scroller', { fallback: true })[0];
+    this.#elements.scroller = this.#getSlotElements('scroller', { fallback: true })[0];
+
+    // If no scroller element is found, return
+    if (!this.#elements.scroller) return;
+
     const observer = new MutationObserver(mutations => {
       mutations.forEach(mutation => {
         if (mutation.addedNodes.length || mutation.removedNodes.length) {
@@ -138,10 +147,30 @@ export class BaseCarousel extends HTMLElement {
         }
       });
     });
-    observer.observe(scroller, { childList: true });
+    observer.observe(this.#elements.scroller, { childList: true });
 
-    // Initial setup
-    this.#prepare();
+    // Setup event listeners
+    this.#elements.scroller.setAttribute('snpc-s', '');
+    this.#elements.scroller.onscroll = this.#onscroll.bind(this);
+    this.#elements.scroller.addEventListener('scrollend', this.#onscrollend.bind(this));
+    window.addEventListener('resize', this.#resizeEvent.bind(this));
+
+    // Setup accessibility
+    this.ariaRoleDescription = 'carousel';
+    Object.assign(this.#elements.scroller, {
+      role: 'group',
+      ariaLive: 'polite',
+      ariaAtomic: false
+    });
+
+    // Initialize carousel
+    this.#computeChildren();
+    this.#addGlobalStyles();
+    this.#identify();
+    this.#setup();
+    this.#observe();
+
+    this.#state.ready = true;
   }
 
   /**
@@ -199,38 +228,6 @@ export class BaseCarousel extends HTMLElement {
    */
   next() {
     this.goTo(this.state.index + 1);
-  }
-
-  /**
-   * Initial carousel preparation
-   */
-  #prepare() {
-    const scroller = this.#getSlotElements('scroller', true)[0];
-    if (!scroller) return;
-
-    // Setup event listeners
-    scroller.onscroll = this.#onscroll.bind(this);
-    scroller.addEventListener('scrollend', this.#onscrollend.bind(this));
-    window.addEventListener('resize', this.#resizeEvent.bind(this));
-
-    this.#elements.scroller = scroller;
-
-    // Setup accessibility
-    this.ariaRoleDescription = 'carousel';
-    Object.assign(scroller, {
-      role: 'group',
-      ariaLive: 'polite',
-      ariaAtomic: false
-    });
-
-    // Initialize carousel
-    this.#computeChildren();
-    this.#addGlobalStyles();
-    this.#identify();
-    this.#setup();
-    this.#observe();
-
-    this.#state.ready = true;
   }
 
   /**
@@ -407,34 +404,22 @@ export class BaseCarousel extends HTMLElement {
    * Generates CSS variables and scroll-snap rules
    */
   #createStyles() {
-    // Remove previous styles if they exist
-    const previousStyles = document.querySelector('#' + this.#state.id + '-styles');
-    if (previousStyles) {
-      previousStyles.remove();
-    }
-
     const { displayed, gap, padding, perPage, stop, behavior } = this.#settings.current;
+    const formatedGap = this.#formatCssValue(gap);
+    const formatedPadding = this.#formatCssValue(padding);
 
     // Create selector for scroll-snap alignment
-    const selectRule = perPage > 1 ? `[data-index]:nth-child(${perPage}n + 1)` : '*';
+    const anchorClass = `sc-anchor${stop ? '-stop' : ''}`;
 
-    // Generate CSS
-    const css = `
-      #${this.#state.id} {
-        --sc-perpage: ${displayed};
-        --sc-gap: ${this.#formatCssValue(gap)};
-        --sc-padding: ${this.#formatCssValue(padding)};
-        --sc-behavior: ${behavior};
-      }
-      #${this.#state.id} [slot="scroller"] > ${selectRule} {
-        scroll-snap-align: start;
-        scroll-snap-stop: ${stop ? 'always' : 'normal'}
-      }
-    `;
+    this.style = `--perpage: ${displayed};--gap: ${formatedGap};--padding: ${formatedPadding};--behavior: ${behavior};${this.#initialStyle}`;
 
-    // Create and append style element
-    this.styles = this.#createStyleElement(css, this.#state.id + '-styles');
-    document.head.append(this.styles);
+    this.elements.items.forEach((item, index) => {
+      if (index % perPage === 0) {
+        item.classList.add(anchorClass);
+      } else {
+        item.classList.remove(anchorClass);
+      }
+    });
   }
 
   /**
@@ -587,10 +572,12 @@ export class BaseCarousel extends HTMLElement {
     if (typeof index !== 'undefined') {
       this.#state.index = index;
     }
+
     this.#synchronize();
-    if (!this.#preventUiUpdate) {
-      this.#executeHooks('updateState', index);
-    }
+
+    if (this.#preventUiUpdate) return;
+
+    this.#executeHooks('updateState', index);
   }
 
   /**
@@ -636,7 +623,7 @@ export class BaseCarousel extends HTMLElement {
     const { sync } = this.#settings.current;
 
     if (sync && this.#state.ready) {
-      this.#elements.sync = this.#elements.sync || document.querySelectorAll(sync) || [];
+      this.#elements.sync = this.#elements.sync || Array.from(document.querySelectorAll(sync));
 
       this.#elements.sync.forEach(carousel => {
         if (carousel instanceof BaseCarousel) {

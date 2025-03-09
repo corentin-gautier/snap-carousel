@@ -4,9 +4,7 @@
  */
 export const ControlsFeature = Base => class extends Base {
   // Feature-specific elements
-  #controls = {
-    buttons: []
-  };
+  #controls = [];
 
   constructor() {
     super();
@@ -30,9 +28,11 @@ export const ControlsFeature = Base => class extends Base {
 
     if (!prevButtons.length && !nextButtons.length) return;
 
-    this.#controls.buttons = [...prevButtons, ...nextButtons];
+    this.#controls.push(...prevButtons, ...nextButtons);
 
-    this.#controls.buttons.forEach(button => {
+    this.#controls.forEach(button => {
+      console.log(button);
+
       // Show/hide buttons based on settings
       button.style = hideButtons ? 'display: none !important;' : '';
 
@@ -64,14 +64,13 @@ export const ControlsFeature = Base => class extends Base {
    * Update navigation button states
    */
   #setButtonsState() {
-    if (!this.#controls.buttons.length) return;
+    if (!this.#controls.length) return;
 
     const { loop } = this.settings.current;
-    const { buttons } = this.#controls;
     const { index, pageCount } = this.state;
     let shouldShiftFocus = false;
 
-    buttons.forEach(button => {
+    this.#controls.forEach(button => {
       // Determine if button should be disabled
       const isDisabled = !loop && (
         button.direction === 'next'
@@ -90,7 +89,7 @@ export const ControlsFeature = Base => class extends Base {
 
     // Move focus if needed
     if (shouldShiftFocus) {
-      const active = buttons.filter(b => !b.disabled);
+      const active = this.#controls.filter(b => !b.disabled);
       if (active.length) {
         active[0].focus();
       }

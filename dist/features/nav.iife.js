@@ -1,51 +1,52 @@
-var u = (s) => {
+var g = (s) => {
   throw TypeError(s);
 };
-var g = (s, t, e) => t.has(s) || u("Cannot " + e);
-var o = (s, t, e) => (g(s, t, "read from private field"), e ? e.call(s) : t.get(s)), c = (s, t, e) => t.has(s) ? u("Cannot add the same private member more than once") : t instanceof WeakSet ? t.add(s) : t.set(s, e);
-var h = (s, t, e) => (g(s, t, "access private method"), e);
-const x = (s) => {
-  var t, e, p, b, d, v, l;
-  return l = class extends s {
+var p = (s, t, i) => t.has(s) || g("Cannot " + i);
+var a = (s, t, i) => (p(s, t, "read from private field"), i ? i.call(s) : t.get(s)), d = (s, t, i) => t.has(s) ? g("Cannot add the same private member more than once") : t instanceof WeakSet ? t.add(s) : t.set(s, i);
+var c = (s, t, i) => (p(s, t, "access private method"), i);
+const k = (s) => {
+  var t, i, o, v, b, l, f, u;
+  return u = class extends s {
     constructor() {
       super();
-      c(this, e);
-      c(this, t, { container: null, dots: [], active: null });
-      this.elements.pagination = o(this, t), this.registerHook("init", h(this, e, p).bind(this)), this.registerHook("updateState", h(this, e, d).bind(this));
+      d(this, o);
+      d(this, t, { container: null, dots: [], active: null });
+      d(this, i, "button nav-button");
+      this.elements.pagination = a(this, t), this.registerHook("init", c(this, o, v).bind(this)), this.registerHook("updateState", c(this, o, l).bind(this));
     }
-  }, t = new WeakMap(), e = new WeakSet(), p = function() {
-    let { container: n, dots: a } = o(this, t);
-    const { current: r } = this.settings;
-    if (n) n.innerHTML = "", a.forEach((i) => i.remove()), o(this, t).dots = [];
+  }, t = new WeakMap(), i = new WeakMap(), o = new WeakSet(), v = function() {
+    let { container: e, dots: r } = a(this, t);
+    const { current: h } = this.settings;
+    if (e) e.innerHTML = "", r.forEach((n) => n.remove()), a(this, t).dots = [];
     else {
-      if (n = this.getSlotElements("pagination")[0], !n) return;
-      n.addEventListener("keydown", h(this, e, v).bind(this)), o(this, t).container = n;
+      if (e = this.getSlotElements("pagination")[0], !e) return;
+      e.addEventListener("keydown", c(this, o, f).bind(this)), a(this, t).container = e;
     }
-    if (n.style.display = r.nav && this.state.pageCount > 1 ? "" : "none", r.nav && n && this.state.pageCount > 1) {
-      for (let i = 0; i < this.state.pageCount; i++) h(this, e, b).call(this, i);
-      o(this, t).dots.length && h(this, e, d).call(this);
+    if (e.style.display = h.nav && this.state.pageCount > 1 ? "" : "none", h.nav && e && this.state.pageCount > 1) {
+      for (let n = 0; n < this.state.pageCount; n++) c(this, o, b).call(this, n);
+      a(this, t).dots.length && c(this, o, l).call(this);
     }
-  }, b = function(n) {
-    const { container: a, dots: r } = o(this, t);
-    if (!a) return;
-    const i = document.createElement("button");
-    i.innerHTML = n + 1, i.addEventListener("click", () => this.goTo(n)), Object.assign(i, { type: "button", part: "button nav-button", ariaControls: this.elements.scroller.id, ariaSelected: !1 }), a.append(i), r.push(i);
-  }, d = function() {
-    if (!this.settings.current.nav || !o(this, t).dots.length) return;
-    let { dots: n, active: a } = o(this, t);
-    const r = n[this.state.index];
-    r && (a && (Object.assign(a, { tabIndex: 0, ariaSelected: !1 }), a.part = "button nav-button"), r.part = "button nav-button active", Object.assign(r, { tabIndex: -1, ariaSelected: !0 }), o(this, t).active = r);
-  }, v = function(n) {
-    if (!o(this, t).dots.length) return;
-    const a = this.isDocumentLtr(), r = o(this, t).dots[this.state.index] || 0;
-    switch (n.key) {
+  }, b = function(e) {
+    const { container: r, dots: h } = a(this, t);
+    if (!r) return;
+    const n = document.createElement("button");
+    n.innerHTML = e + 1, n.addEventListener("click", () => this.goTo(e)), Object.assign(n, { type: "button", part: a(this, i), ariaControls: this.elements.scroller.id, ariaSelected: !1 }), r.append(n), h.push(n);
+  }, l = function() {
+    if (!this.settings.current.nav || !a(this, t).dots.length) return;
+    let { dots: e, active: r } = a(this, t);
+    const h = e[this.state.index];
+    h && (r && (Object.assign(r, { tabIndex: 0, ariaSelected: !1 }), r.part = a(this, i)), h.part = `${a(this, i)} active`, Object.assign(h, { tabIndex: -1, ariaSelected: !0 }), a(this, t).active = h);
+  }, f = function(e) {
+    if (!a(this, t).dots.length) return;
+    const r = this.isDocumentLtr(), h = a(this, t).dots[this.state.index] || 0;
+    switch (e.key) {
       case "ArrowRight":
       case "ArrowLeft":
-        const i = r[`${n.key === "ArrowRight" ? a ? "next" : "previous" : a ? "previous" : "next"}ElementSibling`];
-        i && (i.click(), i.focus());
+        const n = h[`${e.key === "ArrowRight" ? r ? "next" : "previous" : r ? "previous" : "next"}ElementSibling`];
+        n && (n.click(), n.focus());
     }
-  }, l;
+  }, u;
 };
 export {
-  x as NavFeature
+  k as NavFeature
 };

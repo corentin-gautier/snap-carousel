@@ -1,74 +1,73 @@
-var D = (l) => {
-  throw TypeError(l);
+var V = (c) => {
+  throw TypeError(c);
 };
-var M = (l, d, t) => d.has(l) || D("Cannot " + t);
-var e = (l, d, t) => (M(l, d, "read from private field"), t ? t.call(l) : d.get(l)), m = (l, d, t) => d.has(l) ? D("Cannot add the same private member more than once") : d instanceof WeakSet ? d.add(l) : d.set(l, t), T = (l, d, t, i) => (M(l, d, "write to private field"), i ? i.call(l, t) : d.set(l, t), t), n = (l, d, t) => (M(l, d, "access private method"), t);
+var S = (c, u, t) => u.has(c) || V("Cannot " + t);
+var e = (c, u, t) => (S(c, u, "read from private field"), t ? t.call(c) : u.get(c)), m = (c, u, t) => u.has(c) ? V("Cannot add the same private member more than once") : u instanceof WeakSet ? u.add(c) : u.set(c, t), k = (c, u, t, i) => (S(c, u, "write to private field"), i ? i.call(c, t) : u.set(c, t), t), r = (c, u, t) => (S(c, u, "access private method"), t);
 import "./node_modules/scrollyfills/dist/scrollyfills.modern.iife.js";
-import st from "./src/host.css.iife.js";
-import it from "./src/style.css.iife.js";
+import it from "./src/host.css.iife.js";
+import rt from "./src/style.css.iife.js";
 import nt from "./src/template.html.iife.js";
-var f, I, w, r, u, h, v, s, A, H, O, j, q, B, F, N, J, W, z, Z, G, R, K, Q, X, Y, _, L, x, tt, et, P, U, S, V, k;
-const E = class E extends HTMLElement {
+var b, L, T, w, n, l, h, x, s, O, $, j, N, D, B, W, F, q, z, J, Z, R, G, K, Q, X, Y, P, C, _, tt, H, et, A, U, E;
+const I = class I extends HTMLElement {
   constructor() {
     super();
     m(this, s);
-    m(this, f, !1);
-    m(this, I, !1);
-    m(this, w, "snap-carousel");
-    m(this, r, { index: 0, itemsCount: 0, pageCount: 0, isVisible: !1, autoplayInterval: null, breakpoint: void 0, ready: !1, isMoving: !1, pause: !1, computedPadding: 0 });
-    m(this, u, { scroller: null, items: null, sync: null });
+    m(this, b, !1);
+    m(this, L, !1);
+    m(this, T, "snap-carousel");
+    m(this, w, "");
+    m(this, n, { index: 0, itemsCount: 0, pageCount: 0, isVisible: !1, autoplayInterval: null, breakpoint: void 0, ready: !1, isMoving: !1, pause: !1, computedPadding: 0 });
+    m(this, l, { scroller: null, items: null, sync: null });
     m(this, h, { default: {}, origin: {}, current: {} });
-    m(this, v, { init: [], updateState: [] });
-    e(this, h).default = E.defaultConfig;
+    m(this, x, { init: [], updateState: [] });
+    e(this, h).default = I.defaultConfig, k(this, w, this.getAttribute("style")), this.setAttribute("snpc", "");
   }
   get elements() {
-    return e(this, u);
+    return e(this, l);
   }
   get settings() {
     return e(this, h);
   }
   get state() {
-    return e(this, r);
+    return e(this, n);
   }
   get preventUiUpdate() {
-    return e(this, f);
+    return e(this, b);
   }
   getSlotElements(t, i = { fallback: !1 }) {
-    return n(this, s, P).call(this, t, i);
+    return r(this, s, H).call(this, t, i);
   }
   isDocumentLtr() {
-    return n(this, s, S).call(this);
+    return r(this, s, A).call(this);
   }
   registerHook(t, i) {
-    e(this, v)[t] && e(this, v)[t].push(i);
+    e(this, x)[t] && e(this, x)[t].push(i);
   }
   static get defaultConfig() {
-    return { autoplay: 0, displayed: 1, perPage: 1, gap: 0, padding: 0, controls: !1, nav: !1, pager: !1, loop: !1, behavior: "smooth", stop: !1, usePause: !0, vertical: !1, responsive: [] };
+    return { autoplay: 0, displayed: 1, perPage: 1, gap: 0, padding: 0, controls: !1, nav: !1, pager: !1, loop: !1, behavior: "smooth", stop: !1, usePause: !0, vertical: !1, responsive: [], sync: null };
   }
   static get observedAttributes() {
-    const t = Object.keys(E.defaultConfig).map((i) => i.replace(/[A-Z]/g, (o) => "-" + o.toLowerCase()));
+    const t = Object.keys(I.defaultConfig).map((i) => i.replace(/[A-Z]/g, (o) => "-" + o.toLowerCase()));
     return [...t, ...t.map((i) => "data-" + i)];
   }
   connectedCallback() {
     if (!this.isConnected) return;
     const t = document.createElement("template");
-    t.innerHTML = `<style>${st}</style>${nt}`, this.attachShadow({ mode: "open" }), this.shadowRoot.appendChild(t.content.cloneNode(!0));
-    const i = n(this, s, P).call(this, "scroller", { fallback: !0 })[0];
-    new MutationObserver((o) => {
-      o.forEach((a) => {
-        (a.addedNodes.length || a.removedNodes.length) && (n(this, s, q).call(this), n(this, s, j).call(this));
+    t.innerHTML = `<style>${it}</style>${nt}`, this.attachShadow({ mode: "open" }), this.shadowRoot.appendChild(t.content.cloneNode(!0)), e(this, l).scroller = r(this, s, H).call(this, "scroller", { fallback: !0 })[0], e(this, l).scroller && (new MutationObserver((i) => {
+      i.forEach((o) => {
+        (o.addedNodes.length || o.removedNodes.length) && (r(this, s, N).call(this), r(this, s, j).call(this));
       });
-    }).observe(i, { childList: !0 }), n(this, s, H).call(this);
+    }).observe(e(this, l).scroller, { childList: !0 }), e(this, l).scroller.setAttribute("snpc-s", ""), e(this, l).scroller.onscroll = r(this, s, Q).bind(this), e(this, l).scroller.addEventListener("scrollend", r(this, s, Y).bind(this)), window.addEventListener("resize", r(this, s, K).bind(this)), this.ariaRoleDescription = "carousel", Object.assign(e(this, l).scroller, { role: "group", ariaLive: "polite", ariaAtomic: !1 }), r(this, s, N).call(this), r(this, s, D).call(this), r(this, s, B).call(this), r(this, s, $).call(this), r(this, s, G).call(this), e(this, n).ready = !0);
   }
   attributeChangedCallback() {
-    e(this, r).ready && n(this, s, O).call(this);
+    e(this, n).ready && r(this, s, $).call(this);
   }
   goTo(t) {
-    T(this, f, !1);
-    const { scroller: i, items: o } = e(this, u), { perPage: a, vertical: c } = e(this, h).current, b = t > e(this, r).pageCount - 1 ? 0 : t < 0 ? e(this, r).pageCount - 1 : t, g = o[b * a];
-    n(this, s, x).call(this, b), e(this, r).ready = !0;
+    k(this, b, !1);
+    const { scroller: i, items: o } = e(this, l), { perPage: a, vertical: d } = e(this, h).current, v = t > e(this, n).pageCount - 1 ? 0 : t < 0 ? e(this, n).pageCount - 1 : t, g = o[v * a];
+    r(this, s, C).call(this, v), e(this, n).ready = !0;
     let y = 0, p = 0;
-    c ? y = g.offsetTop : p = n(this, s, S).call(this) ? g.offsetLeft : g.offsetLeft + g.offsetWidth - i.offsetWidth, T(this, f, !0), requestIdleCallback(() => {
+    d ? y = g.offsetTop : p = r(this, s, A).call(this) ? g.offsetLeft : g.offsetLeft + g.offsetWidth - i.offsetWidth, k(this, b, !0), requestIdleCallback(() => {
       i.scrollTo({ top: y, left: p });
     }, { timeout: 100 });
   }
@@ -79,40 +78,37 @@ const E = class E extends HTMLElement {
     this.goTo(this.state.index + 1);
   }
 };
-f = new WeakMap(), I = new WeakMap(), w = new WeakMap(), r = new WeakMap(), u = new WeakMap(), h = new WeakMap(), v = new WeakMap(), s = new WeakSet(), A = function(t, ...i) {
-  e(this, v)[t] && e(this, v)[t].forEach((o) => o.apply(this, i));
-}, H = function() {
-  const t = n(this, s, P).call(this, "scroller", !0)[0];
-  t && (t.onscroll = n(this, s, X).bind(this), t.addEventListener("scrollend", n(this, s, _).bind(this)), window.addEventListener("resize", n(this, s, Q).bind(this)), e(this, u).scroller = t, this.ariaRoleDescription = "carousel", Object.assign(t, { role: "group", ariaLive: "polite", ariaAtomic: !1 }), n(this, s, q).call(this), n(this, s, B).call(this), n(this, s, F).call(this), n(this, s, O).call(this), n(this, s, K).call(this), e(this, r).ready = !0);
-}, O = function() {
-  e(this, r).breakpoint = void 0, e(this, h).origin = Object.assign({}, e(this, h).default, n(this, s, J).call(this)), e(this, h).origin.responsive = (e(this, h).origin.responsive || []).sort((t, i) => t.breakpoint - i.breakpoint), n(this, s, z).call(this);
+b = new WeakMap(), L = new WeakMap(), T = new WeakMap(), w = new WeakMap(), n = new WeakMap(), l = new WeakMap(), h = new WeakMap(), x = new WeakMap(), s = new WeakSet(), O = function(t, ...i) {
+  e(this, x)[t] && e(this, x)[t].forEach((o) => o.apply(this, i));
+}, $ = function() {
+  e(this, n).breakpoint = void 0, e(this, h).origin = Object.assign({}, e(this, h).default, r(this, s, F).call(this)), e(this, h).origin.responsive = (e(this, h).origin.responsive || []).sort((t, i) => t.breakpoint - i.breakpoint), r(this, s, z).call(this);
 }, j = function() {
-  n(this, s, N).call(this, () => {
-    n(this, s, Z).call(this), n(this, s, G).call(this), n(this, s, R).call(this), n(this, s, x).call(this, 0), n(this, s, A).call(this, "init");
+  r(this, s, W).call(this, () => {
+    r(this, s, J).call(this), r(this, s, Z).call(this), r(this, s, R).call(this), r(this, s, C).call(this, 0), r(this, s, O).call(this, "init");
   });
-}, q = function() {
-  const t = Array.from(e(this, u).scroller.children).filter((o) => !["absolute", "fixed", "sticky"].includes(getComputedStyle(o).position)), i = t.length;
-  e(this, u).items = t, e(this, r).itemsCount = i, t.forEach((o, a) => {
+}, N = function() {
+  const t = Array.from(e(this, l).scroller.children).filter((o) => !["absolute", "fixed", "sticky"].includes(getComputedStyle(o).position)), i = t.length;
+  e(this, l).items = t, e(this, n).itemsCount = i, t.forEach((o, a) => {
     o.dataset.index = a, Object.assign(o, { ariaSetSize: i, ariaPosInSet: a + 1, ariaRoleDescription: "slide", role: "listitem" });
   });
-}, B = function() {
-  const t = `${e(this, w)}-global-styles`;
+}, D = function() {
+  const t = `${e(this, T)}-global-styles`;
   if (document.querySelector("#" + t)) return;
-  const i = it;
-  document.head.append(n(this, s, U).call(this, i, t));
-}, F = function() {
-  this.id = e(this, r).id = e(this, w) + "-" + (Math.random() + 1).toString(36).substring(4);
-}, N = function(t) {
-  e(this, u).scroller.clientWidth ? t() : requestAnimationFrame(() => {
-    n(this, s, N).call(this, t);
-  });
-}, J = function() {
-  const t = Object.keys(e(this, h).default);
-  return this.attributes.options ? n(this, s, W).call(this, this.attributes.options.value) : Array.from(this.attributes).reduce((i, o) => {
-    const a = o.name.replace("data-", "").replace(/-([a-z])/g, (c) => c[1].toUpperCase());
-    return t.includes(a) && (i[a] = n(this, s, W).call(this, o.value)), i;
-  }, {});
+  const i = rt;
+  document.head.append(r(this, s, et).call(this, i, t));
+}, B = function() {
+  this.id = e(this, n).id = e(this, T) + "-" + (Math.random() + 1).toString(36).substring(4);
 }, W = function(t) {
+  e(this, l).scroller.clientWidth ? t() : requestAnimationFrame(() => {
+    r(this, s, W).call(this, t);
+  });
+}, F = function() {
+  const t = Object.keys(e(this, h).default);
+  return this.attributes.options ? r(this, s, q).call(this, this.attributes.options.value) : Array.from(this.attributes).reduce((i, o) => {
+    const a = o.name.replace("data-", "").replace(/-([a-z])/g, (d) => d[1].toUpperCase());
+    return t.includes(a) && (i[a] = r(this, s, q).call(this, o.value)), i;
+  }, {});
+}, q = function(t) {
   if (t === "") return !0;
   try {
     return JSON.parse(t);
@@ -120,101 +116,90 @@ f = new WeakMap(), I = new WeakMap(), w = new WeakMap(), r = new WeakMap(), u = 
     return t;
   }
 }, z = function() {
-  const { origin: t } = e(this, h), i = t.responsive.reduce((a, c) => c.breakpoint < window.innerWidth ? c : a, { breakpoint: null }), o = Object.assign({}, t, i.settings || {});
-  o.perPage = Math.min(o.displayed, o.perPage), e(this, h).current = o, e(this, r).breakpoint !== i.breakpoint && (e(this, r).breakpoint = i.breakpoint, n(this, s, j).call(this));
+  const { origin: t } = e(this, h), i = t.responsive.reduce((a, d) => d.breakpoint < window.innerWidth ? d : a, { breakpoint: null }), o = Object.assign({}, t, i.settings || {});
+  o.perPage = Math.min(o.displayed, o.perPage), e(this, h).current = o, e(this, n).breakpoint !== i.breakpoint && (e(this, n).breakpoint = i.breakpoint, r(this, s, j).call(this));
+}, J = function() {
+  const { current: t } = e(this, h), { itemsCount: i } = e(this, n), o = Math.floor((t.displayed - t.perPage) / t.perPage);
+  e(this, n).pageCount = Math.ceil(i / t.perPage) - o;
 }, Z = function() {
-  const { current: t } = e(this, h), { itemsCount: i } = e(this, r), o = Math.floor((t.displayed - t.perPage) / t.perPage);
-  e(this, r).pageCount = Math.ceil(i / t.perPage) - o;
-}, G = function() {
-  const t = document.querySelector("#" + e(this, r).id + "-styles");
-  t && t.remove();
-  const { displayed: i, gap: o, padding: a, perPage: c, stop: b, behavior: g } = e(this, h).current, y = c > 1 ? `[data-index]:nth-child(${c}n + 1)` : "*", p = `
-      #${e(this, r).id} {
-        --sc-perpage: ${i};
-        --sc-gap: ${n(this, s, V).call(this, o)};
-        --sc-padding: ${n(this, s, V).call(this, a)};
-        --sc-behavior: ${g};
-      }
-      #${e(this, r).id} [slot="scroller"] > ${y} {
-        scroll-snap-align: start;
-        scroll-snap-stop: ${b ? "always" : "normal"}
-      }
-    `;
-  this.styles = n(this, s, U).call(this, p, e(this, r).id + "-styles"), document.head.append(this.styles);
+  const { displayed: t, gap: i, padding: o, perPage: a, stop: d, behavior: v } = e(this, h).current, g = r(this, s, U).call(this, i), y = r(this, s, U).call(this, o), p = "sc-anchor" + (d ? "-stop" : "");
+  this.style = `--perpage: ${t};--gap: ${g};--padding: ${y};--behavior: ${v};${e(this, w)}`, this.elements.items.forEach((f, st) => {
+    st % a == 0 ? f.classList.add(p) : f.classList.remove(p);
+  });
 }, R = function() {
   const { vertical: t } = e(this, h).current, i = t ? "padding-top" : "padding-left";
-  e(this, r).computedPadding = parseInt(getComputedStyle(e(this, u).scroller)[i], 10);
-}, K = function() {
-  const { items: t, scroller: i } = e(this, u);
+  e(this, n).computedPadding = parseInt(getComputedStyle(e(this, l).scroller)[i], 10);
+}, G = function() {
+  const { items: t, scroller: i } = e(this, l);
   new IntersectionObserver((a) => {
-    const c = a[0];
-    e(this, r).isVisible = c.intersectionRatio > 0.1, e(this, r).pause = !e(this, r).isVisible, n(this, s, k).call(this);
+    const d = a[0];
+    e(this, n).isVisible = d.intersectionRatio > 0.1, e(this, n).pause = !e(this, n).isVisible, r(this, s, E).call(this);
   }, { threshold: [0.1, 0.9] }).observe(this), e(this, h).current.usePause && (this.addEventListener("mouseenter", () => {
-    e(this, r).pause = !0, n(this, s, k).call(this);
+    e(this, n).pause = !0, r(this, s, E).call(this);
   }), this.addEventListener("mouseleave", () => {
-    e(this, r).pause = !1, n(this, s, k).call(this);
+    e(this, n).pause = !1, r(this, s, E).call(this);
   }));
   const o = new IntersectionObserver((a) => {
-    a.forEach((c) => {
-      c.target.toggleAttribute("visible", c.isIntersecting), c.target.toggleAttribute("inert", !c.isIntersecting);
+    a.forEach((d) => {
+      d.target.toggleAttribute("visible", d.isIntersecting), d.target.toggleAttribute("inert", !d.isIntersecting);
     });
   }, { scroller: i, threshold: 0.6 });
   t.forEach((a) => o.observe(a));
-}, Q = function() {
+}, K = function() {
   clearTimeout(this.resizeTm), this.resizeTm = setTimeout(() => {
-    n(this, s, R).call(this), n(this, s, z).call(this);
+    r(this, s, R).call(this), r(this, s, z).call(this);
   }, 100);
+}, Q = function() {
+  if (e(this, L)) return;
+  r(this, s, X).call(this), this.newIndex = e(this, n).index;
+  const t = r(this, s, _).call(this);
+  t !== e(this, n).index && (this.newIndex = t, r(this, s, C).call(this, t), r(this, s, P).call(this, "scrollupdate"));
 }, X = function() {
-  if (e(this, I)) return;
-  n(this, s, Y).call(this), this.newIndex = e(this, r).index;
-  const t = n(this, s, tt).call(this);
-  t !== e(this, r).index && (this.newIndex = t, n(this, s, x).call(this, t), n(this, s, L).call(this, "scrollupdate"));
+  e(this, n).isMoving || r(this, s, P).call(this, "scrollstart"), e(this, n).isMoving = !0;
 }, Y = function() {
-  e(this, r).isMoving || n(this, s, L).call(this, "scrollstart"), e(this, r).isMoving = !0;
-}, _ = function() {
-  e(this, I) || (n(this, s, L).call(this, "scrollend"), T(this, f, !1), e(this, r).isMoving = !1, typeof this.newIndex == "number" ? (n(this, s, x).call(this, this.newIndex), this.newIndex = null) : n(this, s, x).call(this, e(this, r).index), n(this, s, k).call(this));
-}, L = function(t) {
+  e(this, L) || (r(this, s, P).call(this, "scrollend"), k(this, b, !1), e(this, n).isMoving = !1, typeof this.newIndex == "number" ? (r(this, s, C).call(this, this.newIndex), this.newIndex = null) : r(this, s, C).call(this, e(this, n).index), r(this, s, E).call(this));
+}, P = function(t) {
   const { current: i } = e(this, h);
-  this.dispatchEvent(new CustomEvent(t, { detail: e(this, r) })), i["on" + t] && i["on" + t](this);
-}, x = function(t) {
-  t !== void 0 && (e(this, r).index = t), n(this, s, et).call(this), e(this, f) || n(this, s, A).call(this, "updateState", t);
-}, tt = function(t) {
-  const { scroller: i, items: o } = e(this, u), { perPage: a, vertical: c } = e(this, h).current, b = n(this, s, S).call(this);
+  this.dispatchEvent(new CustomEvent(t, { detail: e(this, n) })), i["on" + t] && i["on" + t](this);
+}, C = function(t) {
+  t !== void 0 && (e(this, n).index = t), r(this, s, tt).call(this), e(this, b) || r(this, s, O).call(this, "updateState", t);
+}, _ = function(t) {
+  const { scroller: i, items: o } = e(this, l), { perPage: a, vertical: d } = e(this, h).current, v = r(this, s, A).call(this);
   let g = 0;
-  g = c ? i.scrollTop : b ? i.scrollLeft : i.scrollLeft + i.clientWidth;
+  g = d ? i.scrollTop : v ? i.scrollLeft : i.scrollLeft + i.clientWidth;
   let y = o.map((p) => {
-    let C = 0;
-    return C = c ? p.offsetTop - (e(this, r).computedPadding || 0) - g : (b ? p.offsetLeft : p.offsetLeft + p.clientWidth) - (e(this, r).computedPadding || 0) - g, { index: parseInt(p.dataset.index, 10), distance: Math.abs(C) };
-  }).reduce((p, C) => !p || C.distance < p.distance ? C : p, null);
+    let f = 0;
+    return f = d ? p.offsetTop - (e(this, n).computedPadding || 0) - g : (v ? p.offsetLeft : p.offsetLeft + p.clientWidth) - (e(this, n).computedPadding || 0) - g, { index: parseInt(p.dataset.index, 10), distance: Math.abs(f) };
+  }).reduce((p, f) => !p || f.distance < p.distance ? f : p, null);
   return t ? y : Math.ceil(y.index / a);
-}, et = function() {
+}, tt = function() {
   const { sync: t } = e(this, h).current;
-  t && e(this, r).ready && (e(this, u).sync = e(this, u).sync || document.querySelectorAll(t) || [], e(this, u).sync.forEach((i) => {
-    i instanceof E && i.goTo(e(this, r).index);
+  t && e(this, n).ready && (e(this, l).sync = e(this, l).sync || Array.from(document.querySelectorAll(t)), e(this, l).sync.forEach((i) => {
+    i instanceof I && i.goTo(e(this, n).index);
   }));
-}, P = function(t, i = { fallback: !1 }) {
+}, H = function(t, i = { fallback: !1 }) {
   const o = this.shadowRoot.querySelector(`[name="${t}"]`);
   let a = o.assignedElements();
   return i.fallback && !a.length && this.children[0].slot === "" && (this.children[0].slot = "scroller", a = o.assignedElements()), Array.from(a.length ? a : o.children);
-}, U = function(t, i) {
+}, et = function(t, i) {
   const o = document.createElement("style");
   return o.id = i, o.append(document.createTextNode(t)), o;
-}, S = function() {
+}, A = function() {
   return document.firstElementChild.getAttribute("dir") !== "rtl";
-}, V = function(t) {
+}, U = function(t) {
   return typeof t == "string" ? t : t + "px";
-}, k = function() {
+}, E = function() {
   if (!e(this, h).current.autoplay) return;
-  const { pause: t, isVisible: i } = e(this, r);
-  !t && i ? e(this, r).autoplayInterval || (e(this, r).autoplayInterval = setTimeout(() => {
-    e(this, r).autoplayInterval = null, this.goTo(e(this, r).index + 1);
-  }, e(this, h).current.autoplay)) : (clearTimeout(e(this, r).autoplayInterval), e(this, r).autoplayInterval = null);
+  const { pause: t, isVisible: i } = e(this, n);
+  !t && i ? e(this, n).autoplayInterval || (e(this, n).autoplayInterval = setTimeout(() => {
+    e(this, n).autoplayInterval = null, this.goTo(e(this, n).index + 1);
+  }, e(this, h).current.autoplay)) : (clearTimeout(e(this, n).autoplayInterval), e(this, n).autoplayInterval = null);
 };
-let $ = E;
-function ct(...l) {
-  return l.reduce((d, t) => t(d), $);
+let M = I;
+function dt(...c) {
+  return c.reduce((u, t) => t(u), M);
 }
 export {
-  $ as BaseCarousel,
-  ct as createCarousel
+  M as BaseCarousel,
+  dt as createCarousel
 };

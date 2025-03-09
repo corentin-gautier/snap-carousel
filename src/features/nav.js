@@ -10,6 +10,8 @@ export const NavFeature = Base => class extends Base {
     active: null
   };
 
+  #defaultPart = 'button nav-button';
+
   constructor() {
     super();
     // Add pagination to elements
@@ -65,7 +67,7 @@ export const NavFeature = Base => class extends Base {
 
     Object.assign(dot, {
       type: 'button',
-      part: 'button nav-button',
+      part: this.#defaultPart,
       ariaControls: this.elements.scroller.id,
       ariaSelected: false
     });
@@ -89,10 +91,10 @@ export const NavFeature = Base => class extends Base {
           tabIndex: 0,
           ariaSelected: false
         });
-        active.part = 'button nav-button';
+        active.part = this.#defaultPart;
       }
 
-      next.part = 'button nav-button active';
+      next.part = `${this.#defaultPart} active`;
       Object.assign(next, {
         tabIndex: -1,
         ariaSelected: true
