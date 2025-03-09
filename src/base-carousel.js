@@ -119,7 +119,6 @@ export class BaseCarousel extends HTMLElement {
     this.#settings.default = BaseCarousel.defaultConfig;
     // Store initial style to avoid overriding it
     this.#initialStyle = this.getAttribute('style');
-    this.setAttribute('snpc', '');
   }
 
   /**

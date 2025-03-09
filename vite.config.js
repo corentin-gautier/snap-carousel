@@ -1,4 +1,4 @@
-import { copyFileSync } from 'fs';
+import { copyFileSync, existsSync, mkdirSync } from 'fs';
 import { resolve } from 'path';
 import { defineConfig } from 'vite';
 
@@ -9,10 +9,8 @@ export default defineConfig(({ command, mode }) => {
 
   const copyUmdFile = () => {
     const umdFile = resolve(__dirname, 'dist/snap-carousel.umd.min.js');
-    // Copy to src directory
-    copyFileSync(umdFile, resolve(__dirname, 'src/snap-carousel.umd.js'));
-    // Copy to docs directory
-    copyFileSync(umdFile, resolve(__dirname, 'docs/snap-carousel.umd.js'));
+    // Copy to public directory
+    copyFileSync(umdFile, resolve(__dirname, 'src/public/snap-carousel.umd.min.js'));
   };
 
   if (isLibrary) {
@@ -35,10 +33,8 @@ export default defineConfig(({ command, mode }) => {
         minify: shouldMinify ? 'terser' : false,
         rollupOptions: {
           output: {
-            // Ensure UMD build is copied to src directory after build
             chunkFileNames: 'chunks/[name]-[hash].js',
             assetFileNames: 'assets/[name]-[hash][extname]',
-            // Add auto-registration code for UMD builds
             footer: (chunk) => {
               if (buildFormat === 'umd' && chunk.isEntry) {
                 return `
@@ -59,8 +55,7 @@ export default defineConfig(({ command, mode }) => {
         {
           name: 'copy-umd',
           closeBundle() {
-            // Only copy files when building UMD format and not minified
-            if (buildFormat === 'umd' && !shouldMinify) {
+            if (buildFormat === 'umd' && shouldMinify) {
               copyUmdFile();
             }
           }
@@ -72,6 +67,7 @@ export default defineConfig(({ command, mode }) => {
   return {
     root: 'src',
     base: '',
+    publicDir: 'public',
     build: {
       outDir: '../docs',
       emptyOutDir: true,
@@ -80,9 +76,8 @@ export default defineConfig(({ command, mode }) => {
         input: resolve(__dirname, 'src/index.html'),
         preserveEntrySignatures: 'strict',
         output: {
-          assetFileNames: `assets/[name].[hash].[ext]`
-        },
-        external: [/\.js$/]
+          assetFileNames: `assets/[name].[ext]`
+        }
       }
     },
     server: {
@@ -93,10 +88,27 @@ export default defineConfig(({ command, mode }) => {
     },
     plugins: [
       {
-        name: 'copy-umd-after-build',
-        closeBundle() {
-          // Copy UMD file after docs build
-          copyUmdFile();
+        name: 'copy-umd-to-assets',
+        buildStart() {
+          // Create assets directory if it doesn't exist
+          const assetsDir = resolve(__dirname, 'docs/assets');
+          if (!existsSync(assetsDir)) {
+            mkdirSync(assetsDir, { recursive: true });
+          }
+        },
+        generateBundle() {
+          // Copy UMD file if it exists
+          const umdFile = resolve(__dirname, 'dist/snap-carousel.umd.min.js');
+          if (existsSync(umdFile)) {
+            copyUmdFile();
+          }
+        }
+      },
+      {
+        name: 'handle-external-scripts',
+        transformIndexHtml(html) {
+          // Don't transform external script tags
+          return html;
         }
       }
     ]

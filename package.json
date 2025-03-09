@@ -23,7 +23,8 @@
     ],
     "scripts": {
         "dev": "vite",
-        "build": "npm run build:types && npm run build:esm && npm run build:umd && npm run build:umd:min && vite build",
+        "build": "npm run build:lib && vite build",
+        "build:lib": "npm run build:types && npm run build:esm && npm run build:umd && npm run build:umd:min",
         "build:types": "mkdir -p dist/types/features && cp src/types/*.d.ts dist/types/ && cp src/types/features/*.d.ts dist/types/features/",
         "build:esm": "vite build --mode library",
         "build:umd": "VITE_BUILD_FORMAT=umd vite build --mode library",
