@@ -1,6 +1,6 @@
 {
     "name": "snap-carousel.js",
-    "version": "1.11.1",
+    "version": "1.11.2",
     "description": "A lightweight vanilla JavaScript carousel library built with modern web technologies. Based on custom elements, scroll-snap, and scroll-padding.",
     "type": "module",
     "main": "dist/snap-carousel.umd.js",

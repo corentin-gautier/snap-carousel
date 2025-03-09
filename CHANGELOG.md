@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.11.2](https://github.com/corentin-gautier/snap-carousel/compare/v1.11.1...v1.11.2) (2025-03-09)
+
+
+### Bug Fixes
+
+* rollback snpc attribute ([76f1d09](https://github.com/corentin-gautier/snap-carousel/commit/76f1d094b2e988f346a3f59eff0b09ded42b0ece))
+
 ### [1.11.1](https://github.com/corentin-gautier/snap-carousel/compare/v1.11.0...v1.11.1) (2025-03-09)
 
 ## [1.11.0](https://github.com/corentin-gautier/snap-carousel/compare/v1.10.6...v1.11.0) (2025-03-09)
