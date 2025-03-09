@@ -31,8 +31,6 @@ export const ControlsFeature = Base => class extends Base {
     this.#controls.push(...prevButtons, ...nextButtons);
 
     this.#controls.forEach(button => {
-      console.log(button);
-
       // Show/hide buttons based on settings
       button.style = hideButtons ? 'display: none !important;' : '';
 

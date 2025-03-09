@@ -5,18 +5,72 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Snap Carousel</title>
-  <link rel="icon"
-    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚀</text></svg>">
+
+  <!-- Primary Meta Tags -->
+  <title>Snap Carousel - Lightweight JavaScript Carousel Library</title>
+  <meta name="title" content="Snap Carousel - Lightweight JavaScript Carousel Library">
+  <meta name="description" content="A modern, lightweight (5.4kB gzip) JavaScript carousel component using CSS scroll-snap. Perfect for creating responsive, performant image galleries and content sliders.">
+  <meta name="keywords" content="carousel, slider, javascript, web component, custom element, scroll snap, lightweight, responsive, image gallery">
+  <meta name="author" content="Corentin Gautier">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://corentin-gautier.github.io/snap-carousel/">
+  <meta property="og:title" content="Snap Carousel - Lightweight JavaScript Carousel Library">
+  <meta property="og:description" content="A modern, lightweight (5.4kB gzip) JavaScript carousel component using CSS scroll-snap. Perfect for creating responsive, performant image galleries and content sliders.">
+  <meta property="og:image" content="https://corentin-gautier.github.io/snap-carousel/og-image.png">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://corentin-gautier.github.io/snap-carousel/">
+  <meta property="twitter:title" content="Snap Carousel - Lightweight JavaScript Carousel Library">
+  <meta property="twitter:description" content="A modern, lightweight (5.4kB gzip) JavaScript carousel component using CSS scroll-snap. Perfect for creating responsive, performant image galleries and content sliders.">
+  <meta property="twitter:image" content="https://corentin-gautier.github.io/snap-carousel/og-image.png">
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚀</text></svg>">
+
+  <!-- Preconnect to external resources -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Fonts and Styles -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./main.scss">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/atom-one-dark.min.css">
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareSourceCode",
+      "name": "Snap Carousel",
+      "description": "A modern, lightweight (5.4kB gzip) JavaScript carousel component using CSS scroll-snap. Perfect for creating responsive, performant image galleries and content sliders.",
+      "programmingLanguage": "JavaScript",
+      "runtimePlatform": "Web Browser",
+      "author": {
+        "@type": "Person",
+        "name": "Corentin Gautier"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "applicationCategory": "Web Development",
+      "license": "https://opensource.org/licenses/MIT"
+    }
+  </script>
 </head>
 
 <body>
   <header>
+    <svg style="color: var(--primary);margin-bottom: 1rem;" width="366" height="103" viewBox="0 0 366 103" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 7C0 3.13401 3.13401 0 7 0H152C155.866 0 159 3.13401 159 7V96C159 99.866 155.866 103 152 103H7C3.13401 103 0 99.866 0 96V7Z"/>
+      <path d="M170 7C170 3.13401 173.134 0 177 0H322C325.866 0 329 3.13401 329 7V96C329 99.866 325.866 103 322 103H177C173.134 103 170 99.866 170 96V7Z"/>
+      <path d="M339 7C339 3.13401 342.134 0 346 0H359C362.866 0 366 3.13401 366 7V96C366 99.866 362.866 103 359 103H346C342.134 103 339 99.866 339 96V7Z"/>
+    </svg>
+
     <h1>Snap Carousel</h1>
     <p>A lightweight vanilla JavaScript carousel library built with modern web technologies. Based on custom elements, scroll-snap, and scroll-padding.</p>
   </header>
@@ -1195,6 +1249,12 @@ import { SnapCarousel } from '@snap-carousel/snap-carousel';</code></pre>
             <div class="type">Type: <code>boolean</code></div>
             <div class="default">Default: <code>false</code></div>
             <p>Show scrollbar.</p>
+          </div>
+          <div class="option">
+            <h3>sync</h3>
+            <div class="type">Type: <code>string</code></div>
+            <div class="default">Default: <code>null</code></div>
+            <p>CSS selector for the carousel to sync with.</p>
           </div>
         </div>
       </example>
