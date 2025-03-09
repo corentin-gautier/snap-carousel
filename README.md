@@ -1,7 +1,7 @@
 # Snap Carousel
 
-[![npm version](https://badge.fury.io/js/snap-carousel.svg)](https://badge.fury.io/js/snap-carousel)
-[![gzip size](https://img.badgesize.io/https://unpkg.com/snap-carousel/dist/snap-carousel.min.js?compression=gzip)](https://unpkg.com/snap-carousel/dist/snap-carousel.min.js)
+[![npm version](https://badge.fury.io/js/@cgsoft%2Fsnap-carousel.svg)](https://badge.fury.io/js/@cgsoft%2Fsnap-carousel)
+[![gzip size](https://img.badgesize.io/https://unpkg.com/@cgsoft/snap-carousel/dist/snap-carousel.min.js?compression=gzip)](https://unpkg.com/@cgsoft/snap-carousel/dist/snap-carousel.min.js)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A modern, lightweight (5.4kB gzip) JavaScript carousel component that leverages the power of CSS [scroll-snap](https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-snap-type) and custom element shadow DOM. Perfect for creating responsive, performant, and customizable image galleries, product carousels, and content sliders.
@@ -52,8 +52,27 @@ yarn add @cgsoft/snap-carousel
 </snap-carousel>
 
 <script>
-  import 'snap-carousel';
+  import '@cgsoft/snap-carousel';
 </script>
+```
+
+### ES Modules Usage
+
+```javascript
+// Import everything
+import { SnapCarousel } from '@cgsoft/snap-carousel';
+
+// Register the web component
+customElements.define('snap-carousel', SnapCarousel);
+
+// Or import specific features
+import { BaseCarousel, createCarousel } from '@cgsoft/snap-carousel/base-carousel';
+import { NavFeature } from '@cgsoft/snap-carousel/features/nav';
+import { PagerFeature } from '@cgsoft/snap-carousel/features/pager';
+
+// Create custom carousel with only navigation and pager
+const CustomCarousel = createCarousel(NavFeature, PagerFeature);
+customElements.define('custom-carousel', CustomCarousel);
 ```
 
 ### Configuration Options
