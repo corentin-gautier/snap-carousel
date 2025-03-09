@@ -297,6 +297,7 @@ export class BaseCarousel extends HTMLElement {
    */
   #identify() {
     this.id = this.#state.id = this.#className + '-' + (Math.random() + 1).toString(36).substring(4);
+    this.#elements.scroller.id = this.id + '-scroller';
   }
 
   /**

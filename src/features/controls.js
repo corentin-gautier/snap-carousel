@@ -57,10 +57,7 @@ export const ControlsFeature = Base => class extends Base {
         this.goTo(this.state.index + button.modifier);
       });
 
-      // Setup accessibility
-      Object.assign(button, {
-        ariaControls: this.elements.scroller.id
-      });
+      button.setAttribute('aria-controls', this.elements.scroller.id);
     });
 
     // Set initial button states
@@ -90,8 +87,8 @@ export const ControlsFeature = Base => class extends Base {
         shouldShiftFocus = true;
       }
 
-      button.disabled = isDisabled;
-      button.setAttribute('aria-disabled', isDisabled);
+      button.disabled = !!isDisabled;
+      button.setAttribute('aria-disabled', !!isDisabled);
     });
 
     // Move focus if needed

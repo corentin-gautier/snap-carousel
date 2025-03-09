@@ -62,15 +62,14 @@ export const NavFeature = Base => class extends Base {
     if (!container) return;
 
     const dot = document.createElement('button');
+
+    dot.type = 'button';
+    dot.part = this.#defaultPart;
+    dot.setAttribute('aria-controls', this.elements.scroller.id);
+    dot.setAttribute('aria-selected', false);
+
     dot.innerHTML = index + 1;
     dot.addEventListener('click', () => this.goTo(index));
-
-    Object.assign(dot, {
-      type: 'button',
-      part: this.#defaultPart,
-      ariaControls: this.elements.scroller.id,
-      ariaSelected: false
-    });
 
     container.append(dot);
     dots.push(dot);
