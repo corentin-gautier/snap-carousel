@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.10.3](https://github.com/corentin-gautier/snap-carousel/compare/v1.10.2...v1.10.3) (2025-03-09)
+
+
+### Bug Fixes
+
+* imports ([707565e](https://github.com/corentin-gautier/snap-carousel/commit/707565eee25bfccb5d7ba32d0bdfc7f2b11b0077))
+* properly hide features that aren't needed ([0aeeacf](https://github.com/corentin-gautier/snap-carousel/commit/0aeeacf960bb377288aea8e19a157d11583ff842))
+
 ### [1.10.2](https://github.com/corentin-gautier/snap-carousel/compare/v1.10.1...v1.10.2) (2025-03-09)
 
 
