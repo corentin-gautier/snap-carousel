@@ -1260,10 +1260,13 @@ import { SnapCarousel } from '@snap-carousel/snap-carousel';</code></pre>
     </section>
   </div>
 
-  <script type="module" src="./snap-carousel.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script>
   <script>
     hljs.highlightAll();
+  </script>
+  <script type="module">
+    import { SnapCarousel } from './snap-carousel.js';
+    customElements.define('snap-carousel', SnapCarousel);
   </script>
 </body>
 
