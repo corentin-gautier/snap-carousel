@@ -705,6 +705,17 @@ export class BaseCarousel extends HTMLElement {
       this.#state.autoplayInterval = null;
     }
   }
+
+  /**
+   * Define a custom element
+   * @param {string} name - Name of the custom element
+   * @param {Function} constructor - Constructor function for the custom element
+   */
+  static registerElement(name, constructor) {
+    if (window.customElements) {
+      customElements.define(name, constructor);
+    }
+  }
 }
 
 /**

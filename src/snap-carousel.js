@@ -154,56 +154,24 @@ import { ControlsFeature } from './features/controls';
 import { NavFeature } from './features/nav';
 import { PagerFeature } from './features/pager';
 
-// Export base carousel and features
-export { BaseCarousel, ControlsFeature, createCarousel, NavFeature, PagerFeature };
+// Create carousel variants with different feature combinations
+export const SnapCarousel = createCarousel(ControlsFeature, NavFeature, PagerFeature);
+export const SnapCarouselNav = createCarousel(NavFeature);
+export const SnapCarouselPager = createCarousel(PagerFeature);
+export const SnapCarouselControls = createCarousel(ControlsFeature);
+export const SnapCarouselNavControls = createCarousel(NavFeature, ControlsFeature);
+export const SnapCarouselNavPager = createCarousel(NavFeature, PagerFeature);
+export const SnapCarouselPagerControls = createCarousel(PagerFeature, ControlsFeature);
 
-// Create default carousel with all features
-export const SnapCarousel = createCarousel(
-  ControlsFeature,
-  NavFeature,
-  PagerFeature
-);
+// Export features and base components
+export { BaseCarousel, createCarousel } from './base-carousel';
+export { ControlsFeature } from './features/controls';
+export { NavFeature } from './features/nav';
+export { PagerFeature } from './features/pager';
 
-// Create carousel with only navigation
-export const SnapCarouselNav = createCarousel(
-  NavFeature
-);
+export default SnapCarousel;
 
-// Create carousel with only pager
-export const SnapCarouselPager = createCarousel(
-  PagerFeature
-);
-
-// Create carousel with only controls
-export const SnapCarouselControls = createCarousel(
-  ControlsFeature
-);
-
-// Create carousel with only navigation and controls
-export const SnapCarouselNavControls = createCarousel(
-  NavFeature,
-  ControlsFeature
-);
-
-// Create carousel with only navigation and pager
-export const SnapCarouselNavPager = createCarousel(
-  NavFeature,
-  PagerFeature
-);
-
-// Create carousel with only pager and controls
-export const SnapCarouselPagerControls = createCarousel(
-  PagerFeature,
-  ControlsFeature
-);
-
-// Register as custom element if supported
-if ('customElements' in window) {
-  customElements.define('snap-carousel', SnapCarousel);
-  customElements.define('snap-carousel-nav', SnapCarouselNav);
-  customElements.define('snap-carousel-pager', SnapCarouselPager);
-  customElements.define('snap-carousel-controls', SnapCarouselControls);
-  customElements.define('snap-carousel-nav-controls', SnapCarouselNavControls);
-  customElements.define('snap-carousel-nav-pager', SnapCarouselNavPager);
-  customElements.define('snap-carousel-pager-controls', SnapCarouselPagerControls);
+// Register default snap-carousel only if this is the main bundle
+if ('customElements' in window && import.meta.url.endsWith('snap-carousel.js')) {
+  BaseCarousel.registerElement('snap-carousel', SnapCarousel);
 }

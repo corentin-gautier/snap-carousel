@@ -1,21 +1,21 @@
-import { createCarousel as e } from "./base-carousel.iife.js";
-import { BaseCarousel as v } from "./base-carousel.iife.js";
-import { ControlsFeature as a } from "./features/controls.iife.js";
+import { createCarousel as a, BaseCarousel as o } from "./base-carousel.iife.js";
+import { ControlsFeature as e } from "./features/controls.iife.js";
 import { NavFeature as s } from "./features/nav.iife.js";
-import { PagerFeature as o } from "./features/pager.iife.js";
-const r = e(a, s, o), n = e(s), t = e(o), l = e(a), u = e(s, a), m = e(s, o), p = e(o, a);
-"customElements" in window && (customElements.define("snap-carousel", r), customElements.define("snap-carousel-nav", n), customElements.define("snap-carousel-pager", t), customElements.define("snap-carousel-controls", l), customElements.define("snap-carousel-nav-controls", u), customElements.define("snap-carousel-nav-pager", m), customElements.define("snap-carousel-pager-controls", p));
+import { PagerFeature as r } from "./features/pager.iife.js";
+const t = a(e, s, r), C = a(s), m = a(r), i = a(e), S = a(s, e), c = a(s, r), f = a(r, e);
+"customElements" in window && import.meta.url.endsWith("snap-carousel.js") && o.registerElement("snap-carousel", t);
 export {
-  v as BaseCarousel,
-  a as ControlsFeature,
+  o as BaseCarousel,
+  e as ControlsFeature,
   s as NavFeature,
-  o as PagerFeature,
-  r as SnapCarousel,
-  l as SnapCarouselControls,
-  n as SnapCarouselNav,
-  u as SnapCarouselNavControls,
-  m as SnapCarouselNavPager,
-  t as SnapCarouselPager,
-  p as SnapCarouselPagerControls,
-  e as createCarousel
+  r as PagerFeature,
+  t as SnapCarousel,
+  i as SnapCarouselControls,
+  C as SnapCarouselNav,
+  S as SnapCarouselNavControls,
+  c as SnapCarouselNavPager,
+  m as SnapCarouselPager,
+  f as SnapCarouselPagerControls,
+  a as createCarousel,
+  t as default
 };

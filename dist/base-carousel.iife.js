@@ -2,25 +2,25 @@ var V = (c) => {
   throw TypeError(c);
 };
 var S = (c, u, t) => u.has(c) || V("Cannot " + t);
-var e = (c, u, t) => (S(c, u, "read from private field"), t ? t.call(c) : u.get(c)), m = (c, u, t) => u.has(c) ? V("Cannot add the same private member more than once") : u instanceof WeakSet ? u.add(c) : u.set(c, t), k = (c, u, t, i) => (S(c, u, "write to private field"), i ? i.call(c, t) : u.set(c, t), t), r = (c, u, t) => (S(c, u, "access private method"), t);
+var e = (c, u, t) => (S(c, u, "read from private field"), t ? t.call(c) : u.get(c)), m = (c, u, t) => u.has(c) ? V("Cannot add the same private member more than once") : u instanceof WeakSet ? u.add(c) : u.set(c, t), E = (c, u, t, i) => (S(c, u, "write to private field"), i ? i.call(c, t) : u.set(c, t), t), r = (c, u, t) => (S(c, u, "access private method"), t);
 import "./node_modules/scrollyfills/dist/scrollyfills.modern.iife.js";
 import it from "./src/host.css.iife.js";
 import rt from "./src/style.css.iife.js";
 import nt from "./src/template.html.iife.js";
-var b, L, T, w, n, l, h, x, s, O, $, j, N, D, B, W, F, q, z, J, Z, R, G, K, Q, X, Y, P, C, _, tt, H, et, A, U, E;
-const I = class I extends HTMLElement {
+var b, I, L, T, n, l, h, x, s, O, $, j, N, D, B, W, F, q, z, J, Z, R, G, K, Q, X, Y, P, C, _, tt, H, et, A, U, k;
+const w = class w extends HTMLElement {
   constructor() {
     super();
     m(this, s);
     m(this, b, !1);
-    m(this, L, !1);
-    m(this, T, "snap-carousel");
-    m(this, w, "");
+    m(this, I, !1);
+    m(this, L, "snap-carousel");
+    m(this, T, "");
     m(this, n, { index: 0, itemsCount: 0, pageCount: 0, isVisible: !1, autoplayInterval: null, breakpoint: void 0, ready: !1, isMoving: !1, pause: !1, computedPadding: 0 });
     m(this, l, { scroller: null, items: null, sync: null });
     m(this, h, { default: {}, origin: {}, current: {} });
     m(this, x, { init: [], updateState: [] });
-    e(this, h).default = I.defaultConfig, k(this, w, this.getAttribute("style")), this.setAttribute("snpc", "");
+    e(this, h).default = w.defaultConfig, E(this, T, this.getAttribute("style")), this.setAttribute("snpc", "");
   }
   get elements() {
     return e(this, l);
@@ -47,7 +47,7 @@ const I = class I extends HTMLElement {
     return { autoplay: 0, displayed: 1, perPage: 1, gap: 0, padding: 0, controls: !1, nav: !1, pager: !1, loop: !1, behavior: "smooth", stop: !1, usePause: !0, vertical: !1, responsive: [], sync: null };
   }
   static get observedAttributes() {
-    const t = Object.keys(I.defaultConfig).map((i) => i.replace(/[A-Z]/g, (o) => "-" + o.toLowerCase()));
+    const t = Object.keys(w.defaultConfig).map((i) => i.replace(/[A-Z]/g, (o) => "-" + o.toLowerCase()));
     return [...t, ...t.map((i) => "data-" + i)];
   }
   connectedCallback() {
@@ -63,11 +63,11 @@ const I = class I extends HTMLElement {
     e(this, n).ready && r(this, s, $).call(this);
   }
   goTo(t) {
-    k(this, b, !1);
+    E(this, b, !1);
     const { scroller: i, items: o } = e(this, l), { perPage: a, vertical: d } = e(this, h).current, v = t > e(this, n).pageCount - 1 ? 0 : t < 0 ? e(this, n).pageCount - 1 : t, g = o[v * a];
     r(this, s, C).call(this, v), e(this, n).ready = !0;
     let y = 0, p = 0;
-    d ? y = g.offsetTop : p = r(this, s, A).call(this) ? g.offsetLeft : g.offsetLeft + g.offsetWidth - i.offsetWidth, k(this, b, !0), requestIdleCallback(() => {
+    d ? y = g.offsetTop : p = r(this, s, A).call(this) ? g.offsetLeft : g.offsetLeft + g.offsetWidth - i.offsetWidth, E(this, b, !0), requestIdleCallback(() => {
       i.scrollTo({ top: y, left: p });
     }, { timeout: 100 });
   }
@@ -77,8 +77,11 @@ const I = class I extends HTMLElement {
   next() {
     this.goTo(this.state.index + 1);
   }
+  static registerElement(t, i) {
+    window.customElements && customElements.define(t, i);
+  }
 };
-b = new WeakMap(), L = new WeakMap(), T = new WeakMap(), w = new WeakMap(), n = new WeakMap(), l = new WeakMap(), h = new WeakMap(), x = new WeakMap(), s = new WeakSet(), O = function(t, ...i) {
+b = new WeakMap(), I = new WeakMap(), L = new WeakMap(), T = new WeakMap(), n = new WeakMap(), l = new WeakMap(), h = new WeakMap(), x = new WeakMap(), s = new WeakSet(), O = function(t, ...i) {
   e(this, x)[t] && e(this, x)[t].forEach((o) => o.apply(this, i));
 }, $ = function() {
   e(this, n).breakpoint = void 0, e(this, h).origin = Object.assign({}, e(this, h).default, r(this, s, F).call(this)), e(this, h).origin.responsive = (e(this, h).origin.responsive || []).sort((t, i) => t.breakpoint - i.breakpoint), r(this, s, z).call(this);
@@ -92,12 +95,12 @@ b = new WeakMap(), L = new WeakMap(), T = new WeakMap(), w = new WeakMap(), n = 
     o.dataset.index = a, Object.assign(o, { ariaSetSize: i, ariaPosInSet: a + 1, ariaRoleDescription: "slide", role: "listitem" });
   });
 }, D = function() {
-  const t = `${e(this, T)}-global-styles`;
+  const t = `${e(this, L)}-global-styles`;
   if (document.querySelector("#" + t)) return;
   const i = rt;
   document.head.append(r(this, s, et).call(this, i, t));
 }, B = function() {
-  this.id = e(this, n).id = e(this, T) + "-" + (Math.random() + 1).toString(36).substring(4);
+  this.id = e(this, n).id = e(this, L) + "-" + (Math.random() + 1).toString(36).substring(4);
 }, W = function(t) {
   e(this, l).scroller.clientWidth ? t() : requestAnimationFrame(() => {
     r(this, s, W).call(this, t);
@@ -123,7 +126,7 @@ b = new WeakMap(), L = new WeakMap(), T = new WeakMap(), w = new WeakMap(), n = 
   e(this, n).pageCount = Math.ceil(i / t.perPage) - o;
 }, Z = function() {
   const { displayed: t, gap: i, padding: o, perPage: a, stop: d, behavior: v } = e(this, h).current, g = r(this, s, U).call(this, i), y = r(this, s, U).call(this, o), p = "sc-anchor" + (d ? "-stop" : "");
-  this.style = `--perpage: ${t};--gap: ${g};--padding: ${y};--behavior: ${v};${e(this, w)}`, this.elements.items.forEach((f, st) => {
+  this.style = `--perpage: ${t};--gap: ${g};--padding: ${y};--behavior: ${v};${e(this, T)}`, this.elements.items.forEach((f, st) => {
     st % a == 0 ? f.classList.add(p) : f.classList.remove(p);
   });
 }, R = function() {
@@ -133,11 +136,11 @@ b = new WeakMap(), L = new WeakMap(), T = new WeakMap(), w = new WeakMap(), n = 
   const { items: t, scroller: i } = e(this, l);
   new IntersectionObserver((a) => {
     const d = a[0];
-    e(this, n).isVisible = d.intersectionRatio > 0.1, e(this, n).pause = !e(this, n).isVisible, r(this, s, E).call(this);
+    e(this, n).isVisible = d.intersectionRatio > 0.1, e(this, n).pause = !e(this, n).isVisible, r(this, s, k).call(this);
   }, { threshold: [0.1, 0.9] }).observe(this), e(this, h).current.usePause && (this.addEventListener("mouseenter", () => {
-    e(this, n).pause = !0, r(this, s, E).call(this);
+    e(this, n).pause = !0, r(this, s, k).call(this);
   }), this.addEventListener("mouseleave", () => {
-    e(this, n).pause = !1, r(this, s, E).call(this);
+    e(this, n).pause = !1, r(this, s, k).call(this);
   }));
   const o = new IntersectionObserver((a) => {
     a.forEach((d) => {
@@ -150,14 +153,14 @@ b = new WeakMap(), L = new WeakMap(), T = new WeakMap(), w = new WeakMap(), n = 
     r(this, s, R).call(this), r(this, s, z).call(this);
   }, 100);
 }, Q = function() {
-  if (e(this, L)) return;
+  if (e(this, I)) return;
   r(this, s, X).call(this), this.newIndex = e(this, n).index;
   const t = r(this, s, _).call(this);
   t !== e(this, n).index && (this.newIndex = t, r(this, s, C).call(this, t), r(this, s, P).call(this, "scrollupdate"));
 }, X = function() {
   e(this, n).isMoving || r(this, s, P).call(this, "scrollstart"), e(this, n).isMoving = !0;
 }, Y = function() {
-  e(this, L) || (r(this, s, P).call(this, "scrollend"), k(this, b, !1), e(this, n).isMoving = !1, typeof this.newIndex == "number" ? (r(this, s, C).call(this, this.newIndex), this.newIndex = null) : r(this, s, C).call(this, e(this, n).index), r(this, s, E).call(this));
+  e(this, I) || (r(this, s, P).call(this, "scrollend"), E(this, b, !1), e(this, n).isMoving = !1, typeof this.newIndex == "number" ? (r(this, s, C).call(this, this.newIndex), this.newIndex = null) : r(this, s, C).call(this, e(this, n).index), r(this, s, k).call(this));
 }, P = function(t) {
   const { current: i } = e(this, h);
   this.dispatchEvent(new CustomEvent(t, { detail: e(this, n) })), i["on" + t] && i["on" + t](this);
@@ -175,7 +178,7 @@ b = new WeakMap(), L = new WeakMap(), T = new WeakMap(), w = new WeakMap(), n = 
 }, tt = function() {
   const { sync: t } = e(this, h).current;
   t && e(this, n).ready && (e(this, l).sync = e(this, l).sync || Array.from(document.querySelectorAll(t)), e(this, l).sync.forEach((i) => {
-    i instanceof I && i.goTo(e(this, n).index);
+    i instanceof w && i.goTo(e(this, n).index);
   }));
 }, H = function(t, i = { fallback: !1 }) {
   const o = this.shadowRoot.querySelector(`[name="${t}"]`);
@@ -188,14 +191,14 @@ b = new WeakMap(), L = new WeakMap(), T = new WeakMap(), w = new WeakMap(), n = 
   return document.firstElementChild.getAttribute("dir") !== "rtl";
 }, U = function(t) {
   return typeof t == "string" ? t : t + "px";
-}, E = function() {
+}, k = function() {
   if (!e(this, h).current.autoplay) return;
   const { pause: t, isVisible: i } = e(this, n);
   !t && i ? e(this, n).autoplayInterval || (e(this, n).autoplayInterval = setTimeout(() => {
     e(this, n).autoplayInterval = null, this.goTo(e(this, n).index + 1);
   }, e(this, h).current.autoplay)) : (clearTimeout(e(this, n).autoplayInterval), e(this, n).autoplayInterval = null);
 };
-let M = I;
+let M = w;
 function dt(...c) {
   return c.reduce((u, t) => t(u), M);
 }

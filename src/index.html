@@ -1261,10 +1261,18 @@ import { SnapCarousel } from '@snap-carousel/snap-carousel';</code></pre>
     </section>
   </div>
 
-  <script type="module" src="./snap-carousel.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script>
   <script>
     hljs.highlightAll();
+  </script>
+  <script type="module">
+    import { BaseCarousel, createCarousel } from './snap-carousel.js';
+    import { ControlsFeature } from './features/controls.js';
+    import { PagerFeature } from './features/pager.js';
+    import { NavFeature } from './features/nav.js';
+
+    const myCustomCarousel = createCarousel(ControlsFeature, PagerFeature, NavFeature);
+    BaseCarousel.registerElement('snap-carousel', myCustomCarousel);
   </script>
 </body>
 
