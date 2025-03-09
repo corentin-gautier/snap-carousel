@@ -1,5 +1,5 @@
 {
-    "name": "cg-snap-carousel",
+    "name": "snap-carousel.js",
     "version": "1.10.5",
     "description": "A lightweight vanilla JavaScript carousel library built with modern web technologies. Based on custom elements, scroll-snap, and scroll-padding.",
     "type": "module",

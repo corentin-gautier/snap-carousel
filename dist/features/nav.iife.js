@@ -1,52 +1,51 @@
-var g = (i) => {
-  throw TypeError(i);
+var p = (e) => {
+  throw TypeError(e);
 };
-var p = (i, t, n) => t.has(i) || g("Cannot " + n);
-var o = (i, t, n) => (p(i, t, "read from private field"), n ? n.call(i) : t.get(i)), d = (i, t, n) => t.has(i) ? g("Cannot add the same private member more than once") : t instanceof WeakSet ? t.add(i) : t.set(i, n);
-var c = (i, t, n) => (p(i, t, "access private method"), n);
-const k = (i) => {
-  var t, n, r, b, v, l, f, u;
-  return u = class extends i {
+var b = (e, t, i) => t.has(e) || p("Cannot " + i);
+var n = (e, t, i) => (b(e, t, "read from private field"), i ? i.call(e) : t.get(e)), d = (e, t, i) => t.has(e) ? p("Cannot add the same private member more than once") : t instanceof WeakSet ? t.add(e) : t.set(e, i);
+var u = (e, t, i) => (b(e, t, "access private method"), i);
+const A = (e) => {
+  var t, i, o, v, f, l, m, g;
+  return g = class extends e {
     constructor() {
       super();
-      d(this, r);
+      d(this, o);
       d(this, t, { container: null, dots: [], active: null });
-      d(this, n, "button nav-button");
-      this.elements.pagination = o(this, t), this.registerHook("init", c(this, r, b).bind(this)), this.registerHook("updateState", c(this, r, l).bind(this));
+      d(this, i, "button nav-button");
+      this.elements.pagination = n(this, t), this.registerHook("init", u(this, o, v).bind(this)), this.registerHook("updateState", u(this, o, l).bind(this));
     }
-  }, t = new WeakMap(), n = new WeakMap(), r = new WeakSet(), b = function() {
-    let { container: s, dots: a } = o(this, t);
-    const { current: h } = this.settings;
-    if (s) s.innerHTML = "", a.forEach((e) => e.remove()), o(this, t).dots = [];
+  }, t = new WeakMap(), i = new WeakMap(), o = new WeakSet(), v = function() {
+    let { container: s, dots: a } = n(this, t);
+    const { current: r } = this.settings;
+    if (s) s.innerHTML = "", a.forEach((c) => c.remove()), n(this, t).dots = [];
     else {
       if (s = this.getSlotElements("pagination")[0], !s) return;
-      s.addEventListener("keydown", c(this, r, f).bind(this)), o(this, t).container = s;
+      s.addEventListener("keydown", u(this, o, m).bind(this)), n(this, t).container = s;
     }
-    if (i.setVisibility(s, h.nav && this.state.pageCount > 1), h.nav && s && this.state.pageCount > 1) {
-      for (let e = 0; e < this.state.pageCount; e++) c(this, r, v).call(this, e);
-      o(this, t).dots.length && c(this, r, l).call(this);
-    }
-  }, v = function(s) {
-    const { container: a, dots: h } = o(this, t);
-    if (!a) return;
-    const e = document.createElement("button");
-    e.type = "button", e.part = o(this, n), e.setAttribute("aria-controls", this.elements.scroller.id), e.setAttribute("aria-selected", !1), e.innerHTML = s + 1, e.addEventListener("click", () => this.goTo(s)), a.append(e), h.push(e);
+    e.setVisibility(s, r.nav && this.state.pageCount > 1), r.nav && s && this.state.pageCount > 1 && (this.state.pages.forEach((c, h) => {
+      u(this, o, f).call(this, c, h);
+    }), n(this, t).dots.length && u(this, o, l).call(this));
+  }, f = function(s, a) {
+    const { container: r, dots: c } = n(this, t);
+    if (!r) return;
+    const h = document.createElement("button");
+    h.type = "button", h.part = n(this, i), h.setAttribute("aria-label", `Page ${a + 1}`), h.setAttribute("aria-controls", s.map((x) => x.id).join(" ")), h.setAttribute("aria-current", !1), h.innerHTML = a + 1, h.addEventListener("click", () => this.goTo(a)), r.append(h), c.push(h);
   }, l = function() {
-    if (!this.settings.current.nav || !o(this, t).dots.length) return;
-    let { dots: s, active: a } = o(this, t);
-    const h = s[this.state.index];
-    h && (a && (Object.assign(a, { tabIndex: 0, ariaSelected: !1 }), a.part = o(this, n)), h.part = `${o(this, n)} active`, Object.assign(h, { tabIndex: -1, ariaSelected: !0 }), o(this, t).active = h);
-  }, f = function(s) {
-    if (!o(this, t).dots.length) return;
-    const a = this.isDocumentLtr(), h = o(this, t).dots[this.state.index] || 0;
+    if (!this.settings.current.nav || !n(this, t).dots.length) return;
+    let { dots: s, active: a } = n(this, t);
+    const r = s[this.state.index];
+    r && (a && (Object.assign(a, { tabIndex: 0, ariaCurrent: !1 }), a.part = n(this, i)), r.part = `${n(this, i)} active`, Object.assign(r, { tabIndex: -1, ariaCurrent: !0 }), n(this, t).active = r);
+  }, m = function(s) {
+    if (!n(this, t).dots.length) return;
+    const a = this.isDocumentLtr(), r = n(this, t).dots[this.state.index] || 0;
     switch (s.key) {
       case "ArrowRight":
       case "ArrowLeft":
-        const e = h[`${s.key === "ArrowRight" ? a ? "next" : "previous" : a ? "previous" : "next"}ElementSibling`];
-        e && (e.click(), e.focus());
+        const c = r[`${s.key === "ArrowRight" ? a ? "next" : "previous" : a ? "previous" : "next"}ElementSibling`];
+        c && (c.click(), c.focus());
     }
-  }, u;
+  }, g;
 };
 export {
-  k as NavFeature
+  A as NavFeature
 };

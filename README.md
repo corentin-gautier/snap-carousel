@@ -1,7 +1,7 @@
 # Snap Carousel
 
-[![npm version](https://badge.fury.io/js/cg-snap-carousel.svg)](https://badge.fury.io/js/cg-snap-carousel)
-[![gzip size](https://img.badgesize.io/https://unpkg.com/cg-snap-carousel/dist/snap-carousel.min.js?compression=gzip)](https://unpkg.com/cg-snap-carousel/dist/snap-carousel.min.js)
+[![npm version](https://badge.fury.io/js/snap-carousel.js.svg)](https://badge.fury.io/js/snap-carousel.js)
+[![gzip size](https://img.badgesize.io/https://unpkg.com/snap-carousel.js/dist/snap-carousel.min.js?compression=gzip)](https://unpkg.com/snap-carousel.js/dist/snap-carousel.min.js)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A modern, lightweight (5.4kB gzip) JavaScript carousel component that leverages the power of CSS [scroll-snap](https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-snap-type) and custom element shadow DOM. Perfect for creating responsive, performant, and customizable image galleries, product carousels, and content sliders.
@@ -33,9 +33,9 @@ A modern, lightweight (5.4kB gzip) JavaScript carousel component that leverages 
 ## Installation
 
 ```bash
-npm install cg-snap-carousel
+npm install snap-carousel.js
 # or
-yarn add cg-snap-carousel
+yarn add snap-carousel.js
 ```
 
 ## Documentation
@@ -52,7 +52,7 @@ yarn add cg-snap-carousel
 </snap-carousel>
 
 <script>
-  import 'cg-snap-carousel';
+  import 'snap-carousel.js';
 </script>
 ```
 
@@ -60,15 +60,15 @@ yarn add cg-snap-carousel
 
 ```javascript
 // Import everything
-import { SnapCarousel } from 'cg-snap-carousel';
+import { SnapCarousel } from 'snap-carousel.js';
 
 // Register the web component
 customElements.define('snap-carousel', SnapCarousel);
 
 // Or import specific features
-import { BaseCarousel, createCarousel } from 'cg-snap-carousel/base-carousel';
-import { NavFeature } from 'cg-snap-carousel/features/nav';
-import { PagerFeature } from 'cg-snap-carousel/features/pager';
+import { BaseCarousel, createCarousel } from 'snap-carousel.js/base-carousel';
+import { NavFeature } from 'snap-carousel.js/features/nav';
+import { PagerFeature } from 'snap-carousel.js/features/pager';
 
 // Create custom carousel with only navigation and pager
 const CustomCarousel = createCarousel(NavFeature, PagerFeature);

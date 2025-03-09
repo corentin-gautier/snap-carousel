@@ -43,9 +43,10 @@ export const NavFeature = Base => class extends Base {
     Base.setVisibility(container, current.nav && this.state.pageCount > 1);
 
     if (current.nav && container && this.state.pageCount > 1) {
-      for (let index = 0; index < this.state.pageCount; index++) {
-        this.#createMarker(index);
-      }
+      this.state.pages.forEach((page, index) => {
+        this.#createMarker(page, index);
+      });
+
       // Set first dot as active
       if (this.#pagination.dots.length) {
         this.#setActivePaginationItem();
@@ -57,7 +58,7 @@ export const NavFeature = Base => class extends Base {
    * Create a pagination marker (dot)
    * @param {number} index - Page index for the marker
    */
-  #createMarker(index) {
+  #createMarker(page, index) {
     const { container, dots } = this.#pagination;
     if (!container) return;
 
@@ -65,8 +66,9 @@ export const NavFeature = Base => class extends Base {
 
     dot.type = 'button';
     dot.part = this.#defaultPart;
-    dot.setAttribute('aria-controls', this.elements.scroller.id);
-    dot.setAttribute('aria-selected', false);
+    dot.setAttribute('aria-label', `Page ${index + 1}`);
+    dot.setAttribute('aria-controls', page.map(item => item.id).join(' '));
+    dot.setAttribute('aria-current', false);
 
     dot.innerHTML = index + 1;
     dot.addEventListener('click', () => this.goTo(index));
@@ -88,7 +90,7 @@ export const NavFeature = Base => class extends Base {
       if (active) {
         Object.assign(active, {
           tabIndex: 0,
-          ariaSelected: false
+          ariaCurrent: false
         });
         active.part = this.#defaultPart;
       }
@@ -96,7 +98,7 @@ export const NavFeature = Base => class extends Base {
       next.part = `${this.#defaultPart} active`;
       Object.assign(next, {
         tabIndex: -1,
-        ariaSelected: true
+        ariaCurrent: true
       });
       this.#pagination.active = next;
     }

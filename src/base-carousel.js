@@ -19,6 +19,7 @@ export class BaseCarousel extends HTMLElement {
     index: 0,
     itemsCount: 0,
     pageCount: 0,
+    pages: [],
     isVisible: false,
     autoplayInterval: null,
     breakpoint: undefined,
@@ -164,9 +165,9 @@ export class BaseCarousel extends HTMLElement {
     });
 
     // Initialize carousel
+    this.#identify();
     this.#computeChildren();
     this.#addGlobalStyles();
-    this.#identify();
     this.#setup();
     this.#observe();
 
@@ -266,8 +267,9 @@ export class BaseCarousel extends HTMLElement {
     this.#elements.items = items;
     this.#state.itemsCount = count;
 
-    // Store item index in a data attribute
+    // Store item index in a data attribute and set ARIA attributes
     items.forEach((item, i) => {
+      item.id = `${this.id}-slide-${i}`;
       item.dataset.index = i;
       Object.assign(item, {
         ariaSetSize: count,
@@ -398,6 +400,13 @@ export class BaseCarousel extends HTMLElement {
     );
 
     this.#state.pageCount = Math.ceil(itemsCount / current.perPage) - unecessaryPagesCount;
+
+    // Map which slides belong to each page
+    this.#state.pages = Array.from({ length: this.#state.pageCount }, (_, pageIndex) => {
+      const startIndex = pageIndex * current.perPage;
+      const endIndex = Math.min(startIndex + current.perPage, itemsCount);
+      return Array.from({ length: endIndex - startIndex }, (_, i) => this.#elements.items[startIndex + i]);
+    });
   }
 
   /**

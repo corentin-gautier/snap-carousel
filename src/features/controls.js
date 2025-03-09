@@ -42,7 +42,6 @@ export const ControlsFeature = Base => class extends Base {
     buttons.push(...prevButtons, ...nextButtons);
 
     buttons.forEach(button => {
-
       if (button.hasListener) return;
 
       // Setup button properties
@@ -56,16 +55,14 @@ export const ControlsFeature = Base => class extends Base {
         if (!current.controls) return;
         this.goTo(this.state.index + button.modifier);
       });
-
-      button.setAttribute('aria-controls', this.elements.scroller.id);
     });
 
-    // Set initial button states
+    // Set initial button states and aria-controls
     this.#setButtonsState();
   }
 
   /**
-   * Update navigation button states
+   * Update navigation button states and their aria-controls
    */
   #setButtonsState() {
     if (!this.#controls.buttons.length) return;
@@ -89,6 +86,30 @@ export const ControlsFeature = Base => class extends Base {
 
       button.disabled = !!isDisabled;
       button.setAttribute('aria-disabled', !!isDisabled);
+
+      // Update aria-controls to point to the slides that will be shown when clicked
+      if (!isDisabled) {
+        let targetIndex = index + button.modifier;
+
+        if (targetIndex < 0) {
+          targetIndex = pageCount - 1;
+        } else if (targetIndex >= pageCount) {
+          targetIndex = 0;
+        }
+
+        const targetpages = this.state.pages[targetIndex];
+
+        if (targetpages?.length) {
+          const slideIds = targetpages
+            .map(slideIndex => this.elements.items[slideIndex]?.id)
+            .filter(Boolean);
+          if (slideIds.length) {
+            button.setAttribute('aria-controls', slideIds.join(' '));
+          }
+        }
+      } else {
+        button.removeAttribute('aria-controls');
+      }
     });
 
     // Move focus if needed

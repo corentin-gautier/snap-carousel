@@ -1004,12 +1004,12 @@
             </div>
 
             <!-- Change the default prev button by a custom one -->
-            <button slot="prev-buttons" class="custom-nav-button" direction="prev">
+            <button slot="prev-buttons" aria-label="Previous" class="custom-nav-button" direction="prev">
               <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M220-240v-480h80v480h-80Zm520 0L380-480l360-240v480Zm-80-240Zm0 90v-180l-136 90 136 90Z"/></svg>
             </button>
 
             <!-- Add a completely custom prev button which goes back 2 slides -->
-            <button slot="prev-buttons" class="custom-nav-button" direction="prev" modifier="2">Prev (x2)</button>
+            <button slot="prev-buttons" aria-label="Previous (x2)" class="custom-nav-button" direction="prev" modifier="2">Prev (x2)</button>
 
             <!-- Change the next button icon -->
             <span slot="next-icon">
@@ -1265,8 +1265,12 @@ import { SnapCarousel } from '@snap-carousel/snap-carousel';</code></pre>
     hljs.highlightAll();
   </script>
   <script type="module">
-    import { SnapCarousel } from './snap-carousel.js';
-    customElements.define('snap-carousel', SnapCarousel);
+    import { BaseCarousel, createCarousel } from './base-carousel.js';
+    import { ControlsFeature } from './features/controls.js';
+    import { NavFeature } from './features/nav.js';
+    import { PagerFeature } from './features/pager.js';
+
+    customElements.define('snap-carousel', createCarousel(ControlsFeature, NavFeature, PagerFeature));
   </script>
 </body>
 
