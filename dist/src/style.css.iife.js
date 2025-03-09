@@ -1,4 +1,0 @@
-const a = "[snpc]{--sc-item-size: calc( (100% / var(--perpage, 1)) - var(--gap, 0) + (var(--gap, 0) / var(--perpage, 1)) )}[snpc]:not([scrollbar]) [snpc-s]::-webkit-scrollbar{display:none}[snpc-s]{display:flex}[vertical]>[snpc-s]{flex-direction:column;height:100%}[snpc-s]>[data-index]{display:block;flex:0 0 auto;width:var(--sc-item-size);max-width:100%}[vertical]>[snpc-s]>[data-index]{width:initial;max-width:initial;height:var(--sc-item-size);max-height:100%}[class*=sc-anchor]{scroll-snap-align:start;scroll-snap-stop:normal}.sc-anchor-stop{scroll-snap-stop:always}";
-export {
-  a as default
-};

@@ -19,7 +19,7 @@
  *
  * 1. Using as a Web Component (all features included):
  * ```html
- * <script src="snap-carousel.iife.js"></script>
+ * <script src="snap-carousel.umd.js"></script>
  * <snap-carousel displayed="3" gap="20" controls nav>
  *   <div slot="scroller">
  *     <div>Slide 1</div>
@@ -31,15 +31,15 @@
  *
  * 2. Using ES Modules (all features):
  * ```js
- * import { SnapCarousel } from '@snap-carousel/snap-carousel';
+ * import { SnapCarousel } from 'snap-carousel';
  * customElements.define('snap-carousel', SnapCarousel);
  * ```
  *
  * 3. Custom Build with Selected Features:
  * ```js
- * import { BaseCarousel, createCarousel } from '@snap-carousel/base-carousel';
- * import { NavFeature } from '@snap-carousel/features/nav';
- * import { PagerFeature } from '@snap-carousel/features/pager';
+ * import { BaseCarousel, createCarousel } from './base-carousel';
+ * import { NavFeature } from './features/nav';
+ * import { PagerFeature } from './features/pager';
  *
  * // Create custom carousel with only navigation and pager
  * const CustomCarousel = createCarousel(NavFeature, PagerFeature);
@@ -49,9 +49,9 @@
  * 4. Using Individual Features:
  * ```js
  * // Import specific features
- * import { ControlsFeature } from '@snap-carousel/features/controls';
- * import { NavFeature } from '@snap-carousel/features/nav';
- * import { PagerFeature } from '@snap-carousel/features/pager';
+ * import { ControlsFeature } from './features/controls';
+ * import { NavFeature } from './features/nav';
+ * import { PagerFeature } from './features/pager';
  *
  * // Create carousel with only the features you need
  * const MinimalCarousel = createCarousel(ControlsFeature);
@@ -65,8 +65,8 @@
  * 5. Using with Module Bundlers (webpack, rollup, vite):
  * ```js
  * // Import only what you need
- * import { BaseCarousel, createCarousel } from '@snap-carousel/base-carousel';
- * import { ControlsFeature } from '@snap-carousel/features/controls';
+ * import { BaseCarousel, createCarousel } from './base-carousel';
+ * import { ControlsFeature } from './features/controls';
  *
  * // Tree-shaking will remove unused features
  * const MyCarousel = createCarousel(ControlsFeature);

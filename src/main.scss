@@ -1070,7 +1070,7 @@ section {
       transform: translateY(2px);
     }
 
-    &[aria-selected="true"]::after {
+    &[aria-current="true"]::after {
       background: var(--primary);
     }
 

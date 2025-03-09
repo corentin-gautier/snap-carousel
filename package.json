@@ -3,24 +3,15 @@
     "version": "1.10.6",
     "description": "A lightweight vanilla JavaScript carousel library built with modern web technologies. Based on custom elements, scroll-snap, and scroll-padding.",
     "type": "module",
-    "main": "dist/snap-carousel.iife.js",
-    "module": "dist/snap-carousel.iife.js",
-    "types": "dist/types/index.d.ts",
+    "main": "dist/snap-carousel.umd.js",
+    "module": "dist/snap-carousel.esm.js",
+    "unpkg": "dist/snap-carousel.umd.min.js",
+    "types": "dist/types/snap-carousel.d.ts",
     "exports": {
         ".": {
-            "import": "./dist/snap-carousel.iife.js",
-            "require": "./dist/snap-carousel.iife.js",
-            "types": "./dist/types/index.d.ts"
-        },
-        "./base-carousel": {
-            "import": "./dist/base-carousel.iife.js",
-            "require": "./dist/base-carousel.iife.js",
-            "types": "./dist/types/base-carousel.d.ts"
-        },
-        "./features/*": {
-            "import": "./dist/features/*.iife.js",
-            "require": "./dist/features/*.iife.js",
-            "types": "./dist/types/features/*.d.ts"
+            "import": "./dist/snap-carousel.esm.js",
+            "require": "./dist/snap-carousel.umd.js",
+            "types": "./dist/types/snap-carousel.d.ts"
         }
     },
     "files": [
@@ -32,8 +23,11 @@
     ],
     "scripts": {
         "dev": "vite",
-        "build": "npm run build:types && vite build --mode library && vite build",
+        "build": "npm run build:types && npm run build:esm && npm run build:umd && npm run build:umd:min && vite build",
         "build:types": "mkdir -p dist/types/features && cp src/types/*.d.ts dist/types/ && cp src/types/features/*.d.ts dist/types/features/",
+        "build:esm": "vite build --mode library",
+        "build:umd": "VITE_BUILD_FORMAT=umd vite build --mode library",
+        "build:umd:min": "VITE_BUILD_FORMAT=umd VITE_BUILD_MINIFY=true vite build --mode library",
         "preview": "vite preview",
         "prepublishOnly": "npm run build",
         "test": "echo \"No tests specified\" && exit 0"

@@ -60,8 +60,7 @@
       "license": "https://opensource.org/licenses/MIT"
     }
   </script>
-  <script type="module" crossorigin src="./assets/index-BjjFDd7L.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-DldK4i5Q.css">
+  <link rel="stylesheet" crossorigin href="./assets/index.CxFtO5Rt.css">
 </head>
 
 <body>
@@ -100,17 +99,27 @@
     <section id="getting-started">
       <h2>Getting Started</h2>
       <small>Quick setup guide to get you started with Snap Carousel</small>
-      <pre><code class="language-html">&lt;!-- 1. Include the script --&gt;
-&lt;script src="snap-carousel.iife.js"&gt;&lt;/script&gt;
+      <pre><code class="language-html">&lt;!-- Option 1: Using CDN (recommended for production) --&gt;
+&lt;script src="https://unpkg.com/snap-carousel.js@latest/dist/snap-carousel.umd.min.js"&gt;&lt;/script&gt;
 
-&lt;!-- 2. Use the carousel component --&gt;
+&lt;!-- Option 2: Using local file --&gt;
+&lt;script src="path/to/snap-carousel.umd.js"&gt;&lt;/script&gt;
+
+&lt;!-- Use the carousel component --&gt;
 &lt;snap-carousel displayed="1" controls nav&gt;
   &lt;div slot="scroller"&gt;
     &lt;div&gt;Slide 1&lt;/div&gt;
     &lt;div&gt;Slide 2&lt;/div&gt;
     &lt;div&gt;Slide 3&lt;/div&gt;
   &lt;/div&gt;
-&lt;/snap-carousel&gt;</code></pre>
+&lt;/snap-carousel&gt;
+
+&lt;!-- Or create a custom carousel using JavaScript --&gt;
+&lt;script&gt;
+  const { createCarousel, ControlsFeature, NavFeature } = SnapCarousel;
+  const CustomCarousel = createCarousel(ControlsFeature, NavFeature);
+  customElements.define('custom-carousel', CustomCarousel);
+&lt;/script&gt;</code></pre>
     </section>
 
     <section id="basic-usage">
@@ -861,7 +870,7 @@
       transform: translateY(2px);
     }
 
-    .custom-pagination [aria-selected="true"]::after {
+    .custom-pagination [aria-current="true"]::after {
       background: var(--primary);
     }
 
@@ -1075,17 +1084,13 @@ customElements.define('custom-carousel', CustomCarousel);
         <div>
           <h3>4. Individual Features</h3>
           <pre><code class="language-javascript">// Import specific features
-import { ControlsFeature } from '@snap-carousel/features/controls';
-import { NavFeature } from '@snap-carousel/features/nav';
-import { PagerFeature } from '@snap-carousel/features/pager';
+import { ControlsFeature } from './features/controls';
+import { NavFeature } from './features/nav';
+import { PagerFeature } from './features/pager';
 
-// Create different variants
+// Create carousel with only the features you need
 const MinimalCarousel = createCarousel(ControlsFeature);
-const FullCarousel = createCarousel(
-  ControlsFeature,
-  NavFeature,
-  PagerFeature
-);
+const FullCarousel = createCarousel(ControlsFeature, NavFeature, PagerFeature);
 
 // Register custom elements
 customElements.define('minimal-carousel', MinimalCarousel);
@@ -1128,7 +1133,7 @@ import { SnapCarousel } from '@snap-carousel/snap-carousel';</code></pre>
         </div>
 
         <div class="demo">
-          <custom-carousel displayed="1" controls nav>
+          <snap-carousel displayed="1" controls nav>
             <ul slot="scroller">
               <li>
                 <div class="module-slide">
@@ -1149,7 +1154,7 @@ import { SnapCarousel } from '@snap-carousel/snap-carousel';</code></pre>
                 </div>
               </li>
             </ul>
-          </custom-carousel>
+          </snap-carousel>
         </div>
       </example>
     </section>
@@ -1261,10 +1266,12 @@ import { SnapCarousel } from '@snap-carousel/snap-carousel';</code></pre>
     </section>
   </div>
 
+  <!-- Load the UMD version of the library -->
+  <script src="./snap-carousel.umd.js"></script>
+
+  <!-- Your existing scripts -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script>
-  <script>
-    hljs.highlightAll();
-  </script>
+  <script>hljs.highlightAll();</script>
 </body>
 
 </html>
