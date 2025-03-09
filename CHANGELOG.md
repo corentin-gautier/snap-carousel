@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.10.0](https://github.com/corentin-gautier/snap-carousel/compare/v1.9.2...v1.10.0) (2025-03-09)
+
+
+### Features
+
+* add modular structure and way more documentation ([f21a226](https://github.com/corentin-gautier/snap-carousel/commit/f21a226756d139d356bbe883a53ee084f7a61345))
+
+
+### Bug Fixes
+
+* remove individual css stylsheet ([982097e](https://github.com/corentin-gautier/snap-carousel/commit/982097e684d2052b3051a00315fb00428a081353))
+* restore main.scss file ([08047dc](https://github.com/corentin-gautier/snap-carousel/commit/08047dc8c34bbefd0a634ba93c649f11c1e7ba9a))
+
 ### [1.9.2](https://github.com/corentin-gautier/snap-carousel/compare/v1.9.1...v1.9.2) (2025-03-06)
 
 ### [1.9.1](https://github.com/corentin-gautier/snap-carousel/compare/v1.9.0...v1.9.1) (2024-12-12)
