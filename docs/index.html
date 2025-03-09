@@ -105,7 +105,7 @@
 &lt;!-- Option 2: Using local file --&gt;
 &lt;script src="path/to/snap-carousel.umd.js"&gt;&lt;/script&gt;
 
-&lt;!-- Use the carousel component --&gt;
+&lt;!-- Use the carousel component (auto-registered) --&gt;
 &lt;snap-carousel displayed="1" controls nav&gt;
   &lt;div slot="scroller"&gt;
     &lt;div&gt;Slide 1&lt;/div&gt;
@@ -116,6 +116,7 @@
 
 &lt;!-- Or create a custom carousel using JavaScript --&gt;
 &lt;script&gt;
+  // Features are available on the global SnapCarousel object
   const { createCarousel, ControlsFeature, NavFeature } = SnapCarousel;
   const CustomCarousel = createCarousel(ControlsFeature, NavFeature);
   customElements.define('custom-carousel', CustomCarousel);
@@ -1044,8 +1045,8 @@
       <example>
         <div>
           <h3>1. Basic Usage (All Features)</h3>
-          <pre><code class="language-html">&lt;!-- Using IIFE bundle in browser --&gt;
-&lt;script src="snap-carousel.iife.js"&gt;&lt;/script&gt;
+          <pre><code class="language-html">&lt;!-- Using UMD bundle in browser (auto-registers the component) --&gt;
+&lt;script src="https://unpkg.com/snap-carousel.js@latest/dist/snap-carousel.umd.js"&gt;&lt;/script&gt;
 &lt;snap-carousel displayed="3" gap="20" controls nav&gt;
   &lt;div slot="scroller"&gt;
     &lt;div&gt;Slide 1&lt;/div&gt;
@@ -1057,8 +1058,8 @@
 
         <div>
           <h3>2. ES Modules Usage</h3>
-          <pre><code class="language-javascript">// Import everything
-import { SnapCarousel } from '@snap-carousel/snap-carousel';
+          <pre><code class="language-javascript">// Import from npm package
+import { SnapCarousel } from 'snap-carousel.js';
 
 // Register the web component
 customElements.define('snap-carousel', SnapCarousel);</code></pre>
@@ -1067,9 +1068,9 @@ customElements.define('snap-carousel', SnapCarousel);</code></pre>
         <div>
           <h3>3. Custom Build with Selected Features</h3>
           <pre><code class="language-javascript">// Import base and features
-import { BaseCarousel, createCarousel } from '@snap-carousel/base-carousel';
-import { NavFeature } from '@snap-carousel/features/nav';
-import { PagerFeature } from '@snap-carousel/features/pager';
+import { BaseCarousel, createCarousel } from './base-carousel';
+import { NavFeature } from './features/nav';
+import { PagerFeature } from './features/pager';
 
 // Create custom carousel with only navigation and pager
 const CustomCarousel = createCarousel(NavFeature, PagerFeature);
@@ -1103,15 +1104,20 @@ customElements.define('full-carousel', FullCarousel);</code></pre>
 export default defineConfig({
   build: {
     lib: {
-      entry: 'src/main.js',
-      formats: ['es']
+      entry: 'src/snap-carousel.js',
+      formats: ['es', 'umd'],
+      fileName: (format, entryName) => {
+        const formatSuffix = format === 'es' ? 'esm' : format;
+        return `${entryName}.${formatSuffix}.js`;
+      },
+      name: 'SnapCarousel'
     }
   }
 });
 
 // main.js
-import { BaseCarousel, createCarousel } from '@snap-carousel/base-carousel';
-import { ControlsFeature } from '@snap-carousel/features/controls';
+import { BaseCarousel, createCarousel } from './base-carousel';
+import { ControlsFeature } from './features/controls';
 
 // Tree-shaking will remove unused features
 const MyCarousel = createCarousel(ControlsFeature);
@@ -1121,15 +1127,23 @@ customElements.define('my-carousel', MyCarousel);</code></pre>
         <div>
           <h3>6. Available Imports</h3>
           <pre><code class="language-javascript">// Base carousel and composition
-import { BaseCarousel, createCarousel } from '@snap-carousel/base-carousel';
+import { BaseCarousel, createCarousel } from './base-carousel';
 
 // Individual features
-import { ControlsFeature } from '@snap-carousel/features/controls';
-import { NavFeature } from '@snap-carousel/features/nav';
-import { PagerFeature } from '@snap-carousel/features/pager';
+import { ControlsFeature } from './features/controls';
+import { NavFeature } from './features/nav';
+import { PagerFeature } from './features/pager';
 
-// Full bundle with all features
-import { SnapCarousel } from '@snap-carousel/snap-carousel';</code></pre>
+// Pre-configured variants
+import {
+  SnapCarousel,          // All features
+  SnapCarouselNav,       // Navigation only
+  SnapCarouselPager,     // Pager only
+  SnapCarouselControls,  // Controls only
+  SnapCarouselNavControls,
+  SnapCarouselNavPager,
+  SnapCarouselPagerControls
+} from './snap-carousel';</code></pre>
         </div>
 
         <div class="demo">
