@@ -16,17 +16,23 @@ snap-carousel[vertical] [slot="scroller"] {
   height: 100%;
 }
 
-snap-carousel [slot="scroller"] > * {
+snap-carousel [slot="scroller"] > [data-index] {
   display: block;
   flex: 0 0 auto;
 }
 
-snap-carousel:not([vertical]) [slot="scroller"] > * {
-  width: calc((100% / var(--sc-perpage, 1)) - var(--sc-gap, 0) + (var(--sc-gap, 0) / var(--sc-perpage, 1)));
+snap-carousel:not([vertical]) [slot="scroller"] > [data-index] {
+  width: calc(
+    (100% / var(--sc-perpage, 1)) - var(--sc-gap, 0) +
+      (var(--sc-gap, 0) / var(--sc-perpage, 1))
+  );
   max-width: 100%;
 }
 
-snap-carousel[vertical] [slot="scroller"] > * {
+snap-carousel[vertical] [slot="scroller"] > [data-index] {
   max-height: 100%;
-  height: calc((100% / var(--sc-perpage, 1)) - var(--sc-gap, 0) + (var(--sc-gap, 0) / var(--sc-perpage, 1)));
+  height: calc(
+    (100% / var(--sc-perpage, 1)) - var(--sc-gap, 0) +
+      (var(--sc-gap, 0) / var(--sc-perpage, 1))
+  );
 }

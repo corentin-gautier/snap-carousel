@@ -11,9 +11,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/dark.min.css">
-  <script type="module" crossorigin src="./assets/index-B335HPnU.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-DX9r-e_-.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/atom-one-dark.min.css">
+  <script type="module" crossorigin src="./assets/index-B25hnn6z.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-Bmq_ym-s.css">
 </head>
 
 <body>
@@ -35,7 +35,7 @@
             <li><a href="#real-estate-listings">Real Estate Listings</a></li>
             <li><a href="#product-comparison">Product Comparison</a></li>
             <li><a href="#film-showcase">Film Showcase</a></li>
-            <li><a href="#custom-navigation">Custom Navigation</a></li>
+            <li><a href="#customization">Customization</a></li>
           </ul>
         </li>
         <li><a href="#module-structure">Module Structure</a></li>
@@ -109,23 +109,14 @@
   nav
   loop
 &gt;
-&lt;ul slot="scroller"&gt;
-&lt;li&gt;
-  &lt;div class="product-card"&gt;
-    &lt;img src="product.jpg" alt="Product"&gt;
-    &lt;h3&gt;Product Name&lt;/h3&gt;
-    &lt;p class="price"&gt;$99.99&lt;/p&gt;
-    &lt;button&gt;Add to Cart&lt;/button&gt;
-  &lt;/div&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
+...
 &lt;/snap-carousel&gt;</code></pre>
         </div>
         <snap-carousel displayed="3" per-page="2" gap="1rem" padding="2rem" controls nav loop>
           <ul slot="scroller" style="padding-block: 1rem;">
             <li>
               <div class="product-card">
-                <img src="https://picsum.photos/300/200" alt="Premium Headphones">
+                <img loading="lazy" src="https://picsum.photos/300/200" alt="Premium Headphones">
                 <h3>Premium Headphones</h3>
                 <p class="price">$299.99</p>
                 <button>Add to Cart</button>
@@ -133,7 +124,7 @@
             </li>
             <li>
               <div class="product-card">
-                <img src="https://picsum.photos/300/200" alt="Wireless Earbuds">
+                <img loading="lazy" src="https://picsum.photos/300/200" alt="Wireless Earbuds">
                 <h3>Wireless Earbuds</h3>
                 <p class="price">$159.99</p>
                 <button>Add to Cart</button>
@@ -141,7 +132,7 @@
             </li>
             <li>
               <div class="product-card">
-                <img src="https://picsum.photos/300/200" alt="Smart Watch">
+                <img loading="lazy" src="https://picsum.photos/300/200" alt="Smart Watch">
                 <h3>Smart Watch</h3>
                 <p class="price">$399.99</p>
                 <button>Add to Cart</button>
@@ -149,7 +140,23 @@
             </li>
             <li>
               <div class="product-card">
-                <img src="https://picsum.photos/300/200" alt="Fitness Tracker">
+                <img loading="lazy" src="https://picsum.photos/300/200" alt="Fitness Tracker">
+                <h3>Fitness Tracker</h3>
+                <p class="price">$199.99</p>
+                <button>Add to Cart</button>
+              </div>
+            </li>
+            <li>
+              <div class="product-card">
+                <img loading="lazy" src="https://picsum.photos/300/200" alt="Fitness Tracker">
+                <h3>Fitness Tracker</h3>
+                <p class="price">$199.99</p>
+                <button>Add to Cart</button>
+              </div>
+            </li>
+            <li>
+              <div class="product-card">
+                <img loading="lazy" src="https://picsum.photos/300/200" alt="Fitness Tracker">
                 <h3>Fitness Tracker</h3>
                 <p class="price">$199.99</p>
                 <button>Add to Cart</button>
@@ -180,7 +187,7 @@
               <div class="testimonial-card">
                 <div class="quote">"Amazing product! Exactly what I needed."</div>
                 <div class="author">
-                  <img src="https://picsum.photos/50/50" alt="John Doe">
+                  <img loading="lazy" src="https://picsum.photos/50/50" alt="John Doe">
                   <div>
                     <strong>John Doe</strong>
                     <span>CEO, TechCorp</span>
@@ -192,7 +199,7 @@
               <div class="testimonial-card">
                 <div class="quote">"The best solution we've found in the market."</div>
                 <div class="author">
-                  <img src="https://picsum.photos/50/50" alt="Jane Smith">
+                  <img loading="lazy" src="https://picsum.photos/50/50" alt="Jane Smith">
                   <div>
                     <strong>Jane Smith</strong>
                     <span>Product Manager, DesignCo</span>
@@ -204,7 +211,7 @@
               <div class="testimonial-card">
                 <div class="quote">"Outstanding support and regular updates."</div>
                 <div class="author">
-                  <img src="https://picsum.photos/50/50" alt="Mike Johnson">
+                  <img loading="lazy" src="https://picsum.photos/50/50" alt="Mike Johnson">
                   <div>
                     <strong>Mike Johnson</strong>
                     <span>Developer, DevTeam</span>
@@ -233,25 +240,25 @@
           <ul slot="scroller">
             <li>
               <div class="gallery-item">
-                <img src="https://picsum.photos/800/400" alt="Gallery Image">
+                <img loading="lazy" src="https://picsum.photos/800/400" alt="Gallery Image">
                 <div class="caption">Beautiful landscape</div>
               </div>
             </li>
             <li>
               <div class="gallery-item">
-                <img src="https://picsum.photos/800/400" alt="Gallery Image">
+                <img loading="lazy" src="https://picsum.photos/800/400" alt="Gallery Image">
                 <div class="caption">City architecture</div>
               </div>
             </li>
             <li>
               <div class="gallery-item">
-                <img src="https://picsum.photos/800/400" alt="Gallery Image">
+                <img loading="lazy" src="https://picsum.photos/800/400" alt="Gallery Image">
                 <div class="caption">Nature photography</div>
               </div>
             </li>
             <li>
               <div class="gallery-item">
-                <img src="https://picsum.photos/800/400" alt="Gallery Image">
+                <img loading="lazy" src="https://picsum.photos/800/400" alt="Gallery Image">
                 <div class="caption">Urban life</div>
               </div>
             </li>
@@ -279,7 +286,7 @@
             <li>
               <div class="property-card">
                 <div class="image-gallery">
-                  <img src="https://picsum.photos/600/400" alt="Modern Apartment">
+                  <img loading="lazy" src="https://picsum.photos/600/400" alt="Modern Apartment">
                   <span class="status new">New Listing</span>
                   <button class="favorite">♡</button>
                 </div>
@@ -302,7 +309,7 @@
             <li>
               <div class="property-card">
                 <div class="image-gallery">
-                  <img src="https://picsum.photos/600/400" alt="Luxury Villa">
+                  <img loading="lazy" src="https://picsum.photos/600/400" alt="Luxury Villa">
                   <span class="status featured">Featured</span>
                   <button class="favorite">♡</button>
                 </div>
@@ -325,7 +332,7 @@
             <li>
               <div class="property-card">
                 <div class="image-gallery">
-                  <img src="https://picsum.photos/600/400" alt="Family Home">
+                  <img loading="lazy" src="https://picsum.photos/600/400" alt="Family Home">
                   <span class="status reduced">Price Reduced</span>
                   <button class="favorite">♡</button>
                 </div>
@@ -369,7 +376,7 @@
             <li>
               <div class="product-comparison">
                 <div class="header">
-                  <img src="https://picsum.photos/100/100" alt="Basic Plan">
+                  <img loading="lazy" src="https://picsum.photos/100/100" alt="Basic Plan">
                   <h3>Basic Plan</h3>
                   <p class="price">$9.99<span>/month</span></p>
                 </div>
@@ -398,7 +405,7 @@
               <div class="product-comparison featured">
                 <div class="header">
                   <div class="badge">Popular</div>
-                  <img src="https://picsum.photos/100/100" alt="Pro Plan">
+                  <img loading="lazy" src="https://picsum.photos/100/100" alt="Pro Plan">
                   <h3>Pro Plan</h3>
                   <p class="price">$19.99<span>/month</span></p>
                 </div>
@@ -426,7 +433,7 @@
             <li>
               <div class="product-comparison">
                 <div class="header">
-                  <img src="https://picsum.photos/100/100" alt="Enterprise Plan">
+                  <img loading="lazy" src="https://picsum.photos/100/100" alt="Enterprise Plan">
                   <h3>Enterprise Plan</h3>
                   <p class="price">$49.99<span>/month</span></p>
                 </div>
@@ -454,7 +461,7 @@
             <li>
               <div class="product-comparison">
                 <div class="header">
-                  <img src="https://picsum.photos/100/100" alt="Custom Plan">
+                  <img loading="lazy" src="https://picsum.photos/100/100" alt="Custom Plan">
                   <h3>Custom Plan</h3>
                   <p class="price">Contact Us</p>
                 </div>
@@ -491,6 +498,7 @@
     displayed="3"
     per-page="3"
     gap="1rem"
+    padding="0 2rem"
     controls
     nav
     class="film-carousel"
@@ -498,12 +506,12 @@
 ...
 &lt;/snap-carousel&gt;</code></pre>
           </div>
-          <snap-carousel displayed="3" per-page="3" gap="1rem" padding="0 4rem" controls nav class="film-carousel">
+          <snap-carousel displayed="3" per-page="3" gap="1rem" padding="0 2rem" controls nav class="film-carousel">
             <ul slot="scroller">
               <li>
                 <div class="film-card">
                   <div class="poster">
-                    <img src="https://picsum.photos/seed/frontier/300/450" alt="The Last Frontier">
+                    <img loading="lazy" src="https://picsum.photos/seed/frontier/300/450" alt="The Last Frontier">
                     <div class="rating">
                       <span class="age">12+</span>
                       <span class="score">★ 8.5</span>
@@ -528,7 +536,7 @@
               <li>
                 <div class="film-card">
                   <div class="poster">
-                    <img src="https://picsum.photos/seed/urban/300/450" alt="Urban Legends">
+                    <img loading="lazy" src="https://picsum.photos/seed/urban/300/450" alt="Urban Legends">
                     <div class="rating">
                       <span class="age">15+</span>
                       <span class="score">★ 7.9</span>
@@ -553,7 +561,7 @@
               <li>
                 <div class="film-card">
                   <div class="poster">
-                    <img src="https://picsum.photos/seed/heist/300/450" alt="The Grand Heist">
+                    <img loading="lazy" src="https://picsum.photos/seed/heist/300/450" alt="The Grand Heist">
                     <div class="rating">
                       <span class="age">16+</span>
                       <span class="score">★ 8.2</span>
@@ -578,7 +586,7 @@
               <li>
                 <div class="film-card">
                   <div class="poster">
-                    <img src="https://picsum.photos/seed/echoes/300/450" alt="Echoes of Time">
+                    <img loading="lazy" src="https://picsum.photos/seed/echoes/300/450" alt="Echoes of Time">
                     <div class="rating">
                       <span class="age">12+</span>
                       <span class="score">★ 8.7</span>
@@ -603,7 +611,7 @@
               <li>
                 <div class="film-card">
                   <div class="poster">
-                    <img src="https://picsum.photos/seed/wild/300/450" alt="Wild Hearts">
+                    <img loading="lazy" src="https://picsum.photos/seed/wild/300/450" alt="Wild Hearts">
                     <div class="rating">
                       <span class="age">PG</span>
                       <span class="score">★ 7.8</span>
@@ -628,7 +636,7 @@
               <li>
                 <div class="film-card">
                   <div class="poster">
-                    <img src="https://picsum.photos/seed/frontier/300/450" alt="The Last Frontier">
+                    <img loading="lazy" src="https://picsum.photos/seed/frontier/300/450" alt="The Last Frontier">
                     <div class="rating">
                       <span class="age">12+</span>
                       <span class="score">★ 8.5</span>
@@ -653,7 +661,7 @@
               <li>
                 <div class="film-card">
                   <div class="poster">
-                    <img src="https://picsum.photos/seed/urban/300/450" alt="Urban Legends">
+                    <img loading="lazy" src="https://picsum.photos/seed/urban/300/450" alt="Urban Legends">
                     <div class="rating">
                       <span class="age">15+</span>
                       <span class="score">★ 7.9</span>
@@ -678,7 +686,7 @@
               <li>
                 <div class="film-card">
                   <div class="poster">
-                    <img src="https://picsum.photos/seed/heist/300/450" alt="The Grand Heist">
+                    <img loading="lazy" src="https://picsum.photos/seed/heist/300/450" alt="The Grand Heist">
                     <div class="rating">
                       <span class="age">16+</span>
                       <span class="score">★ 8.2</span>
@@ -703,7 +711,7 @@
               <li>
                 <div class="film-card">
                   <div class="poster">
-                    <img src="https://picsum.photos/seed/echoes/300/450" alt="Echoes of Time">
+                    <img loading="lazy" src="https://picsum.photos/seed/echoes/300/450" alt="Echoes of Time">
                     <div class="rating">
                       <span class="age">12+</span>
                       <span class="score">★ 8.7</span>
@@ -728,7 +736,7 @@
               <li>
                 <div class="film-card">
                   <div class="poster">
-                    <img src="https://picsum.photos/seed/wild/300/450" alt="Wild Hearts">
+                    <img loading="lazy" src="https://picsum.photos/seed/wild/300/450" alt="Wild Hearts">
                     <div class="rating">
                       <span class="age">PG</span>
                       <span class="score">★ 7.8</span>
@@ -754,293 +762,187 @@
           </snap-carousel>
       </example>
 
-      <example id="custom-navigation">
+      <example id="customization">
         <div>
-            <h2>Custom Navigation</h2>
-            <small>Showcase of customized navigation styles and pagination layouts</small>
+            <h2>Custom Navigation & addictionnal options</h2>
+            <small>Showcase of customized navigation styles and additional options</small>
             <pre><code class="language-html">&lt;snap-carousel
     displayed="1"
     controls
     nav
     pager
+    scrollbar
+    vertical
+    stop
     class="custom-nav-carousel"
+    style="height: 400px;"
 &gt;
-&lt;style&gt;
-  .custom-pagination {
-    gap: .7rem;
-    display: flex;
-    position: absolute;
-    bottom: 1rem;
-    width: 100%;
-    justify-content: center;
-  }
+  &lt;style&gt;
+    .custom-pagination {
+      gap: .7rem;
+      display: flex;
+      position: absolute;
+      bottom: 1rem;
+      width: 100%;
+      justify-content: center;
+    }
 
-  .custom-pagination button {
-    font-size: 0;
-    border: none;
-    padding: 20px 0;
-    background: transparent;
-    cursor: pointer;
-  }
+    .custom-pagination button {
+      font-size: 0;
+      border: none;
+      padding: 20px 0;
+      background: transparent;
+      cursor: pointer;
+    }
 
-  .custom-pagination button::after {
-    content: '';
-    display: block;
-    width: 3rem;
-    height: 0.3rem;
-    padding: 0;
-    border-radius: 0;
-    background: var(--border);
-    transition: all 0.3s ease;
-    font-size: 0px;
-    transform: translateY(2px);
-  }
+    .custom-pagination button::after {
+      content: '';
+      display: block;
+      width: 3rem;
+      height: 0.3rem;
+      padding: 0;
+      border-radius: 0;
+      background: var(--border);
+      transition: all 0.3s ease;
+      font-size: 0px;
+      transform: translateY(2px);
+    }
 
-  .custom-pagination [aria-selected="true"]::after {
-    background: var(--primary);
-  }
+    .custom-pagination [aria-selected="true"]::after {
+      background: var(--primary);
+    }
 
-  .custom-pagination button:hover::after {
-    background: var(--primary-dark);
-    transform: none;
-  }
+    .custom-pagination button:hover::after {
+      background: var(--primary-dark);
+      transform: none;
+    }
 
-  .custom-nav-carousel::part(next-button) {
-    position: absolute;
-    right: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
-  }
+    .custom-nav-carousel::part(next-button) {
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+    }
 
-  .custom-nav-button {
-    border-radius: 30px;
-    pointer-events: auto;
-    background: var(--secondary);
-    box-shadow: var(--shadow);
-    color: #333;
-    padding: 8px;
+    .custom-nav-button {
+      border-radius: 30px;
+      pointer-events: auto;
+      background: var(--secondary);
+      box-shadow: var(--shadow);
+      color: #333;
+      padding: 8px;
 
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    border: none;
-    left: 1rem;
-  }
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      border: none;
+      left: 1rem;
+    }
 
-  .custom-nav-button[disabled] {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
+    .custom-nav-button[disabled] {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
 
-  .custom-nav-button:hover {
-    scale: 1.1;
-  }
+    .custom-nav-button:hover {
+      scale: 1.1;
+    }
 
-  .custom-nav-button[modifier="2"] {
-    transform: translateY(50px);
-  }
+    .custom-nav-button[modifier="2"] {
+      transform: translateY(50px);
+    }
 
-  .custom-nav-carousel::part(pager) {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    background: var(--bg);
-    padding: 0.5rem 1rem;
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow);
-    margin: 0;
-  }
+    .custom-nav-carousel::part(pager) {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: var(--bg);
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      margin: 0;
+    }
 
-  .custom-nav-carousel::part(current) {
-    font-size: 2rem;
-    color: var(--text);
-  }
+    .custom-nav-carousel::part(current) {
+      font-size: 2rem;
+      color: var(--text);
+    }
 
-  .custom-nav-carousel::part(buttons) {
-    margin: 0;
-  }
-&lt;/style&gt;
-&lt;ul slot="scroller"&gt;
-  &lt;li&gt;
-    &lt;div class="nav-demo-slide"&gt;
-      &lt;h3&gt;Custom Navigation Demo&lt;/h3&gt;
-      &lt;p&gt;Showcasing different navigation styles&lt;/p&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
+    .custom-nav-carousel::part(buttons) {
+      margin: 0;
+    }
+  &lt;/style&gt;
+  &lt;ul slot="scroller"&gt;
+    &lt;li style="position: sticky;left: 0;top: 0;"&gt;
+      &lt;div style="background: var(--primary); color: #FFF; padding: 1rem; border-radius: var(--radius-md);position: absolute;width: 200px;top:2rem;left:2rem;"&gt;
+        This item is not counted as a slide
+      &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;div class="nav-demo-slide"&gt;
+        &lt;h3&gt;Custom Navigation Demo&lt;/h3&gt;
+        &lt;p&gt;Showcasing different navigation styles&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
 
-&lt;div slot="pagination" class="custom-pagination"&gt;
-  &lt;!-- buttons will be added here automatically --&gt;
-&lt;/div&gt;
+  &lt;div slot="pagination" class="custom-pagination"&gt;
+    &lt;!-- buttons will be added here automatically --&gt;
+  &lt;/div&gt;
 
-&lt;!-- Change the default prev button by a custom one --&gt;
-&lt;button slot="prev-buttons" class="custom-nav-button" direction="prev"&gt;
-  &lt;svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"&gt;&lt;path d="M220-240v-480h80v480h-80Zm520 0L380-480l360-240v480Zm-80-240Zm0 90v-180l-136 90 136 90Z"/&gt;&lt;/svg&gt;
-&lt;/button&gt;
+  &lt;!-- Change the default prev button by a custom one --&gt;
+  &lt;button slot="prev-buttons" class="custom-nav-button" direction="prev"&gt;
+    &lt;svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"&gt;&lt;path d="M220-240v-480h80v480h-80Zm520 0L380-480l360-240v480Zm-80-240Zm0 90v-180l-136 90 136 90Z"/&gt;&lt;/svg&gt;
+  &lt;/button&gt;
 
-&lt;!-- Add a completely custom prev button which goes back 2 slides --&gt;
-&lt;button slot="prev-buttons" class="custom-nav-button" direction="prev" modifier="2"&gt;Prev (x2)&lt;/button&gt;
+  &lt;!-- Add a completely custom prev button which goes back 2 slides --&gt;
+  &lt;button slot="prev-buttons" class="custom-nav-button" direction="prev" modifier="2"&gt;Prev (x2)&lt;/button&gt;
 
-&lt;!-- Change the next button icon --&gt;
-&lt;span slot="next-icon"&gt;
-  &lt;svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"&gt;&lt;path d="M660-240v-480h80v480h-80Zm-440 0v-480l360 240-360 240Zm80-240Zm0 90 136-90-136-90v180Z"/&gt;&lt;/svg&gt;
-&lt;/span&gt;
+  &lt;!-- Change the next button icon --&gt;
+  &lt;span slot="next-icon"&gt;
+    &lt;svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"&gt;&lt;path d="M660-240v-480h80v480h-80Zm-440 0v-480l360 240-360 240Zm80-240Zm0 90 136-90-136-90v180Z"/&gt;&lt;/svg&gt;
+  &lt;/span&gt;
 
-&lt;!-- Change the separator text --&gt;
-&lt;span slot="sep"&gt;
-  OF
-&lt;/span&gt;
+  &lt;!-- Change the separator text --&gt;
+  &lt;span slot="sep"&gt;
+    OF
+  &lt;/span&gt;
 
-&lt;!-- Remove the next buttton label --&gt;
-&lt;span slot="next-label"&gt;&lt;/span&gt;
+  &lt;!-- Remove the next buttton label --&gt;
+  &lt;span slot="next-label"&gt;&lt;/span&gt;
 &lt;/snap-carousel&gt;</code></pre>
           </div>
-          <snap-carousel displayed="1" controls nav pager gap="1rem" class="custom-nav-carousel">
-            <style>
-              .custom-pagination {
-                gap: .7rem;
-                display: flex;
-                position: absolute;
-                bottom: 1rem;
-                width: 100%;
-                justify-content: center;
-              }
 
-              .custom-pagination button {
-                font-size: 0;
-                border: none;
-                padding: 20px 0;
-                background: transparent;
-                cursor: pointer;
-              }
-
-              .custom-pagination button::after {
-                content: '';
-                display: block;
-                width: 3rem;
-                height: 0.3rem;
-                padding: 0;
-                border-radius: 0;
-                background: var(--border);
-                transition: all 0.3s ease;
-                font-size: 0px;
-                transform: translateY(2px);
-              }
-
-              .custom-pagination [aria-selected="true"]::after {
-                background: var(--primary);
-              }
-
-              .custom-pagination button:hover::after {
-                background: var(--primary-dark);
-                transform: none;
-              }
-
-              .custom-nav-carousel::part(next-button) {
-                position: absolute;
-                right: 1rem;
-                top: 50%;
-                transform: translateY(-50%);
-              }
-
-              .custom-nav-button {
-                border-radius: 30px;
-                pointer-events: auto;
-                background: var(--secondary);
-                box-shadow: var(--shadow);
-                color: #333;
-                padding: 8px;
-
-                position: absolute;
-                top: 50%;
-                transform: translateY(-50%);
-                border: none;
-                left: 1rem;
-              }
-
-              .custom-nav-button[disabled] {
-                opacity: 0.5;
-                cursor: not-allowed;
-              }
-
-              .custom-nav-button:hover {
-                scale: 1.1;
-              }
-
-              .custom-nav-button[modifier="2"] {
-                transform: translateY(50px);
-              }
-
-              .custom-nav-carousel::part(pager) {
-                position: absolute;
-                top: 1rem;
-                right: 1rem;
-                background: var(--bg);
-                padding: 0.5rem 1rem;
-                border-radius: var(--radius-lg);
-                box-shadow: var(--shadow);
-                margin: 0;
-              }
-
-              .custom-nav-carousel::part(current) {
-                font-size: 2rem;
-                color: var(--text);
-              }
-
-              .custom-nav-carousel::part(buttons) {
-                margin: 0;
-              }
-
-              .nav-demo-slide {
-                height: 400px;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                text-align: center;
-                background: var(--bg-alt);
-                border-radius: var(--radius-lg);
-                border: 1px solid var(--border);
-              }
-
-              .nav-demo-slide h3 {
-                font-size: 2rem;
-                margin: 0 0 1rem;
-                background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-              }
-
-              .nav-demo-slide p {
-                color: var(--text-light);
-                font-size: 1.1rem;
-                margin: 0;
-              }
-            </style>
+          <snap-carousel scrollbar vertical stop displayed="1" controls nav pager class="custom-nav-carousel" style="height: 400px;">
 
             <ul slot="scroller">
+              <li style="position: sticky;left: 0;top: 0;">
+                <div style="background: var(--primary); color: #FFF; padding: 1rem; border-radius: var(--radius-md);position: absolute;width: 200px;top:2rem;left:2rem;">
+                  This item is not counted as a slide
+                </div>
+              </li>
               <li>
-                <div class="nav-demo-slide">
+                <div class="nav-demo-slide" style="background: aquamarine;">
                   <h3>Modern Navigation</h3>
                   <p>Line indicators with floating controls</p>
                 </div>
               </li>
               <li>
-                <div class="nav-demo-slide">
+                <div class="nav-demo-slide" style="background: lightgreen;">
                   <h3>Sleek Design</h3>
                   <p>Minimalist and functional</p>
                 </div>
               </li>
               <li>
-                <div class="nav-demo-slide">
+                <div class="nav-demo-slide" style="background: lightsalmon;">
                   <h3>Custom Styling</h3>
-                  <p>Fully customizable navigation</p>
+                  <p style="color: #FFF;">Fully customizable navigation</p>
                 </div>
               </li>
               <li>
-                <div class="nav-demo-slide">
+                <div class="nav-demo-slide" style="background: lightseagreen;">
                   <h3>Responsive Layout</h3>
-                  <p>Adapts to any screen size</p>
+                  <p style="color: #FFF;">Adapts to any screen size</p>
                 </div>
               </li>
             </ul>
@@ -1078,83 +980,100 @@
       <small>Different ways to import and use the carousel features</small>
 
       <example>
-        <h3>1. Basic Usage (All Features)</h3>
-        <pre><code class="language-html">&lt;!-- Using IIFE bundle in browser --&gt;
-        &lt;script src="snap-carousel.iife.js"&gt;&lt;/script&gt;
+        <div>
+          <h3>1. Basic Usage (All Features)</h3>
+          <pre><code class="language-html">&lt;!-- Using IIFE bundle in browser --&gt;
+&lt;script src="snap-carousel.iife.js"&gt;&lt;/script&gt;
+&lt;snap-carousel displayed="3" gap="20" controls nav&gt;
+  &lt;div slot="scroller"&gt;
+    &lt;div&gt;Slide 1&lt;/div&gt;
+    &lt;div&gt;Slide 2&lt;/div&gt;
+    &lt;div&gt;Slide 3&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/snap-carousel&gt;</code></pre>
+        </div>
 
-        &lt;snap-carousel displayed="3" gap="20" controls nav&gt;
-          &lt;div slot="scroller"&gt;
-            &lt;div&gt;Slide 1&lt;/div&gt;
-            &lt;div&gt;Slide 2&lt;/div&gt;
-            &lt;div&gt;Slide 3&lt;/div&gt;
-          &lt;/div&gt;
-        &lt;/snap-carousel&gt;</code></pre>
-        <h3>2. ES Modules Usage</h3>
-        <pre><code class="language-javascript">// Import everything
-        import { SnapCarousel } from '@snap-carousel/snap-carousel';
+        <div>
+          <h3>2. ES Modules Usage</h3>
+          <pre><code class="language-javascript">// Import everything
+import { SnapCarousel } from '@snap-carousel/snap-carousel';
 
-        // Register the web component
-        customElements.define('snap-carousel', SnapCarousel);</code></pre>
-        <h3>3. Custom Build with Selected Features</h3>
-        <pre><code class="language-javascript">// Import base and features
-        import { BaseCarousel, createCarousel } from '@snap-carousel/base-carousel';
-        import { NavFeature } from '@snap-carousel/features/nav';
-        import { PagerFeature } from '@snap-carousel/features/pager';
+// Register the web component
+customElements.define('snap-carousel', SnapCarousel);</code></pre>
+        </div>
 
-        // Create custom carousel with only navigation and pager
-        const CustomCarousel = createCarousel(NavFeature, PagerFeature);
-        customElements.define('custom-carousel', CustomCarousel);
+        <div>
+          <h3>3. Custom Build with Selected Features</h3>
+          <pre><code class="language-javascript">// Import base and features
+import { BaseCarousel, createCarousel } from '@snap-carousel/base-carousel';
+import { NavFeature } from '@snap-carousel/features/nav';
+import { PagerFeature } from '@snap-carousel/features/pager';
 
-        // Use in HTML
-        &lt;custom-carousel displayed="3" nav pager&gt;
-          &lt;div slot="scroller"&gt;...&lt;/div&gt;
-        &lt;/custom-carousel&gt;</code></pre>
-        <h3>4. Individual Features</h3>
-        <pre><code class="language-javascript">// Import specific features
-        import { ControlsFeature } from '@snap-carousel/features/controls';
-        import { NavFeature } from '@snap-carousel/features/nav';
-        import { PagerFeature } from '@snap-carousel/features/pager';
+// Create custom carousel with only navigation and pager
+const CustomCarousel = createCarousel(NavFeature, PagerFeature);
+customElements.define('custom-carousel', CustomCarousel);
 
-        // Create different variants
-        const MinimalCarousel = createCarousel(ControlsFeature);
-        const FullCarousel = createCarousel(
-          ControlsFeature,
-          NavFeature,
-          PagerFeature
-        );
+// Use in HTML
+&lt;custom-carousel displayed="3" nav pager&gt;
+  &lt;div slot="scroller"&gt;...&lt;/div&gt;
+&lt;/custom-carousel&gt;</code></pre>
+        </div>
 
-        // Register custom elements
-        customElements.define('minimal-carousel', MinimalCarousel);
-        customElements.define('full-carousel', FullCarousel);</code></pre>
-        <h3>5. With Module Bundlers</h3>
-        <pre><code class="language-javascript">// vite.config.js
-        export default defineConfig({
-          build: {
-            lib: {
-        entry: 'src/main.js',
-        formats: ['es']
-            }
-          }
-        });
+        <div>
+          <h3>4. Individual Features</h3>
+          <pre><code class="language-javascript">// Import specific features
+import { ControlsFeature } from '@snap-carousel/features/controls';
+import { NavFeature } from '@snap-carousel/features/nav';
+import { PagerFeature } from '@snap-carousel/features/pager';
 
-        // main.js
-        import { BaseCarousel, createCarousel } from '@snap-carousel/base-carousel';
-        import { ControlsFeature } from '@snap-carousel/features/controls';
+// Create different variants
+const MinimalCarousel = createCarousel(ControlsFeature);
+const FullCarousel = createCarousel(
+  ControlsFeature,
+  NavFeature,
+  PagerFeature
+);
 
-        // Tree-shaking will remove unused features
-        const MyCarousel = createCarousel(ControlsFeature);
-        customElements.define('my-carousel', MyCarousel);</code></pre>
-        <h3>6. Available Imports</h3>
-        <pre><code class="language-javascript">// Base carousel and composition
-        import { BaseCarousel, createCarousel } from '@snap-carousel/base-carousel';
+// Register custom elements
+customElements.define('minimal-carousel', MinimalCarousel);
+customElements.define('full-carousel', FullCarousel);</code></pre>
+        </div>
 
-        // Individual features
-        import { ControlsFeature } from '@snap-carousel/features/controls';
-        import { NavFeature } from '@snap-carousel/features/nav';
-        import { PagerFeature } from '@snap-carousel/features/pager';
+        <div>
+          <h3>5. With Module Bundlers</h3>
+          <pre><code class="language-javascript">// vite.config.js
+export default defineConfig({
+  build: {
+    lib: {
+      entry: 'src/main.js',
+      formats: ['es']
+    }
+  }
+});
 
-        // Full bundle with all features
-        import { SnapCarousel } from '@snap-carousel/snap-carousel';</code></pre>
+// main.js
+import { BaseCarousel, createCarousel } from '@snap-carousel/base-carousel';
+import { ControlsFeature } from '@snap-carousel/features/controls';
+
+// Tree-shaking will remove unused features
+const MyCarousel = createCarousel(ControlsFeature);
+customElements.define('my-carousel', MyCarousel);</code></pre>
+        </div>
+
+        <div>
+          <h3>6. Available Imports</h3>
+          <pre><code class="language-javascript">// Base carousel and composition
+import { BaseCarousel, createCarousel } from '@snap-carousel/base-carousel';
+
+// Individual features
+import { ControlsFeature } from '@snap-carousel/features/controls';
+import { NavFeature } from '@snap-carousel/features/nav';
+import { PagerFeature } from '@snap-carousel/features/pager';
+
+// Full bundle with all features
+import { SnapCarousel } from '@snap-carousel/snap-carousel';</code></pre>
+        </div>
+
         <div class="demo">
           <snap-carousel displayed="1" controls nav pager>
             <ul slot="scroller">
@@ -1272,6 +1191,12 @@
             <div class="default">Default: <code>null</code></div>
             <p>Breakpoint-specific settings (e.g., responsive='[{"breakpoint": "1024", "settings": {"displayed": "2"}}]').</p>
           </div>
+          <div class="option">
+            <h3>scrollbar</h3>
+            <div class="type">Type: <code>boolean</code></div>
+            <div class="default">Default: <code>false</code></div>
+            <p>Show scrollbar.</p>
+          </div>
         </div>
       </example>
     </section>
@@ -1280,16 +1205,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script>
   <script>
     hljs.highlightAll();
-
-    // Smooth scroll to sections
-    document.querySelectorAll('.doc-nav a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        document.querySelector(this.getAttribute('href')).scrollIntoView({
-          behavior: 'smooth'
-        });
-      });
-    });
   </script>
 </body>
 

@@ -164,7 +164,46 @@ export const SnapCarousel = createCarousel(
   PagerFeature
 );
 
+// Create carousel with only navigation
+export const SnapCarouselNav = createCarousel(
+  NavFeature
+);
+
+// Create carousel with only pager
+export const SnapCarouselPager = createCarousel(
+  PagerFeature
+);
+
+// Create carousel with only controls
+export const SnapCarouselControls = createCarousel(
+  ControlsFeature
+);
+
+// Create carousel with only navigation and controls
+export const SnapCarouselNavControls = createCarousel(
+  NavFeature,
+  ControlsFeature
+);
+
+// Create carousel with only navigation and pager
+export const SnapCarouselNavPager = createCarousel(
+  NavFeature,
+  PagerFeature
+);
+
+// Create carousel with only pager and controls
+export const SnapCarouselPagerControls = createCarousel(
+  PagerFeature,
+  ControlsFeature
+);
+
 // Register as custom element if supported
 if ('customElements' in window) {
   customElements.define('snap-carousel', SnapCarousel);
+  customElements.define('snap-carousel-nav', SnapCarouselNav);
+  customElements.define('snap-carousel-pager', SnapCarouselPager);
+  customElements.define('snap-carousel-controls', SnapCarouselControls);
+  customElements.define('snap-carousel-nav-controls', SnapCarouselNavControls);
+  customElements.define('snap-carousel-nav-pager', SnapCarouselNavPager);
+  customElements.define('snap-carousel-pager-controls', SnapCarouselPagerControls);
 }

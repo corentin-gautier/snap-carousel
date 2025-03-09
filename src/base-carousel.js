@@ -11,7 +11,7 @@ export class BaseCarousel extends HTMLElement {
   // Private fields
   #preventUiUpdate = false;
   #preventNextEvent = false;
-  #className = 'snp-c';
+  #className = 'snap-carousel';
 
   // State management
   #state = {
@@ -151,10 +151,6 @@ export class BaseCarousel extends HTMLElement {
     if (this.#state.ready) this.#setup();
   }
 
-  // -----------------------------------------------------------------------------
-  // Public API
-  // -----------------------------------------------------------------------------
-
   /**
    * Navigate to a specific page
    * @param {number} page - Page index to navigate to
@@ -204,10 +200,6 @@ export class BaseCarousel extends HTMLElement {
   next() {
     this.goTo(this.state.index + 1);
   }
-
-  // -----------------------------------------------------------------------------
-  // Private Methods: Setup & Initialization
-  // -----------------------------------------------------------------------------
 
   /**
    * Initial carousel preparation
@@ -272,7 +264,7 @@ export class BaseCarousel extends HTMLElement {
   }
 
   #computeChildren() {
-    const items = Array.from(this.#elements.scroller.children).filter(i => !['absolute', 'fixed'].includes(getComputedStyle(i).position));
+    const items = Array.from(this.#elements.scroller.children).filter(i => !['absolute', 'fixed', 'sticky'].includes(getComputedStyle(i).position));
     const count = items.length;
     this.#elements.items = items;
     this.#state.itemsCount = count;
@@ -424,7 +416,7 @@ export class BaseCarousel extends HTMLElement {
     const { displayed, gap, padding, perPage, stop, behavior } = this.#settings.current;
 
     // Create selector for scroll-snap alignment
-    const selectRule = perPage > 1 ? `*:nth-child(${perPage}n + 1)` : '*';
+    const selectRule = perPage > 1 ? `[data-index]:nth-child(${perPage}n + 1)` : '*';
 
     // Generate CSS
     const css = `
@@ -458,10 +450,6 @@ export class BaseCarousel extends HTMLElement {
       10
     );
   }
-
-  // -----------------------------------------------------------------------------
-  // Private Methods: Event Handling & Observation
-  // -----------------------------------------------------------------------------
 
   /**
    * Setup intersection and mutation observers
@@ -731,10 +719,6 @@ export class BaseCarousel extends HTMLElement {
     }
   }
 }
-
-// -----------------------------------------------------------------------------
-// Feature Composition
-// -----------------------------------------------------------------------------
 
 /**
  * Compose carousel with selected features

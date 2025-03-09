@@ -7,18 +7,18 @@ import "./node_modules/scrollyfills/dist/scrollyfills.modern.iife.js";
 import st from "./src/host.css.iife.js";
 import it from "./src/style.css.iife.js";
 import nt from "./src/template.html.iife.js";
-var f, I, w, r, u, h, y, s, A, H, O, j, q, B, F, N, J, W, z, Z, G, R, K, Q, X, Y, _, L, x, tt, et, P, U, S, V, k;
+var f, I, w, r, u, h, v, s, A, H, O, j, q, B, F, N, J, W, z, Z, G, R, K, Q, X, Y, _, L, x, tt, et, P, U, S, V, k;
 const E = class E extends HTMLElement {
   constructor() {
     super();
     m(this, s);
     m(this, f, !1);
     m(this, I, !1);
-    m(this, w, "snp-c");
+    m(this, w, "snap-carousel");
     m(this, r, { index: 0, itemsCount: 0, pageCount: 0, isVisible: !1, autoplayInterval: null, breakpoint: void 0, ready: !1, isMoving: !1, pause: !1, computedPadding: 0 });
     m(this, u, { scroller: null, items: null, sync: null });
     m(this, h, { default: {}, origin: {}, current: {} });
-    m(this, y, { init: [], updateState: [] });
+    m(this, v, { init: [], updateState: [] });
     e(this, h).default = E.defaultConfig;
   }
   get elements() {
@@ -40,7 +40,7 @@ const E = class E extends HTMLElement {
     return n(this, s, S).call(this);
   }
   registerHook(t, i) {
-    e(this, y)[t] && e(this, y)[t].push(i);
+    e(this, v)[t] && e(this, v)[t].push(i);
   }
   static get defaultConfig() {
     return { autoplay: 0, displayed: 1, perPage: 1, gap: 0, padding: 0, controls: !1, nav: !1, pager: !1, loop: !1, behavior: "smooth", stop: !1, usePause: !0, vertical: !1, responsive: [] };
@@ -67,9 +67,9 @@ const E = class E extends HTMLElement {
     T(this, f, !1);
     const { scroller: i, items: o } = e(this, u), { perPage: a, vertical: c } = e(this, h).current, b = t > e(this, r).pageCount - 1 ? 0 : t < 0 ? e(this, r).pageCount - 1 : t, g = o[b * a];
     n(this, s, x).call(this, b), e(this, r).ready = !0;
-    let v = 0, p = 0;
-    c ? v = g.offsetTop : p = n(this, s, S).call(this) ? g.offsetLeft : g.offsetLeft + g.offsetWidth - i.offsetWidth, T(this, f, !0), requestIdleCallback(() => {
-      i.scrollTo({ top: v, left: p });
+    let y = 0, p = 0;
+    c ? y = g.offsetTop : p = n(this, s, S).call(this) ? g.offsetLeft : g.offsetLeft + g.offsetWidth - i.offsetWidth, T(this, f, !0), requestIdleCallback(() => {
+      i.scrollTo({ top: y, left: p });
     }, { timeout: 100 });
   }
   prev() {
@@ -79,8 +79,8 @@ const E = class E extends HTMLElement {
     this.goTo(this.state.index + 1);
   }
 };
-f = new WeakMap(), I = new WeakMap(), w = new WeakMap(), r = new WeakMap(), u = new WeakMap(), h = new WeakMap(), y = new WeakMap(), s = new WeakSet(), A = function(t, ...i) {
-  e(this, y)[t] && e(this, y)[t].forEach((o) => o.apply(this, i));
+f = new WeakMap(), I = new WeakMap(), w = new WeakMap(), r = new WeakMap(), u = new WeakMap(), h = new WeakMap(), v = new WeakMap(), s = new WeakSet(), A = function(t, ...i) {
+  e(this, v)[t] && e(this, v)[t].forEach((o) => o.apply(this, i));
 }, H = function() {
   const t = n(this, s, P).call(this, "scroller", !0)[0];
   t && (t.onscroll = n(this, s, X).bind(this), t.addEventListener("scrollend", n(this, s, _).bind(this)), window.addEventListener("resize", n(this, s, Q).bind(this)), e(this, u).scroller = t, this.ariaRoleDescription = "carousel", Object.assign(t, { role: "group", ariaLive: "polite", ariaAtomic: !1 }), n(this, s, q).call(this), n(this, s, B).call(this), n(this, s, F).call(this), n(this, s, O).call(this), n(this, s, K).call(this), e(this, r).ready = !0);
@@ -91,7 +91,7 @@ f = new WeakMap(), I = new WeakMap(), w = new WeakMap(), r = new WeakMap(), u = 
     n(this, s, Z).call(this), n(this, s, G).call(this), n(this, s, R).call(this), n(this, s, x).call(this, 0), n(this, s, A).call(this, "init");
   });
 }, q = function() {
-  const t = Array.from(e(this, u).scroller.children).filter((o) => !["absolute", "fixed"].includes(getComputedStyle(o).position)), i = t.length;
+  const t = Array.from(e(this, u).scroller.children).filter((o) => !["absolute", "fixed", "sticky"].includes(getComputedStyle(o).position)), i = t.length;
   e(this, u).items = t, e(this, r).itemsCount = i, t.forEach((o, a) => {
     o.dataset.index = a, Object.assign(o, { ariaSetSize: i, ariaPosInSet: a + 1, ariaRoleDescription: "slide", role: "listitem" });
   });
@@ -128,14 +128,14 @@ f = new WeakMap(), I = new WeakMap(), w = new WeakMap(), r = new WeakMap(), u = 
 }, G = function() {
   const t = document.querySelector("#" + e(this, r).id + "-styles");
   t && t.remove();
-  const { displayed: i, gap: o, padding: a, perPage: c, stop: b, behavior: g } = e(this, h).current, v = c > 1 ? `*:nth-child(${c}n + 1)` : "*", p = `
+  const { displayed: i, gap: o, padding: a, perPage: c, stop: b, behavior: g } = e(this, h).current, y = c > 1 ? `[data-index]:nth-child(${c}n + 1)` : "*", p = `
       #${e(this, r).id} {
         --sc-perpage: ${i};
         --sc-gap: ${n(this, s, V).call(this, o)};
         --sc-padding: ${n(this, s, V).call(this, a)};
         --sc-behavior: ${g};
       }
-      #${e(this, r).id} [slot="scroller"] > ${v} {
+      #${e(this, r).id} [slot="scroller"] > ${y} {
         scroll-snap-align: start;
         scroll-snap-stop: ${b ? "always" : "normal"}
       }
@@ -182,11 +182,11 @@ f = new WeakMap(), I = new WeakMap(), w = new WeakMap(), r = new WeakMap(), u = 
   const { scroller: i, items: o } = e(this, u), { perPage: a, vertical: c } = e(this, h).current, b = n(this, s, S).call(this);
   let g = 0;
   g = c ? i.scrollTop : b ? i.scrollLeft : i.scrollLeft + i.clientWidth;
-  let v = o.map((p) => {
+  let y = o.map((p) => {
     let C = 0;
     return C = c ? p.offsetTop - (e(this, r).computedPadding || 0) - g : (b ? p.offsetLeft : p.offsetLeft + p.clientWidth) - (e(this, r).computedPadding || 0) - g, { index: parseInt(p.dataset.index, 10), distance: Math.abs(C) };
   }).reduce((p, C) => !p || C.distance < p.distance ? C : p, null);
-  return t ? v : Math.ceil(v.index / a);
+  return t ? y : Math.ceil(y.index / a);
 }, et = function() {
   const { sync: t } = e(this, h).current;
   t && e(this, r).ready && (e(this, u).sync = e(this, u).sync || document.querySelectorAll(t) || [], e(this, u).sync.forEach((i) => {
