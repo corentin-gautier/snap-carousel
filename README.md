@@ -1,6 +1,6 @@
 # Snap Carousel
 
-[![npm version](https://badge.fury.io/js/snap-carousel.svg)](https://badge.fury.io/js/snap-carousel)
+[![npm version](https://badge.fury.io/js/cg-snap-carousel.svg)](https://badge.fury.io/js/cg-snap-carousel)
 [![gzip size](https://img.badgesize.io/https://unpkg.com/cg-snap-carousel/dist/snap-carousel.min.js?compression=gzip)](https://unpkg.com/cg-snap-carousel/dist/snap-carousel.min.js)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
