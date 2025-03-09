@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.10.4](https://github.com/corentin-gautier/snap-carousel/compare/v1.10.3...v1.10.4) (2025-03-09)
+
+
+### Bug Fixes
+
+* aria-controls ([d695faf](https://github.com/corentin-gautier/snap-carousel/commit/d695faf11839efe59c9d2938d234c92a93b98725))
+
 ### [1.10.3](https://github.com/corentin-gautier/snap-carousel/compare/v1.10.2...v1.10.3) (2025-03-09)
 
 
