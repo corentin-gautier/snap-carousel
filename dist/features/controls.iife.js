@@ -4,7 +4,7 @@ var f = (e) => {
 var m = (e, t, s) => t.has(e) || f("Cannot " + s);
 var r = (e, t, s) => (m(e, t, "read from private field"), s ? s.call(e) : t.get(e)), u = (e, t, s) => t.has(e) ? f("Cannot add the same private member more than once") : t instanceof WeakSet ? t.add(e) : t.set(e, s);
 var d = (e, t, s) => (m(e, t, "access private method"), s);
-const C = (e) => {
+const A = (e) => {
   var t, s, p, b, g;
   return g = class extends e {
     constructor() {
@@ -20,7 +20,7 @@ const C = (e) => {
     e.setVisibility(i, !c), (l.length || h.length) && (o.push(...l, ...h), o.forEach((n) => {
       n.hasListener || (n.direction = n.getAttribute("direction") || "next", n.modifier = (n.direction === "next" ? 1 : -1) * (parseInt(n.getAttribute("modifier"), 10) || 1), n.hasListener = !0, n.addEventListener("click", () => {
         a.controls && this.goTo(this.state.index + n.modifier);
-      }), Object.assign(n, { ariaControls: this.elements.scroller.id }));
+      }), n.setAttribute("aria-controls", this.elements.scroller.id));
     }), d(this, s, b).call(this));
   }, b = function() {
     if (!r(this, t).buttons.length) return;
@@ -28,7 +28,7 @@ const C = (e) => {
     let h = !1;
     if (r(this, t).buttons.forEach((i) => {
       const o = !a && (i.direction === "next" ? c >= l - i.modifier : c < Math.abs(i.modifier));
-      i === this.shadowRoot.activeElement && o && (h = !0), i.disabled = o, i.setAttribute("aria-disabled", o);
+      i === this.shadowRoot.activeElement && o && (h = !0), i.disabled = !!o, i.setAttribute("aria-disabled", !!o);
     }), h) {
       const i = r(this, t).buttons.filter((o) => !o.disabled);
       i.length && i[0].focus();
@@ -36,5 +36,5 @@ const C = (e) => {
   }, g;
 };
 export {
-  C as ControlsFeature
+  A as ControlsFeature
 };
