@@ -5,3 +5,6 @@ node_modules
 .gitignore
 .vscode
 .DS_Store
+.github
+vite.config.ts
+tsconfig.json
