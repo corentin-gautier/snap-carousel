@@ -24,7 +24,7 @@ export const PagerFeature = Base => class extends Base {
    * Create page number display
    */
   #createPager() {
-    const { current } = this.settings;
+    const { current: currentSettings } = this.settings;
 
     // Initialize pager elements if not exists
     if (!this.#pager.container) {
@@ -41,10 +41,12 @@ export const PagerFeature = Base => class extends Base {
     // Ensure all required elements exist
     if (!this.#pager.current || !this.#pager.total) return;
 
+    const { container, current, total } = this.#pager;
+
     // Show/hide pager based on settings
-    this.#pager.container.style.display = current.pager && this.state.pageCount > 1 ? '' : 'none';
-    this.#pager.current.innerHTML = 1;
-    this.#pager.total.innerHTML = this.state.pageCount;
+    Base.setVisibility(container, currentSettings.pager && this.state.pageCount > 1);
+    current.innerHTML = 1;
+    total.innerHTML = this.state.pageCount;
   }
 
   /**

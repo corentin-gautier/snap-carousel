@@ -40,7 +40,7 @@ export const NavFeature = Base => class extends Base {
       this.#pagination.dots = [];
     }
 
-    container.style.display = current.nav && this.state.pageCount > 1 ? '' : 'none';
+    Base.setVisibility(container, current.nav && this.state.pageCount > 1);
 
     if (current.nav && container && this.state.pageCount > 1) {
       for (let index = 0; index < this.state.pageCount; index++) {

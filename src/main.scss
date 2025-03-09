@@ -161,7 +161,7 @@ code {
 }
 
 // Carousel styles
-snap-carousel {
+[snpc] {
   width: 100%;
   position: relative;
 
@@ -267,6 +267,7 @@ snap-carousel {
       }
     }
   }
+
 
   &::part(pager) {
 
