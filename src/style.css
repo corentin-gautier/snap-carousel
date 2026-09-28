@@ -1,15 +1,8 @@
-snap-carousel {
-  --sc-item-size: calc(
-    (100% / var(--perpage, 1)) - var(--gap, 0) +
-      (var(--gap, 0) / var(--perpage, 1))
-  );
-}
-
-snap-carousel:not([scrollbar]) [snpc-s]::-webkit-scrollbar {
-  display: none;
-}
-
 [snpc-s] {
+  --sc-item-size: calc(
+    (100% / var(--perpage, 1)) - var(--gap, 0px) +
+      (var(--gap, 0px) / var(--perpage, 1))
+  );
   display: flex;
 }
 
@@ -32,11 +25,52 @@ snap-carousel:not([scrollbar]) [snpc-s]::-webkit-scrollbar {
   max-height: 100%;
 }
 
-[class*="sc-anchor"] {
+.sc-anchor {
   scroll-snap-align: start;
   scroll-snap-stop: normal;
 }
 
 .sc-anchor-stop {
   scroll-snap-stop: always;
+}
+
+/* Native buttons and dots, used by SnapCarousel where supported (:state()).
+   Same content and order as the JS versions, no visual styles.
+   :where() keeps any page style stronger than these defaults. */
+:where(:state(native-controls):not([vertical]) > [snpc-s])::scroll-button(inline-start),
+:where([vertical]:state(native-controls) > [snpc-s])::scroll-button(block-start) {
+  content: var(--prev-label);
+  grid-area: 2 / 1;
+  justify-self: start;
+}
+
+:where(:state(native-controls):not([vertical]) > [snpc-s])::scroll-button(inline-end),
+:where([vertical]:state(native-controls) > [snpc-s])::scroll-button(block-end) {
+  content: var(--next-label);
+  grid-area: 2 / 1;
+  justify-self: end;
+}
+
+:where(:state(native-nav) > [snpc-s]) {
+  scroll-marker-group: after;
+  counter-reset: sc-page;
+}
+
+/* Chrome forces `contain: size` on the group: its markers never give it a
+   height, so it gets one matching the markers below. Larger custom markers
+   need a larger height. */
+:where(:state(native-nav) > [snpc-s])::scroll-marker-group {
+  order: 2;
+  height: 1.25rem;
+}
+
+:where(:state(native-nav) > [snpc-s] > .sc-page) {
+  counter-increment: sc-page;
+}
+
+:where(:state(native-nav) > [snpc-s] > .sc-page)::scroll-marker {
+  content: counter(sc-page) / "Page " counter(sc-page);
+  /* Markers inherit from their slide, keep them to the group's height */
+  font-size: 1rem;
+  line-height: 1.25;
 }

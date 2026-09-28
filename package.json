@@ -1,17 +1,24 @@
 {
     "name": "snap-carousel.js",
     "version": "1.11.2",
-    "description": "A lightweight vanilla JavaScript carousel library built with modern web technologies. Based on custom elements, scroll-snap, and scroll-padding.",
+    "description": "A lightweight vanilla JavaScript carousel library built with modern web technologies. Based on custom elements, scroll-snap, and scroll-padding. Features are only loaded when used.",
     "type": "module",
-    "main": "dist/snap-carousel.umd.js",
-    "module": "dist/snap-carousel.esm.js",
-    "unpkg": "dist/snap-carousel.umd.min.js",
+    "main": "dist/snap-carousel.js",
+    "module": "dist/snap-carousel.js",
+    "unpkg": "dist/snap-carousel.js",
     "types": "dist/types/snap-carousel.d.ts",
     "exports": {
         ".": {
-            "import": "./dist/snap-carousel.esm.js",
-            "require": "./dist/snap-carousel.umd.js",
-            "types": "./dist/types/snap-carousel.d.ts"
+            "types": "./dist/types/snap-carousel.d.ts",
+            "import": "./dist/snap-carousel.js"
+        },
+        "./base": {
+            "types": "./dist/types/base-carousel.d.ts",
+            "import": "./dist/base.js"
+        },
+        "./features/*": {
+            "types": "./dist/types/features/*.d.ts",
+            "import": "./dist/features/*.js"
         }
     },
     "files": [
@@ -24,11 +31,9 @@
     "scripts": {
         "dev": "vite",
         "build": "npm run build:lib && vite build",
-        "build:lib": "npm run build:types && npm run build:esm && npm run build:umd && npm run build:umd:min",
+        "build:lib": "vite build --mode library && npm run build:types && npm run size",
         "build:types": "mkdir -p dist/types/features && cp src/types/*.d.ts dist/types/ && cp src/types/features/*.d.ts dist/types/features/",
-        "build:esm": "vite build --mode library",
-        "build:umd": "VITE_BUILD_FORMAT=umd vite build --mode library",
-        "build:umd:min": "VITE_BUILD_FORMAT=umd VITE_BUILD_MINIFY=true vite build --mode library",
+        "size": "node scripts/size.js",
         "preview": "vite preview",
         "prepublishOnly": "npm run build",
         "test": "echo \"No tests specified\" && exit 0"
@@ -58,17 +63,13 @@
     "devDependencies": {
         "@rollup/plugin-terser": "^0.4.4",
         "@types/node": "^20.11.24",
-        "rollup-plugin-terser": "^7.0.2",
         "scrollyfills": "^1.0.3",
         "terser": "^5.39.0",
         "typescript": "^5.3.3",
         "vite": "^5.1.4"
     },
-    "peerDependencies": {
-        "scrollyfills": "^1.0.3"
-    },
     "engines": {
-        "node": ">=14.0.0"
+        "node": ">=18.0.0"
     },
     "publishConfig": {
         "access": "public"
@@ -78,5 +79,8 @@
         "url": "https://github.com/corentin-gautier"
     },
     "license": "MIT",
-    "sideEffects": false
+    "sideEffects": [
+        "./dist/snap-carousel.js",
+        "./src/snap-carousel.js"
+    ]
 }

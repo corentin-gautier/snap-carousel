@@ -2,24 +2,16 @@
  * SnapCarousel 🚀
  * A lightweight vanilla JavaScript carousel library using modern web technologies
  *
- * Features:
- * - Smooth scrolling with snap points
- * - Responsive breakpoints
- * - Touch and keyboard navigation
- * - Autoplay with pause on hover
- * - RTL support
- * - Vertical mode
+ * Importing this module registers <snap-carousel>.
  *
- * Events:
- * - scrollstart: Fired when scrolling begins
- * - scrollupdate: Fired during scroll with updated state
- * - scrollend: Fired when scrolling ends
+ * Default prev/next buttons and nav dots are drawn by the browser
+ * (::scroll-button, ::scroll-marker) where supported. Otherwise, or when the
+ * carousel needs something the native version can't do (custom slotted
+ * buttons or dots, loop, stepping by fewer slides than displayed), the JS
+ * feature is downloaded instead. The pager is always JS.
  *
- * Usage Examples:
- *
- * 1. Using as a Web Component (all features included):
  * ```html
- * <script src="snap-carousel.umd.js"></script>
+ * <script type="module" src="https://unpkg.com/snap-carousel.js"></script>
  * <snap-carousel displayed="3" gap="20" controls nav>
  *   <div slot="scroller">
  *     <div>Slide 1</div>
@@ -29,149 +21,68 @@
  * </snap-carousel>
  * ```
  *
- * 2. Using ES Modules (all features):
- * ```js
- * import { SnapCarousel } from 'snap-carousel';
- * customElements.define('snap-carousel', SnapCarousel);
- * ```
- *
- * 3. Custom Build with Selected Features:
- * ```js
- * import { BaseCarousel, createCarousel } from './base-carousel';
- * import { NavFeature } from './features/nav';
- * import { PagerFeature } from './features/pager';
- *
- * // Create custom carousel with only navigation and pager
- * const CustomCarousel = createCarousel(NavFeature, PagerFeature);
- * customElements.define('custom-carousel', CustomCarousel);
- * ```
- *
- * 4. Using Individual Features:
- * ```js
- * // Import specific features
- * import { ControlsFeature } from './features/controls';
- * import { NavFeature } from './features/nav';
- * import { PagerFeature } from './features/pager';
- *
- * // Create carousel with only the features you need
- * const MinimalCarousel = createCarousel(ControlsFeature);
- * const FullCarousel = createCarousel(ControlsFeature, NavFeature, PagerFeature);
- *
- * // Register custom elements
- * customElements.define('minimal-carousel', MinimalCarousel);
- * customElements.define('full-carousel', FullCarousel);
- * ```
- *
- * 5. Using with Module Bundlers (webpack, rollup, vite):
- * ```js
- * // Import only what you need
- * import { BaseCarousel, createCarousel } from './base-carousel';
- * import { ControlsFeature } from './features/controls';
- *
- * // Tree-shaking will remove unused features
- * const MyCarousel = createCarousel(ControlsFeature);
- * customElements.define('my-carousel', MyCarousel);
- * ```
- *
- * Configuration Options:
- *
- * @property {number} displayed=1 - Number of items visible in the viewport at once
- * @property {number} per-page=1 - Number of items to scroll per navigation action
- * @property {string} gap="0" - Space between carousel items (CSS units, e.g., "1rem", "16px")
- * @property {string} padding="0" - Inline padding around the carousel viewport (CSS units)
- * @property {boolean} controls=false - Show previous/next navigation buttons
- * @property {boolean} nav=false - Show navigation dots for direct slide access
- * @property {boolean} pager=false - Show current/total slides counter
- * @property {boolean} loop=false - Enable infinite looping of carousel items
- * @property {number} autoplay=0 - Autoplay interval in milliseconds (0 to disable)
- * @property {boolean} use-pause=false - Pause autoplay on hover
- * @property {string} behavior="smooth" - Scroll behavior ("smooth" or "auto")
- * @property {boolean} stop=false - Force stopping at each step (scroll-snap-stop: always)
- * @property {boolean} vertical=false - Enable vertical scrolling mode instead of horizontal
- * @property {object} responsive=null - Breakpoint-specific settings
- *
- * Example responsive configuration:
- * ```js
- * responsive='[{
- *   "breakpoint": "1024",
- *   "settings": {
- *     "displayed": "2",
- *     "per-page": "2"
- *   }
- * }]'
- * ```
- *
- * Available Features:
- *
- * 1. Controls Feature (ControlsFeature):
- *    - Adds previous/next navigation buttons
- *    - Customizable button appearance via slots
- *    - Automatic disable state based on carousel position
- *
- * 2. Navigation Feature (NavFeature):
- *    - Adds dot navigation for direct slide access
- *    - Customizable dot appearance and layout
- *    - Automatic active state handling
- *
- * 3. Pager Feature (PagerFeature):
- *    - Adds current/total slides counter
- *    - Customizable separator and number format
- *    - Updates automatically during navigation
- *
- * Customization:
- *
- * 1. Slots:
- *    - scroller: Main content container
- *    - prev-buttons: Previous navigation buttons
- *    - next-buttons: Next navigation buttons
- *    - prev-icon: Previous button icon
- *    - next-icon: Next button icon
- *    - prev-label: Previous button label
- *    - next-label: Next button label
- *    - pagination: Navigation dots container
- *    - sep: Pager separator
- *
- * 2. CSS Parts:
- *    - prev-button: Previous button styling
- *    - next-button: Next button styling
- *    - pagination: Navigation dots container styling
- *    - pager: Page counter styling
- *    - current: Current page number styling
- *    - total: Total pages number styling
- *
- * @example
- * <snap-carousel displayed="3" gap="20" controls nav>
- *   <div slot="scroller">
- *     <div>Slide 1</div>
- *     <div>Slide 2</div>
- *     <div>Slide 3</div>
- *   </div>
- * </snap-carousel>
+ * To build a custom element without registering <snap-carousel>, import from
+ * 'snap-carousel.js/base' and 'snap-carousel.js/features/*' instead.
  */
 
-import { BaseCarousel, createCarousel } from './base-carousel';
-import { ControlsFeature } from './features/controls';
-import { NavFeature } from './features/nav';
-import { PagerFeature } from './features/pager';
+import { BaseCarousel } from './base-carousel';
 
-// Create carousel variants with different feature combinations
-export const SnapCarousel = createCarousel(ControlsFeature, NavFeature, PagerFeature);
-export const SnapCarouselNav = createCarousel(NavFeature);
-export const SnapCarouselPager = createCarousel(PagerFeature);
-export const SnapCarouselControls = createCarousel(ControlsFeature);
-export const SnapCarouselNavControls = createCarousel(NavFeature, ControlsFeature);
-export const SnapCarouselNavPager = createCarousel(NavFeature, PagerFeature);
-export const SnapCarouselPagerControls = createCarousel(PagerFeature, ControlsFeature);
+const features = {
+  controls: () => import('./features/controls').then(module => module.controls),
+  nav: () => import('./features/nav').then(module => module.nav),
+  pager: () => import('./features/pager').then(module => module.pager)
+};
 
-// Export features and base components
+// Slots whose content only the JS features can render
+const customSlots = {
+  controls: ['prev-buttons', 'next-buttons', 'before-prev', 'after-next', 'prev-icon', 'next-icon', 'prev-label', 'next-label'],
+  nav: ['pagination']
+};
+
+let native;
+
+export class SnapCarousel extends BaseCarousel {
+  #loaded = new Set();
+
+  constructor() {
+    super();
+    // Registered before any feature, so it runs first on every init
+    this.registerHook('init', () => this.#chooseFeatures());
+  }
+
+  #chooseFeatures() {
+    const { current } = this.settings;
+
+    native ??= CSS.supports('scroll-marker-group: after');
+
+    // Native buttons scroll by about one viewport: whole displayed slides
+    const canBeNative = {
+      controls: !current.loop && current.perPage >= Math.floor(current.displayed),
+      nav: true
+    };
+
+    Object.keys(customSlots).forEach(name => {
+      const isNative = native && current[name] && canBeNative[name] &&
+        !this.querySelector(customSlots[name].map(slot => `:scope > [slot="${slot}"]`).join());
+
+      this.states[isNative ? 'add' : 'delete']('native-' + name);
+
+      // Keeps the JS feature hidden if it was loaded for another breakpoint
+      if (isNative) current[name] = false;
+    });
+
+    Object.keys(features).forEach(name => {
+      if (!current[name] || this.#loaded.has(name)) return;
+      this.#loaded.add(name);
+      features[name]().then(feature => this.use(feature));
+    });
+  }
+}
+
 export { BaseCarousel, createCarousel } from './base-carousel';
-export { ControlsFeature } from './features/controls';
-export { NavFeature } from './features/nav';
-export { PagerFeature } from './features/pager';
 
 export default SnapCarousel;
 
-// Register default snap-carousel only if this is the main bundle
-if ('customElements' in window && import.meta.url.endsWith('snap-carousel.js')) {
+if (typeof window !== 'undefined') {
   BaseCarousel.registerElement('snap-carousel', SnapCarousel);
 }

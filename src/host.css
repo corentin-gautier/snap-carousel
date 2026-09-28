@@ -1,5 +1,12 @@
+/* Layout only, buttons and dots are left for the page to style.
+   Rows: scroller, prev/next at both ends, dots, pager. The native
+   ::scroll-button and ::scroll-marker-group (style.css) use the same places.
+   Grid rather than flex: Chrome doesn't size ::scroll-marker-group as a flex item. */
 :host {
-  display: block;
+  display: grid;
+  /* A single definite column: Chrome gives ::scroll-marker-group no height
+     next to intrinsically sized columns */
+  grid-template: minmax(0, 1fr) / minmax(0, 1fr);
   position: relative;
   width: 100%;
 }
@@ -8,16 +15,18 @@
   scrollbar-width: none;
 }
 
-:host(:not([scrollbar])) ::slotted([slot="scroller"])::-webkit-scrollbar {
-  display: none;
-}
-
 ::slotted([slot="scroller"]) {
   position: relative;
   margin: 0;
   display: flex;
   gap: var(--gap);
   scroll-behavior: var(--behavior);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::slotted([slot="scroller"]) {
+    scroll-behavior: auto;
+  }
 }
 
 :host(:not([vertical])) ::slotted([slot="scroller"]) {
@@ -35,4 +44,23 @@
   overscroll-behavior-y: contain;
   padding-block: var(--padding) !important;
   scroll-padding-block: var(--padding);
+}
+
+[part="controls"] {
+  display: contents;
+}
+
+[part="buttons"] {
+  grid-area: 2 / 1;
+  display: flex;
+  justify-content: space-between;
+}
+
+[part="nav"],
+::slotted([slot="pagination"]) {
+  order: 2;
+}
+
+[part="pager"] {
+  order: 3;
 }

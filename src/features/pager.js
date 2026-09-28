@@ -1,59 +1,38 @@
 /**
  * Pager feature for SnapCarousel
  * Adds page numbers display (current/total)
+ * @param {import('../base-carousel').BaseCarousel} carousel
  */
-export const PagerFeature = Base => class extends Base {
-  // Feature-specific elements
-  #pager = {
-    container: null,
-    current: null,
-    sep: null,
-    total: null
+export const pager = carousel => {
+  let container;
+  let current;
+  let total;
+
+  const update = () => {
+    if (current && carousel.settings.current.pager) {
+      current.textContent = carousel.state.index + 1;
+    }
   };
 
-  constructor() {
-    super();
-    // Add pager to elements
-    this.elements.pager = this.#pager;
-    // Register hooks
-    this.registerHook('init', this.#createPager.bind(this));
-    this.registerHook('updateState', this.#setCurrentPage.bind(this));
-  }
-
-  /**
-   * Create page number display
-   */
-  #createPager() {
-    const { current: currentSettings } = this.settings;
-
-    // Initialize pager elements if not exists
-    if (!this.#pager.container) {
-      this.#pager.container = this.shadowRoot.querySelector('[part="pager"]');
-      if (!this.#pager.container) return;
-
-      ['current', 'sep', 'total'].forEach(key => {
-        const element = this.getSlotElements(key)[0];
-        if (!element) return;
-        this.#pager[key] = element;
-      });
+  carousel.registerHook('init', () => {
+    if (!container) {
+      container = carousel.shadowRoot.querySelector('[part="pager"]');
+      [current, total] = ['current', 'total'].map(name => carousel.getSlotElements(name)[0]);
     }
 
-    // Ensure all required elements exist
-    if (!this.#pager.current || !this.#pager.total) return;
+    if (!current || !total) return;
 
-    const { container, current, total } = this.#pager;
+    carousel.constructor.setVisibility(container, carousel.settings.current.pager && carousel.state.pageCount > 1);
+    total.textContent = carousel.state.pageCount;
+    update();
+  });
 
-    // Show/hide pager based on settings
-    Base.setVisibility(container, currentSettings.pager && this.state.pageCount > 1);
-    current.innerHTML = 1;
-    total.innerHTML = this.state.pageCount;
-  }
+  carousel.registerHook('updateState', update);
+};
 
-  /**
-   * Update current page number display
-   */
-  #setCurrentPage() {
-    if (!this.settings.current.pager || !this.#pager.current) return;
-    this.#pager.current.innerHTML = this.state.index + 1;
+export const PagerFeature = Base => class extends Base {
+  constructor() {
+    super();
+    pager(this);
   }
 };

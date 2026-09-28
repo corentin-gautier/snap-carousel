@@ -1,19 +1,7 @@
-import { BaseCarousel, CarouselFeature } from '../base-carousel';
+import { CarouselMixin, CarouselPlugin } from '../base-carousel';
 
-export interface NavFeatureOptions {
-    nav?: boolean;
-}
+/** Attach the nav feature to a carousel instance: `carousel.use(nav)` */
+export declare const nav: CarouselPlugin;
 
-export declare class NavFeature implements CarouselFeature {
-    private carousel: BaseCarousel;
-
-    constructor(carousel: BaseCarousel);
-
-    init(): void;
-    destroy(): void;
-    update(): void;
-
-    private createNavigation(): void;
-    private removeNavigation(): void;
-    private updateNavigationState(): void;
-}
+/** Nav feature mixin: `createCarousel(NavFeature)` */
+export declare const NavFeature: CarouselMixin;

@@ -1,19 +1,7 @@
-import { BaseCarousel, CarouselFeature } from '../base-carousel';
+import { CarouselMixin, CarouselPlugin } from '../base-carousel';
 
-export interface PagerFeatureOptions {
-    pager?: boolean;
-}
+/** Attach the pager feature to a carousel instance: `carousel.use(pager)` */
+export declare const pager: CarouselPlugin;
 
-export declare class PagerFeature implements CarouselFeature {
-    private carousel: BaseCarousel;
-
-    constructor(carousel: BaseCarousel);
-
-    init(): void;
-    destroy(): void;
-    update(): void;
-
-    private createPager(): void;
-    private removePager(): void;
-    private updatePagerState(): void;
-}
+/** Pager feature mixin: `createCarousel(PagerFeature)` */
+export declare const PagerFeature: CarouselMixin;

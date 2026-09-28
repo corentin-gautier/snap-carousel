@@ -1,123 +1,82 @@
 /**
  * Controls feature for SnapCarousel
  * Adds previous/next navigation buttons
+ * @param {import('../base-carousel').BaseCarousel} carousel
  */
-export const ControlsFeature = Base => class extends Base {
-  // Feature-specific elements
-  #controls = {
-    container: null,
-    buttons: []
-  };
-
-  constructor() {
-    super();
-    // Add controls to elements
-    this.elements.controls = this.#controls;
-    // Register hooks
-    this.registerHook('init', this.#createControls.bind(this));
-    this.registerHook('updateState', this.#setButtonsState.bind(this));
-  }
-
-  /**
-   * Create navigation controls
-   */
-  #createControls() {
-    const { current } = this.settings;
-    const hideButtons = !current.controls || this.state.pageCount < 2;
-
-    // Get all control buttons
-    const prevButtons = this.getSlotElements('prev-buttons');
-    const nextButtons = this.getSlotElements('next-buttons');
-
-    this.#controls.container = this.shadowRoot.querySelector('[part="buttons"]');
-    if (!this.#controls.container) return;
-
-    const { container, buttons } = this.#controls;
-
-    // Show/hide buttons based on settings
-    Base.setVisibility(container, !hideButtons);
-
-    if (!prevButtons.length && !nextButtons.length) return;
-
-    buttons.push(...prevButtons, ...nextButtons);
-
-    buttons.forEach(button => {
-      if (button.hasListener) return;
-
-      // Setup button properties
-      button.direction = button.getAttribute('direction') || 'next';
-      button.modifier = (button.direction === 'next' ? 1 : -1) *
-        (parseInt(button.getAttribute('modifier'), 10) || 1);
-      button.hasListener = true;
-
-      // Add click handler
-      button.addEventListener('click', () => {
-        if (!current.controls) return;
-        this.goTo(this.state.index + button.modifier);
-      });
-    });
-
-    // Set initial button states and aria-controls
-    this.#setButtonsState();
-  }
+export const controls = carousel => {
+  let container;
+  const buttons = [];
 
   /**
    * Update navigation button states and their aria-controls
    */
-  #setButtonsState() {
-    if (!this.#controls.buttons.length) return;
-
-    const { loop } = this.settings.current;
-    const { index, pageCount } = this.state;
+  const update = () => {
+    const { loop } = carousel.settings.current;
+    const { index, pageCount, pages } = carousel.state;
     let shouldShiftFocus = false;
 
-    this.#controls.buttons.forEach(button => {
-      // Determine if button should be disabled
-      const isDisabled = !loop && (
-        button.direction === 'next'
-          ? index >= pageCount - button.modifier
-          : index < Math.abs(button.modifier)
-      );
+    buttons.forEach(button => {
+      const target = loop
+        ? ((index + button.modifier) % pageCount + pageCount) % pageCount
+        : index + button.modifier;
+      const isDisabled = !pages[target];
 
-      // Track if focus needs to be moved
-      if (button === this.shadowRoot.activeElement && isDisabled) {
+      // A disabled button loses focus, hand it over to another one
+      if (isDisabled && button.matches(':focus')) {
         shouldShiftFocus = true;
       }
 
-      button.disabled = !!isDisabled;
-      button.setAttribute('aria-disabled', !!isDisabled);
+      button.disabled = isDisabled;
 
-      // Update aria-controls to point to the slides that will be shown when clicked
-      if (!isDisabled) {
-        let targetIndex = index + button.modifier;
-
-        if (targetIndex < 0) {
-          targetIndex = pageCount - 1;
-        } else if (targetIndex >= pageCount) {
-          targetIndex = 0;
-        }
-
-        const targetpages = this.state.pages[targetIndex];
-
-        if (targetpages?.length) {
-          const slideIds = targetpages
-            .map(slideIndex => this.elements.items[slideIndex]?.id)
-            .filter(Boolean);
-          if (slideIds.length) {
-            button.setAttribute('aria-controls', slideIds.join(' '));
-          }
-        }
-      } else {
+      if (isDisabled) {
         button.removeAttribute('aria-controls');
+      } else {
+        button.setAttribute('aria-controls', pages[target].map(item => item.id).join(' '));
       }
     });
 
-    // Move focus if needed
     if (shouldShiftFocus) {
-      const active = this.#controls.buttons.filter(b => !b.disabled);
-      if (active.length) {
-        active[0].focus();
-      }
+      buttons.find(button => !button.disabled)?.focus();
     }
+  };
+
+  carousel.registerHook('init', () => {
+    const { current } = carousel.settings;
+
+    container ||= carousel.shadowRoot.querySelector('[part="buttons"]');
+    carousel.constructor.setVisibility(container, current.controls && carousel.state.pageCount > 1);
+
+    // Labels of the default buttons, used unless a prev-label/next-label slot replaces them
+    container.querySelectorAll('[part~="control-button"]').forEach(button => {
+      const label = String(button.getAttribute('direction') === 'prev' ? current.prevLabel : current.nextLabel);
+      button.ariaLabel = label;
+      button.querySelector('slot[name$="-label"]').textContent = label;
+    });
+
+    [...carousel.getSlotElements('prev-buttons'), ...carousel.getSlotElements('next-buttons')].forEach(button => {
+      if (buttons.includes(button)) return;
+
+      button.modifier = (button.getAttribute('direction') === 'prev' ? -1 : 1) *
+        (parseInt(button.getAttribute('modifier'), 10) || 1);
+
+      button.addEventListener('click', () => {
+        if (carousel.settings.current.controls) {
+          carousel.goTo(carousel.state.index + button.modifier);
+        }
+      });
+
+      buttons.push(button);
+    });
+
+    update();
+  });
+
+  carousel.registerHook('updateState', update);
+};
+
+export const ControlsFeature = Base => class extends Base {
+  constructor() {
+    super();
+    controls(this);
   }
 };

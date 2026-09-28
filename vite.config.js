@@ -1,66 +1,52 @@
-import { copyFileSync, existsSync, mkdirSync } from 'fs';
+import terser from '@rollup/plugin-terser';
 import { resolve } from 'path';
 import { defineConfig } from 'vite';
 
-export default defineConfig(({ command, mode }) => {
-  const isLibrary = mode === 'library';
-  const buildFormat = process.env.VITE_BUILD_FORMAT || 'es';
-  const shouldMinify = process.env.VITE_BUILD_MINIFY === 'true';
+// Native private fields and class fields, no down-levelling helpers
+const target = 'es2022';
 
-  const copyUmdFile = () => {
-    const umdFile = resolve(__dirname, 'dist/snap-carousel.umd.min.js');
-    // Copy to public directory
-    copyFileSync(umdFile, resolve(__dirname, 'src/public/snap-carousel.umd.min.js'));
-  };
+// Strip line breaks and indentation from imported HTML templates
+const minifyHtml = {
+  name: 'minify-html',
+  transform(code, id) {
+    if (id.endsWith('.html?raw')) return code.replace(/\\n\s*/g, '');
+  }
+};
 
-  if (isLibrary) {
+export default defineConfig(({ mode }) => {
+  if (mode === 'library') {
     return {
       root: 'src',
-      base: '/',
+      publicDir: false,
       build: {
+        target,
         lib: {
-          entry: resolve(__dirname, 'src/snap-carousel.js'),
-          formats: [buildFormat],
-          fileName: (format, entryName) => {
-            const formatSuffix = format === 'es' ? 'esm' : format;
-            const minSuffix = shouldMinify ? '.min' : '';
-            return `${entryName}.${formatSuffix}${minSuffix}.js`;
+          // Each entry is a public import path, features stay in their own
+          // files so SnapCarousel can load them on demand
+          entry: {
+            'snap-carousel': resolve(__dirname, 'src/snap-carousel.js'),
+            'base': resolve(__dirname, 'src/base-carousel.js'),
+            'features/controls': resolve(__dirname, 'src/features/controls.js'),
+            'features/nav': resolve(__dirname, 'src/features/nav.js'),
+            'features/pager': resolve(__dirname, 'src/features/pager.js')
           },
-          name: 'SnapCarousel'
+          formats: ['es'],
+          fileName: (format, entryName) => `${entryName}.js`
         },
         outDir: '../dist',
+        emptyOutDir: true,
         sourcemap: false,
-        minify: shouldMinify ? 'terser' : false,
+        // Vite keeps whitespace in ES library builds, terser does the full job
+        minify: false,
+        cssMinify: true,
         rollupOptions: {
           output: {
             chunkFileNames: 'chunks/[name]-[hash].js',
-            assetFileNames: 'assets/[name]-[hash][extname]',
-            footer: (chunk) => {
-              if (buildFormat === 'umd' && chunk.isEntry) {
-                return `
-                  if (typeof window !== 'undefined') {
-                    window.addEventListener('DOMContentLoaded', function() {
-                      if (!customElements.get('snap-carousel')) {
-                        customElements.define('snap-carousel', SnapCarousel.default);
-                      }
-                    });
-                  }`.replace(/^\s+/gm, '');
-              }
-              return '';
-            }
+            plugins: [terser({ module: true, ecma: 2022 })]
           }
         }
       },
-      plugins: [
-        {
-          name: 'copy-umd',
-          closeBundle() {
-            if (buildFormat === 'umd' && shouldMinify) {
-              copyUmdFile();
-            }
-          }
-        }
-      ]
+      plugins: [minifyHtml]
     };
   }
 
@@ -69,12 +55,12 @@ export default defineConfig(({ command, mode }) => {
     base: '',
     publicDir: 'public',
     build: {
+      target,
       outDir: '../docs',
       emptyOutDir: true,
       sourcemap: false,
       rollupOptions: {
         input: resolve(__dirname, 'src/index.html'),
-        preserveEntrySignatures: 'strict',
         output: {
           assetFileNames: `assets/[name].[ext]`
         }
@@ -85,32 +71,6 @@ export default defineConfig(({ command, mode }) => {
     },
     preview: {
       open: true
-    },
-    plugins: [
-      {
-        name: 'copy-umd-to-assets',
-        buildStart() {
-          // Create assets directory if it doesn't exist
-          const assetsDir = resolve(__dirname, 'docs/assets');
-          if (!existsSync(assetsDir)) {
-            mkdirSync(assetsDir, { recursive: true });
-          }
-        },
-        generateBundle() {
-          // Copy UMD file if it exists
-          const umdFile = resolve(__dirname, 'dist/snap-carousel.umd.min.js');
-          if (existsSync(umdFile)) {
-            copyUmdFile();
-          }
-        }
-      },
-      {
-        name: 'handle-external-scripts',
-        transformIndexHtml(html) {
-          // Don't transform external script tags
-          return html;
-        }
-      }
-    ]
+    }
   };
 });

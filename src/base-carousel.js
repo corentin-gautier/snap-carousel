@@ -1,18 +1,28 @@
-import 'scrollyfills';
 import hostStyles from './host.css?inline';
 import globalStyles from './style.css?inline';
 import htmlTemplate from './template.html?raw';
+
+// Shared by every instance, created on first use
+let template, hostSheet;
+
+const createSheet = css => {
+  const sheet = new CSSStyleSheet();
+  sheet.replaceSync(css);
+  return sheet;
+};
+
+const toPx = value => typeof value === 'string' ? value : value + 'px';
 
 // -----------------------------------------------------------------------------
 // Base Carousel Class
 // -----------------------------------------------------------------------------
 
 export class BaseCarousel extends HTMLElement {
-  // Private fields
   #preventUiUpdate = false;
-  #preventNextEvent = false;
-  #className = 'snap-carousel';
-  #initialStyle = '';
+  #internals;
+  #observers = [];
+  #slideObserver = null;
+  #mediaListeners = null;
 
   // State management
   #state = {
@@ -25,14 +35,13 @@ export class BaseCarousel extends HTMLElement {
     breakpoint: undefined,
     ready: false,
     isMoving: false,
-    pause: false,
-    computedPadding: 0
+    pause: false
   };
 
   // DOM Elements
   #elements = {
     scroller: null,
-    items: null,
+    items: [],
     sync: null
   };
 
@@ -43,39 +52,51 @@ export class BaseCarousel extends HTMLElement {
     current: {}
   };
 
+  // Feature lifecycle hooks
+  #featureHooks = {
+    setup: [],
+    init: [],
+    updateState: []
+  };
+
   // Public getters for feature access
   get elements() { return this.#elements; }
   get settings() { return this.#settings; }
   get state() { return this.#state; }
   get preventUiUpdate() { return this.#preventUiUpdate; }
+  // Custom states, matched with :state() in CSS
+  get states() { return this.#internals.states; }
 
-  // Protected methods for features
-  getSlotElements(slotName, options = { fallback: false }) {
+  getSlotElements(slotName, options) {
     return this.#getSlotElements(slotName, options);
   }
 
-  isDocumentLtr() {
-    return this.#isDocumentLtr();
+  /**
+   * Whether the carousel's own direction (inherited from any ancestor) is LTR
+   */
+  isLtr() {
+    return getComputedStyle(this).direction !== 'rtl';
   }
-
-  // Feature lifecycle hooks
-  #featureHooks = {
-    init: [],
-    updateState: []
-  };
 
   // Register feature hooks
   registerHook(type, callback) {
-    if (this.#featureHooks[type]) {
-      this.#featureHooks[type].push(callback);
+    this.#featureHooks[type]?.push(callback);
+  }
+
+  /**
+   * Attach a feature after construction (used for lazy loaded features)
+   * @param {(carousel: BaseCarousel) => void} feature
+   */
+  use(feature) {
+    const count = this.#featureHooks.init.length;
+    feature(this);
+    if (this.#state.ready) {
+      this.#featureHooks.init.slice(count).forEach(callback => callback.call(this));
     }
   }
 
-  // Execute feature hooks
   #executeHooks(type, ...args) {
-    if (this.#featureHooks[type]) {
-      this.#featureHooks[type].forEach(callback => callback.apply(this, args));
-    }
+    this.#featureHooks[type].forEach(callback => callback.apply(this, args));
   }
 
   /**
@@ -85,19 +106,21 @@ export class BaseCarousel extends HTMLElement {
     return {
       autoplay: 0,          // Autoplay interval in ms (0 = disabled)
       displayed: 1,         // Number of items visible at once
-      perPage: 1,          // Number of items to scroll per page
-      gap: 0,              // Gap between items
-      padding: 0,          // Padding around the carousel
+      perPage: 1,           // Number of items to scroll per page
+      gap: 0,               // Gap between items
+      padding: 0,           // Padding around the carousel
       controls: false,      // Show prev/next buttons
-      nav: false,          // Show navigation dots
-      pager: false,        // Show page numbers
-      loop: false,         // Loop around when reaching the end
-      behavior: 'smooth',  // Scroll behavior
-      stop: false,         // Stop at each item
-      usePause: true,      // Pause autoplay on hover
-      vertical: false,     // Vertical orientation
-      responsive: [],      // Breakpoint configurations
-      sync: null           // Selector for other carousels to sync with
+      nav: false,           // Show navigation dots
+      pager: false,         // Show page numbers
+      prevLabel: 'Previous', // Text of the default previous button
+      nextLabel: 'Next',    // Text of the default next button
+      loop: false,          // Loop around when reaching the end
+      behavior: 'smooth',   // Scroll behavior
+      stop: false,          // Stop at each item
+      usePause: true,       // Pause autoplay on hover and focus
+      vertical: false,      // Vertical orientation
+      responsive: [],       // Breakpoint configurations
+      sync: null            // Selector for other carousels to sync with
     };
   }
 
@@ -107,77 +130,71 @@ export class BaseCarousel extends HTMLElement {
    */
   static get observedAttributes() {
     const keys = Object.keys(BaseCarousel.defaultConfig)
-      .map(k => k.replace(/[A-Z]/g, m => "-" + m.toLowerCase()));
-    return [...keys, ...keys.map(k => 'data-' + k)];
+      .map(k => k.replace(/[A-Z]/g, m => '-' + m.toLowerCase()));
+    return ['options', ...keys, ...keys.map(k => 'data-' + k)];
   }
 
-  /**
-   * Constructor: Initialize default settings
-   */
   constructor() {
     super();
     this.#settings.default = BaseCarousel.defaultConfig;
-    // Store initial style to avoid overriding it
-    this.#initialStyle = this.getAttribute('style');
+
+    if (!template) {
+      template = document.createElement('template');
+      template.innerHTML = htmlTemplate;
+      hostSheet = createSheet(hostStyles);
+      document.adoptedStyleSheets.push(createSheet(globalStyles));
+    }
+
+    this.attachShadow({ mode: 'open' }).append(template.content.cloneNode(true));
+    this.shadowRoot.adoptedStyleSheets = [hostSheet];
+
+    const internals = this.#internals = this.attachInternals();
+    internals.role = 'region';
+    internals.ariaRoleDescription = 'carousel';
   }
 
-  /**
-   * Connected callback: Setup the carousel when added to DOM
-   */
   connectedCallback() {
-    if (!this.isConnected) return;
-
-    // Create and attach shadow DOM
-    const template = document.createElement('template');
-    template.innerHTML = `<style>${hostStyles}</style>${htmlTemplate}`;
-    this.attachShadow({ mode: 'open' });
-    this.shadowRoot.appendChild(template.content.cloneNode(true));
-
-    // Setup mutation observer for dynamic content
-    this.#elements.scroller = this.#getSlotElements('scroller', { fallback: true })[0];
+    const scroller = this.#elements.scroller ||= this.#getSlotElements('scroller', { fallback: true })[0];
 
     // If no scroller element is found, return
-    if (!this.#elements.scroller) return;
+    if (!scroller) return;
 
-    const observer = new MutationObserver(mutations => {
-      mutations.forEach(mutation => {
-        if (mutation.addedNodes.length || mutation.removedNodes.length) {
-          this.#computeChildren();
-          this.#init();
-        }
+    if (!this.#state.ready) {
+      this.#identify();
+
+      scroller.setAttribute('snpc-s', '');
+      scroller.role = 'list';
+      scroller.onscroll = () => this.#onscroll();
+
+      // Only download the scrollend polyfill in browsers that need it
+      ('onscrollend' in window ? Promise.resolve() : import('scrollyfills')).then(() => {
+        scroller.addEventListener('scrollend', () => this.#onscrollend());
       });
-    });
-    observer.observe(this.#elements.scroller, { childList: true });
 
-    // Setup event listeners
-    this.#elements.scroller.setAttribute('snpc-s', '');
-    this.#elements.scroller.onscroll = this.#onscroll.bind(this);
-    this.#elements.scroller.addEventListener('scrollend', this.#onscrollend.bind(this));
-    window.addEventListener('resize', this.#resizeEvent.bind(this));
+      // Pause autoplay while the carousel is hovered or has focus.
+      // Deferred so :focus-within reflects where focus lands after a focusout.
+      const onInteraction = () => setTimeout(() => {
+        this.#state.pause = this.#settings.current.usePause && this.matches(':hover, :focus-within');
+        this.#setPlayPause();
+      });
+      ['mouseenter', 'mouseleave', 'focusin', 'focusout'].forEach(type => this.addEventListener(type, onInteraction));
+    }
 
-    // Setup accessibility
-    this.ariaRoleDescription = 'carousel';
-    Object.assign(this.#elements.scroller, {
-      role: 'group',
-      ariaLive: 'polite',
-      ariaAtomic: false
-    });
-
-    // Initialize carousel
-    this.#identify();
-    this.#computeChildren();
-    this.#addGlobalStyles();
-    this.#setup();
     this.#observe();
+    this.#computeChildren();
+    this.#setup();
 
     this.#state.ready = true;
   }
 
-  /**
-   * Attribute changed callback: Update settings when attributes change
-   */
+  disconnectedCallback() {
+    this.#observers.forEach(observer => observer.disconnect());
+    this.#mediaListeners?.abort();
+    this.#setPlayPause();
+  }
+
   attributeChangedCallback() {
-    if (this.#state.ready) this.#setup();
+    if (this.#state.ready && this.isConnected) this.#setup();
   }
 
   /**
@@ -185,90 +202,90 @@ export class BaseCarousel extends HTMLElement {
    * @param {number} page - Page index to navigate to
    */
   goTo(page) {
-    this.#preventUiUpdate = false;
     const { scroller, items } = this.#elements;
-    const { perPage, vertical } = this.#settings.current;
+    const { perPage, vertical, loop } = this.#settings.current;
+    const { pageCount } = this.#state;
 
-    // Calculate target page
-    const index = page > this.#state.pageCount - 1
-      ? 0
-      : (page < 0 ? this.#state.pageCount - 1 : page);
+    if (!pageCount) return;
 
-    const target = items[index * perPage];
+    const index = loop
+      ? (page % pageCount + pageCount) % pageCount
+      : Math.max(0, Math.min(page, pageCount - 1));
 
+    this.#preventUiUpdate = false;
     this.#updateState(index);
-    this.#state.ready = true;
-
-    // Calculate scroll position
-    let top = 0, left = 0;
-    if (vertical) {
-      top = target.offsetTop;
-    } else {
-      left = this.#isDocumentLtr()
-        ? target.offsetLeft
-        : (target.offsetLeft + target.offsetWidth) - scroller.offsetWidth;
-    }
-
-    // Perform scroll
     this.#preventUiUpdate = true;
-    requestIdleCallback(() => {
-      scroller.scrollTo({ top, left });
-    }, { timeout: 100 });
+
+    // Align the target's inline-start (or top) with the scroller's snap area.
+    // Working from rects keeps this independent of direction and scrollLeft sign.
+    const target = items[index * perPage].getBoundingClientRect();
+    const port = scroller.getBoundingClientRect();
+    const style = getComputedStyle(scroller);
+
+    if (vertical) {
+      scroller.scrollTo({ top: scroller.scrollTop + target.top - port.top - (parseFloat(style.scrollPaddingTop) || 0) });
+    } else {
+      scroller.scrollTo({
+        left: scroller.scrollLeft + (this.isLtr()
+          ? target.left - port.left - (parseFloat(style.scrollPaddingLeft) || 0)
+          : target.right - port.right + (parseFloat(style.scrollPaddingRight) || 0))
+      });
+    }
   }
 
-  /**
-   * Navigate to previous page
-   */
   prev() {
-    this.goTo(this.state.index - 1);
+    this.goTo(this.#state.index - 1);
   }
 
-  /**
-   * Navigate to next page
-   */
   next() {
-    this.goTo(this.state.index + 1);
+    this.goTo(this.#state.index + 1);
   }
 
   /**
-   * Setup carousel configuration
+   * Read attributes and listen to responsive breakpoints
    */
   #setup() {
-    this.#state.breakpoint = undefined;
-    this.#settings.origin = Object.assign({},
+    const origin = this.#settings.origin = Object.assign({},
       this.#settings.default,
       this.#getNodeConfig()
     );
 
-    // Sort responsive breakpoints
-    this.#settings.origin.responsive = (this.#settings.origin.responsive || [])
-      .sort((a, b) => a.breakpoint - b.breakpoint);
+    this.#state.breakpoint = undefined;
+    this.#mediaListeners?.abort();
+    this.#mediaListeners = new AbortController();
 
+    // Breakpoints apply above their width, like the former `breakpoint < innerWidth` check
+    origin.responsive = (origin.responsive || [])
+      .sort((a, b) => a.breakpoint - b.breakpoint)
+      .map(config => {
+        const query = matchMedia(`(width > ${+config.breakpoint}px)`);
+        query.addEventListener('change', () => this.#getCurrentConfig(), { signal: this.#mediaListeners.signal });
+        return { ...config, query };
+      });
+
+    this.#executeHooks('setup');
     this.#getCurrentConfig();
   }
 
-  /**
-   * Initialize carousel after setup
-   */
   #init() {
-    this.#waitForWidth(() => {
-      this.#setPages();
-      this.#createStyles();
-      this.#computePadding();
-      this.#updateState(0);
-      this.#executeHooks('init');
-    });
+    this.#setPages();
+    this.#createStyles();
+    this.#updateState(0);
+    this.#executeHooks('init');
+    this.#setPlayPause();
   }
 
   #computeChildren() {
-    const items = Array.from(this.#elements.scroller.children).filter(i => !['absolute', 'fixed', 'sticky'].includes(getComputedStyle(i).position));
+    const items = Array.from(this.#elements.scroller.children)
+      .filter(i => !['absolute', 'fixed', 'sticky'].includes(getComputedStyle(i).position));
     const count = items.length;
+
     this.#elements.items = items;
     this.#state.itemsCount = count;
+    this.#slideObserver.disconnect();
 
-    // Store item index in a data attribute and set ARIA attributes
     items.forEach((item, i) => {
-      item.id = `${this.id}-slide-${i}`;
+      item.id ||= `${this.id}-slide-${i}`;
       item.dataset.index = i;
       Object.assign(item, {
         ariaSetSize: count,
@@ -276,66 +293,33 @@ export class BaseCarousel extends HTMLElement {
         ariaRoleDescription: 'slide',
         role: 'listitem'
       });
+      this.#slideObserver.observe(item);
     });
   }
 
   /**
-   * Add carousel base styles in the document head
-   * @returns
-   */
-  #addGlobalStyles() {
-    const classname = this.#className;
-    const id = `${classname}-global-styles`;
-    if (document.querySelector('#' + id)) {
-      return;
-    }
-    const css = globalStyles;
-    document.head.append(this.#createStyleElement(css, id));
-  }
-
-  /**
-   * Adds unique ids and classes
+   * Adds unique ids, keeping the ones set by the user
    */
   #identify() {
-    this.id = this.#state.id = this.#className + '-' + (Math.random() + 1).toString(36).substring(4);
-    this.#elements.scroller.id = this.id + '-scroller';
-  }
-
-  /**
-   * Wait for the scroller element to have a width before initializing
-   * Uses requestAnimationFrame for efficient polling
-   * @param {Function} callback - Function to call once width is available
-   */
-  #waitForWidth(callback) {
-    if (this.#elements.scroller.clientWidth) {
-      callback();
-    } else {
-      requestAnimationFrame(() => {
-        this.#waitForWidth(callback);
-      });
-    }
+    this.id ||= 'snap-carousel-' + (Math.random() + 1).toString(36).substring(4);
+    this.#elements.scroller.id ||= this.id + '-scroller';
   }
 
   /**
    * Get configuration from element attributes
    * Supports both regular and data- prefixed attributes
-   * @returns {Object} Configuration object from attributes
    */
   #getNodeConfig() {
     const options = Object.keys(this.#settings.default);
 
-    // Check for options attribute first
     if (this.attributes.options) {
       return this.#maybeParse(this.attributes.options.value);
     }
 
-    // Process individual attributes
     return Array.from(this.attributes).reduce((config, attr) => {
-      // Convert kebab-case to camelCase and remove data- prefix
       const name = attr.name.replace('data-', '')
         .replace(/-([a-z])/g, g => g[1].toUpperCase());
 
-      // Only include valid options
       if (options.includes(name)) {
         config[name] = this.#maybeParse(attr.value);
       }
@@ -343,11 +327,6 @@ export class BaseCarousel extends HTMLElement {
     }, {});
   }
 
-  /**
-   * Safely parse a string value into a JavaScript value
-   * @param {string} value - The string to parse
-   * @returns {any} Parsed value or original string if parsing fails
-   */
   #maybeParse(value) {
     if (value === '') return true;
     try {
@@ -358,227 +337,121 @@ export class BaseCarousel extends HTMLElement {
   }
 
   /**
-   * Get configuration for current breakpoint
-   * Merges default config with responsive breakpoint settings
+   * Merge the settings of the widest matching breakpoint
    */
   #getCurrentConfig() {
     const { origin } = this.#settings;
-
-    // Find matching breakpoint
-    const match = origin.responsive.reduce((match, config) =>
-      config.breakpoint < window.innerWidth ? config : match,
-      { breakpoint: null }
-    );
-
-    // Merge configurations
-    const current = Object.assign({}, origin, match.settings || {});
+    const match = origin.responsive.findLast(config => config.query.matches) || { breakpoint: null };
+    const current = Object.assign({}, origin, match.settings);
 
     // Ensure perPage doesn't exceed displayed items
     current.perPage = Math.min(current.displayed, current.perPage);
 
     this.#settings.current = current;
 
-    // Reinitialize if breakpoint changed
     if (this.#state.breakpoint !== match.breakpoint) {
       this.#state.breakpoint = match.breakpoint;
       this.#init();
     }
   }
 
-  /**
-   * Calculate and store the number of pages
-   * Accounts for displayed items and items per page
-   */
   #setPages() {
-    const { current } = this.#settings;
+    const { displayed, perPage } = this.#settings.current;
     const { itemsCount } = this.#state;
 
-    // Calculate unnecessary pages when displayed > perPage
-    const unecessaryPagesCount = Math.floor(
-      (current.displayed - current.perPage) / current.perPage
+    // Pages that can't be reached when displayed > perPage
+    const unreachable = Math.floor((displayed - perPage) / perPage);
+
+    this.#state.pageCount = Math.max(0, Math.ceil(itemsCount / perPage) - unreachable);
+    this.#state.pages = Array.from({ length: this.#state.pageCount }, (_, page) =>
+      this.#elements.items.slice(page * perPage, page * perPage + perPage)
     );
-
-    this.#state.pageCount = Math.ceil(itemsCount / current.perPage) - unecessaryPagesCount;
-
-    // Map which slides belong to each page
-    this.#state.pages = Array.from({ length: this.#state.pageCount }, (_, pageIndex) => {
-      const startIndex = pageIndex * current.perPage;
-      const endIndex = Math.min(startIndex + current.perPage, itemsCount);
-      return Array.from({ length: endIndex - startIndex }, (_, i) => this.#elements.items[startIndex + i]);
-    });
   }
 
   /**
-   * Create and apply carousel styles
-   * Generates CSS variables and scroll-snap rules
+   * Set sizing variables and scroll-snap anchors
    */
   #createStyles() {
-    const { displayed, gap, padding, perPage, stop, behavior } = this.#settings.current;
-    const formatedGap = this.#formatCssValue(gap);
-    const formatedPadding = this.#formatCssValue(padding);
+    const { displayed, gap, padding, perPage, stop, behavior, prevLabel, nextLabel } = this.#settings.current;
 
-    // Create selector for scroll-snap alignment
-    const anchorClass = `sc-anchor${stop ? '-stop' : ''}`;
+    // Labels become CSS strings for the native buttons' content
+    Object.entries({
+      perpage: displayed,
+      gap: toPx(gap),
+      padding: toPx(padding),
+      behavior,
+      'prev-label': JSON.stringify(String(prevLabel)),
+      'next-label': JSON.stringify(String(nextLabel))
+    })
+      .forEach(([name, value]) => this.style.setProperty('--' + name, value));
 
-    this.style = `--perpage: ${displayed};--gap: ${formatedGap};--padding: ${formatedPadding};--behavior: ${behavior};${this.#initialStyle}`;
-
-    this.elements.items.forEach((item, index) => {
-      if (index % perPage === 0) {
-        item.classList.add(anchorClass);
-      } else {
-        item.classList.remove(anchorClass);
-      }
+    // sc-page marks the first slide of each reachable page (native scroll markers)
+    this.#elements.items.forEach((item, index) => {
+      const anchor = index % perPage === 0;
+      item.classList.toggle('sc-anchor', anchor);
+      item.classList.toggle('sc-anchor-stop', anchor && !!stop);
+      item.classList.toggle('sc-page', anchor && index / perPage < this.#state.pageCount);
     });
   }
 
   /**
-   * Calculate and store the computed padding
-   * Used for scroll position calculations
-   */
-  #computePadding() {
-    const { vertical } = this.#settings.current;
-    const property = vertical ? 'padding-top' : 'padding-left';
-
-    this.#state.computedPadding = parseInt(
-      getComputedStyle(this.#elements.scroller)[property],
-      10
-    );
-  }
-
-  /**
-   * Setup intersection and mutation observers
-   * Handles visibility changes and content updates
+   * Create the observers, re-created on every connection
    */
   #observe() {
-    const { items, scroller } = this.#elements;
+    const { scroller } = this.#elements;
 
-    // Intersection observer for carousel visibility
-    const visibilityObserver = new IntersectionObserver(entries => {
-      const entry = entries[0];
-      this.#state.isVisible = entry.intersectionRatio > 0.1;
-      this.#state.pause = !this.#state.isVisible;
-      this.#setPlayPause();
-    }, {
-      threshold: [0.1, 0.9]
+    const contentObserver = new MutationObserver(() => {
+      this.#computeChildren();
+      this.#init();
     });
+    contentObserver.observe(scroller, { childList: true });
 
+    // Autoplay only runs while the carousel is on screen
+    const visibilityObserver = new IntersectionObserver(([entry]) => {
+      this.#state.isVisible = entry.intersectionRatio > 0.1;
+      this.#setPlayPause();
+    }, { threshold: [0.1, 0.9] });
     visibilityObserver.observe(this);
 
-    // Setup pause on hover if enabled
-    if (this.#settings.current.usePause) {
-      this.addEventListener('mouseenter', () => {
-        this.#state.pause = true;
-        this.#setPlayPause();
-      });
-
-      this.addEventListener('mouseleave', () => {
-        this.#state.pause = false;
-        this.#setPlayPause();
-      });
-    }
-
-    // Intersection observer for slide visibility
-    const slideObserver = new IntersectionObserver(entries => {
+    // Slides scrolled out of the scroller are made inert
+    this.#slideObserver = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         entry.target.toggleAttribute('visible', entry.isIntersecting);
         entry.target.toggleAttribute('inert', !entry.isIntersecting);
       });
-    }, {
-      scroller,
-      threshold: 0.6
-    });
+    }, { root: scroller, threshold: 0.6 });
 
-    items.forEach(item => slideObserver.observe(item));
+    this.#observers = [contentObserver, visibilityObserver, this.#slideObserver];
   }
 
-  /**
-   * Handle window resize events
-   * Debounces updates to prevent excessive recalculation
-   */
-  #resizeEvent() {
-    clearTimeout(this.resizeTm);
-    this.resizeTm = setTimeout(() => {
-      this.#computePadding();
-      this.#getCurrentConfig();
-    }, 100);
-  }
-
-  /**
-   * Handle scroll events
-   * Updates state and triggers events during scrolling
-   */
   #onscroll() {
-    if (this.#preventNextEvent) return;
-
-    this.#onscrollstart();
-    this.newIndex = this.#state.index;
+    if (!this.#state.isMoving) {
+      this.#state.isMoving = true;
+      this.#triggerEvent('scrollstart');
+    }
 
     const current = this.#getCurrent();
 
     if (current !== this.#state.index) {
-      this.newIndex = current;
       this.#updateState(current);
       this.#triggerEvent('scrollupdate');
     }
   }
 
-  /**
-   * Handle scroll start
-   * Triggers scrollstart event when scrolling begins
-   */
-  #onscrollstart() {
-    if (!this.#state.isMoving) {
-      this.#triggerEvent('scrollstart');
-    }
-    this.#state.isMoving = true;
-  }
-
-  /**
-   * Handle scroll end
-   * Updates state and triggers events when scrolling ends
-   */
   #onscrollend() {
-    if (this.#preventNextEvent) return;
-
     this.#triggerEvent('scrollend');
     this.#preventUiUpdate = false;
     this.#state.isMoving = false;
-
-    if (typeof this.newIndex === 'number') {
-      this.#updateState(this.newIndex);
-      this.newIndex = null;
-    } else {
-      this.#updateState(this.#state.index);
-    }
-
+    this.#updateState();
     this.#setPlayPause();
   }
 
-  /**
-   * Dispatch a custom event
-   * @param {string} name - Event name to trigger
-   */
   #triggerEvent(name) {
-    const { current } = this.#settings;
-
-    this.dispatchEvent(
-      new CustomEvent(name, {
-        detail: this.#state
-      })
-    );
-
-    // Call event handler if defined in settings
-    if (current['on' + name]) {
-      current['on' + name](this);
-    }
+    this.dispatchEvent(new CustomEvent(name, { detail: this.#state }));
   }
 
-  /**
-   * Update the dots/controls state
-   * @param {Number} index
-   */
   #updateState(index) {
-    if (typeof index !== 'undefined') {
+    if (index !== undefined) {
       this.#state.index = index;
     }
 
@@ -590,39 +463,33 @@ export class BaseCarousel extends HTMLElement {
   }
 
   /**
-   * Compute the current slide index
-   * @returns {Number} the current slide index
+   * Compute the current page from the slide closest to the snap area start
    */
-  #getCurrent(node) {
+  #getCurrent() {
     const { scroller, items } = this.#elements;
     const { perPage, vertical } = this.#settings.current;
+    const port = scroller.getBoundingClientRect();
+    const style = getComputedStyle(scroller);
+    const ltr = this.isLtr();
 
-    const isLtr = this.#isDocumentLtr();
+    const offset = rect => vertical
+      ? rect.top - port.top - (parseFloat(style.scrollPaddingTop) || 0)
+      : ltr
+        ? rect.left - port.left - (parseFloat(style.scrollPaddingLeft) || 0)
+        : port.right - rect.right - (parseFloat(style.scrollPaddingRight) || 0);
 
-    let refPoint = 0;
+    let closest = 0;
+    let min = Infinity;
 
-    if (vertical) {
-      refPoint = scroller.scrollTop;
-    } else {
-      refPoint = isLtr ? scroller.scrollLeft : scroller.scrollLeft + scroller.clientWidth;
-    }
-
-    let closest = items.map(i => {
-      let distance = 0;
-      if (vertical) {
-        distance = i.offsetTop - (this.#state.computedPadding || 0) - refPoint;
-      } else {
-        distance = (isLtr ? i.offsetLeft : i.offsetLeft + i.clientWidth) - (this.#state.computedPadding || 0) - refPoint;
+    items.forEach((item, index) => {
+      const distance = Math.abs(offset(item.getBoundingClientRect()));
+      if (distance < min) {
+        min = distance;
+        closest = index;
       }
-      return {
-        index: parseInt(i.dataset.index, 10),
-        distance: Math.abs(distance)
-      };
-    }).reduce((a, b) => !a || b.distance < a.distance ? b : a, null);
+    });
 
-    if (node) return closest;
-
-    return Math.ceil(closest.index / perPage);
+    return Math.ceil(closest / perPage);
   }
 
   /**
@@ -630,33 +497,31 @@ export class BaseCarousel extends HTMLElement {
    */
   #synchronize() {
     const { sync } = this.#settings.current;
+    const { index, ready } = this.#state;
 
-    if (sync && this.#state.ready) {
-      this.#elements.sync = this.#elements.sync || Array.from(document.querySelectorAll(sync));
+    if (!sync || !ready) return;
 
-      this.#elements.sync.forEach(carousel => {
-        if (carousel instanceof BaseCarousel) {
-          carousel.goTo(this.#state.index);
-        }
-      });
-    }
+    this.#elements.sync ||= Array.from(document.querySelectorAll(sync));
+    this.#elements.sync.forEach(carousel => {
+      // Checking the index avoids an endless loop between carousels synced both ways
+      if (carousel instanceof BaseCarousel && carousel.state.index !== index) {
+        carousel.goTo(index);
+      }
+    });
   }
 
   /**
-   * Retrieve elements assigned to a slot or default elements
-   * @param {string} slotName - Name of the slot to query
-   * @param {Object} options - Options object
-   * @param {boolean} [options.fallback=false] - Whether to fallback to first child if slot is empty
-   * @returns {Array<HTMLElement>} Array of elements
+   * Retrieve elements assigned to a slot or its default content
    */
   #getSlotElements(slotName, options = { fallback: false }) {
     const slot = this.shadowRoot.querySelector(`[name="${slotName}"]`);
     let assigned = slot.assignedElements();
 
-    // Fallback to first child if slot is empty and fallback is enabled
+    // Use the first child as scroller if nothing is slotted
     if (options.fallback && !assigned.length) {
-      if (this.children[0].slot === '') {
-        this.children[0].slot = 'scroller';
+      const first = this.firstElementChild;
+      if (first && !first.slot) {
+        first.slot = slotName;
         assigned = slot.assignedElements();
       }
     }
@@ -665,53 +530,27 @@ export class BaseCarousel extends HTMLElement {
   }
 
   /**
-   * Create a style element with given CSS
-   * @param {string} css - CSS content
-   * @param {string} id - ID for the style element
-   * @returns {HTMLStyleElement} Created style element
-   */
-  #createStyleElement(css, id) {
-    const styles = document.createElement('style');
-    styles.id = id;
-    styles.append(document.createTextNode(css));
-    return styles;
-  }
-
-  /**
-   * Check if document is in LTR mode
-   * @returns {boolean} True if document is LTR
-   */
-  #isDocumentLtr() {
-    return document.firstElementChild.getAttribute('dir') !== 'rtl';
-  }
-
-  /**
-   * Format a CSS value, adding 'px' if needed
-   * @param {string|number} value - Value to format
-   * @returns {string} Formatted CSS value
-   */
-  #formatCssValue(value) {
-    return typeof value === 'string' ? value : value + 'px';
-  }
-
-  /**
-   * Activate/deactivate the automatic goTo
+   * Start or stop the autoplay timer
    */
   #setPlayPause() {
-    if (!this.#settings.current.autoplay) return;
+    const { autoplay } = this.#settings.current;
+    const { pause, isVisible, pageCount } = this.#state;
+    const playing = autoplay > 0 && !pause && isVisible && this.isConnected;
 
-    const { pause, isVisible } = this.#state;
-
-    if (!pause && isVisible) {
-      if (!this.#state.autoplayInterval) {
-        this.#state.autoplayInterval = setTimeout(() => {
-          this.#state.autoplayInterval = null;
-          this.goTo(this.#state.index + 1);
-        }, this.#settings.current.autoplay);
-      }
-    } else {
+    if (!playing) {
       clearTimeout(this.#state.autoplayInterval);
       this.#state.autoplayInterval = null;
+    } else if (!this.#state.autoplayInterval) {
+      this.#state.autoplayInterval = setTimeout(() => {
+        this.#state.autoplayInterval = null;
+        // Autoplay always rewinds, even without loop
+        this.goTo(this.#state.index + 1 < pageCount ? this.#state.index + 1 : 0);
+      }, autoplay);
+    }
+
+    // Don't announce every slide change while it rotates on its own
+    if (this.#elements.scroller) {
+      this.#elements.scroller.ariaLive = playing ? 'off' : 'polite';
     }
   }
 
@@ -720,12 +559,10 @@ export class BaseCarousel extends HTMLElement {
   }
 
   /**
-   * Define a custom element
-   * @param {string} name - Name of the custom element
-   * @param {Function} constructor - Constructor function for the custom element
+   * Define a custom element, unless the name is already taken
    */
   static registerElement(name, constructor) {
-    if (window.customElements) {
+    if (window.customElements && !customElements.get(name)) {
       customElements.define(name, constructor);
     }
   }

@@ -1,132 +1,88 @@
+const defaultPart = 'button nav-button';
+
 /**
  * Navigation dots feature for SnapCarousel
  * Adds pagination dots for visual navigation
+ * @param {import('../base-carousel').BaseCarousel} carousel
  */
-export const NavFeature = Base => class extends Base {
-  // Feature-specific elements
-  #pagination = {
-    container: null,
-    dots: [],
-    active: null
+export const nav = carousel => {
+  let container;
+  let dots = [];
+  let active;
+
+  /**
+   * Update active pagination dot, only the active one is in the tab order
+   */
+  const update = () => {
+    const next = dots[carousel.state.index];
+    if (!carousel.settings.current.nav || !next) return;
+
+    if (active) {
+      active.part = defaultPart;
+      active.tabIndex = -1;
+      active.ariaCurrent = 'false';
+    }
+
+    next.part = `${defaultPart} active`;
+    next.tabIndex = 0;
+    next.ariaCurrent = 'true';
+    active = next;
   };
 
-  #defaultPart = 'button nav-button';
-
-  constructor() {
-    super();
-    // Add pagination to elements
-    this.elements.pagination = this.#pagination;
-    // Register hooks
-    this.registerHook('init', this.#createPagination.bind(this));
-    this.registerHook('updateState', this.#setActivePaginationItem.bind(this));
-  }
-
   /**
-   * Create pagination dots
+   * Arrow keys move between dots, following the carousel direction
    */
-  #createPagination() {
-    let { container, dots } = this.#pagination;
-    const { current } = this.settings;
+  const onKeyDown = event => {
+    const step = { ArrowRight: 1, ArrowLeft: -1 }[event.key];
+    if (!step) return;
+
+    const target = dots[carousel.state.index + (carousel.isLtr() ? step : -step)];
+    if (target) {
+      target.click();
+      target.focus();
+    }
+  };
+
+  carousel.registerHook('init', () => {
+    const { pages, pageCount } = carousel.state;
+    const show = carousel.settings.current.nav && pageCount > 1;
 
     if (!container) {
-      container = this.getSlotElements('pagination')[0];
+      container = carousel.getSlotElements('pagination')[0];
       if (!container) return;
-
-      container.addEventListener('keydown', this.#handleKeyDown.bind(this));
-      this.#pagination.container = container;
-    } else {
-      container.innerHTML = '';
-      dots.forEach(dot => dot.remove());
-      this.#pagination.dots = [];
+      container.addEventListener('keydown', onKeyDown);
     }
 
-    Base.setVisibility(container, current.nav && this.state.pageCount > 1);
+    dots.forEach(dot => dot.remove());
+    dots = [];
+    active = null;
 
-    if (current.nav && container && this.state.pageCount > 1) {
-      this.state.pages.forEach((page, index) => {
-        this.#createMarker(page, index);
-      });
+    carousel.constructor.setVisibility(container, show);
+    if (!show) return;
 
-      // Set first dot as active
-      if (this.#pagination.dots.length) {
-        this.#setActivePaginationItem();
-      }
-    }
-  }
+    dots = pages.map((page, index) => {
+      const dot = document.createElement('button');
+      dot.type = 'button';
+      dot.part = defaultPart;
+      dot.tabIndex = -1;
+      dot.textContent = index + 1;
+      dot.setAttribute('aria-label', `Page ${index + 1}`);
+      dot.setAttribute('aria-controls', page.map(item => item.id).join(' '));
+      dot.setAttribute('aria-current', 'false');
+      dot.addEventListener('click', () => carousel.goTo(index));
+      return dot;
+    });
 
-  /**
-   * Create a pagination marker (dot)
-   * @param {number} index - Page index for the marker
-   */
-  #createMarker(page, index) {
-    const { container, dots } = this.#pagination;
-    if (!container) return;
+    container.append(...dots);
+    update();
+  });
 
-    const dot = document.createElement('button');
+  carousel.registerHook('updateState', update);
+};
 
-    dot.type = 'button';
-    dot.part = this.#defaultPart;
-    dot.setAttribute('aria-label', `Page ${index + 1}`);
-    dot.setAttribute('aria-controls', page.map(item => item.id).join(' '));
-    dot.setAttribute('aria-current', false);
-
-    dot.innerHTML = index + 1;
-    dot.addEventListener('click', () => this.goTo(index));
-
-    container.append(dot);
-    dots.push(dot);
-  }
-
-  /**
-   * Update active pagination dot
-   */
-  #setActivePaginationItem() {
-    if (!this.settings.current.nav || !this.#pagination.dots.length) return;
-
-    let { dots, active } = this.#pagination;
-    const next = dots[this.state.index];
-
-    if (next) {
-      if (active) {
-        Object.assign(active, {
-          tabIndex: 0,
-          ariaCurrent: false
-        });
-        active.part = this.#defaultPart;
-      }
-
-      next.part = `${this.#defaultPart} active`;
-      Object.assign(next, {
-        tabIndex: -1,
-        ariaCurrent: true
-      });
-      this.#pagination.active = next;
-    }
-  }
-
-  /**
-   * Handle keyboard navigation in pagination
-   * @param {KeyboardEvent} event - Keyboard event
-   */
-  #handleKeyDown(event) {
-    if (!this.#pagination.dots.length) return;
-
-    const isLtr = this.isDocumentLtr();
-    const activeDot = this.#pagination.dots[this.state.index] || 0;
-
-    switch (event.key) {
-      case 'ArrowRight':
-      case 'ArrowLeft':
-        const direction = event.key === 'ArrowRight'
-          ? (isLtr ? 'next' : 'previous')
-          : (isLtr ? 'previous' : 'next');
-
-        const target = activeDot[`${direction}ElementSibling`];
-        if (target) {
-          target.click();
-          target.focus();
-        }
-        break;
-    }
+export const NavFeature = Base => class extends Base {
+  constructor() {
+    super();
+    nav(this);
   }
 };

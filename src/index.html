@@ -9,7 +9,7 @@
   <!-- Primary Meta Tags -->
   <title>Snap Carousel - Lightweight JavaScript Carousel Library</title>
   <meta name="title" content="Snap Carousel - Lightweight JavaScript Carousel Library">
-  <meta name="description" content="A modern, lightweight (5.4kB gzip) JavaScript carousel component using CSS scroll-snap. Perfect for creating responsive, performant image galleries and content sliders.">
+  <meta name="description" content="A modern, lightweight (4kB gzip) JavaScript carousel component using CSS scroll-snap. Perfect for creating responsive, performant image galleries and content sliders.">
   <meta name="keywords" content="carousel, slider, javascript, web component, custom element, scroll snap, lightweight, responsive, image gallery">
   <meta name="author" content="Corentin Gautier">
 
@@ -19,14 +19,14 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://corentin-gautier.github.io/snap-carousel/">
   <meta property="og:title" content="Snap Carousel - Lightweight JavaScript Carousel Library">
-  <meta property="og:description" content="A modern, lightweight (5.4kB gzip) JavaScript carousel component using CSS scroll-snap. Perfect for creating responsive, performant image galleries and content sliders.">
+  <meta property="og:description" content="A modern, lightweight (4kB gzip) JavaScript carousel component using CSS scroll-snap. Perfect for creating responsive, performant image galleries and content sliders.">
   <meta property="og:image" content="https://corentin-gautier.github.io/snap-carousel/og-image.png">
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
   <meta property="twitter:url" content="https://corentin-gautier.github.io/snap-carousel/">
   <meta property="twitter:title" content="Snap Carousel - Lightweight JavaScript Carousel Library">
-  <meta property="twitter:description" content="A modern, lightweight (5.4kB gzip) JavaScript carousel component using CSS scroll-snap. Perfect for creating responsive, performant image galleries and content sliders.">
+  <meta property="twitter:description" content="A modern, lightweight (4kB gzip) JavaScript carousel component using CSS scroll-snap. Perfect for creating responsive, performant image galleries and content sliders.">
   <meta property="twitter:image" content="https://corentin-gautier.github.io/snap-carousel/og-image.png">
 
   <!-- Favicon -->
@@ -47,7 +47,7 @@
       "@context": "https://schema.org",
       "@type": "SoftwareSourceCode",
       "name": "Snap Carousel",
-      "description": "A modern, lightweight (5.4kB gzip) JavaScript carousel component using CSS scroll-snap. Perfect for creating responsive, performant image galleries and content sliders.",
+      "description": "A modern, lightweight (4kB gzip) JavaScript carousel component using CSS scroll-snap. Perfect for creating responsive, performant image galleries and content sliders.",
       "programmingLanguage": "JavaScript",
       "runtimePlatform": "Web Browser",
       "author": {
@@ -91,8 +91,10 @@
             <li><a href="#product-comparison">Product Comparison</a></li>
             <li><a href="#film-showcase">Film Showcase</a></li>
             <li><a href="#customization">Customization</a></li>
+            <li><a href="#localized-labels">Localized Labels</a></li>
           </ul>
         </li>
+        <li><a href="#styling">Styling</a></li>
         <li><a href="#module-structure">Module Structure</a></li>
         <li><a href="#options">Options Reference</a></li>
       </ul>
@@ -101,28 +103,18 @@
     <section id="getting-started">
       <h2>Getting Started</h2>
       <small>Quick setup guide to get you started with Snap Carousel</small>
-      <pre><code class="language-html">&lt;!-- Option 1: Using CDN (recommended for production) --&gt;
-&lt;script src="https://unpkg.com/snap-carousel.js@latest/dist/snap-carousel.umd.min.js"&gt;&lt;/script&gt;
+      <pre><code class="language-html">&lt;!-- Load the module once, it registers &lt;snap-carousel&gt; --&gt;
+&lt;script type="module" src="https://unpkg.com/snap-carousel.js@2"&gt;&lt;/script&gt;
 
-&lt;!-- Option 2: Using local file --&gt;
-&lt;script src="path/to/snap-carousel.umd.js"&gt;&lt;/script&gt;
-
-&lt;!-- Use the carousel component (auto-registered) --&gt;
+&lt;!-- Controls and nav are downloaded only because this carousel uses them --&gt;
 &lt;snap-carousel displayed="1" controls nav&gt;
   &lt;div slot="scroller"&gt;
     &lt;div&gt;Slide 1&lt;/div&gt;
     &lt;div&gt;Slide 2&lt;/div&gt;
     &lt;div&gt;Slide 3&lt;/div&gt;
   &lt;/div&gt;
-&lt;/snap-carousel&gt;
-
-&lt;!-- Or create a custom carousel using JavaScript --&gt;
-&lt;script&gt;
-  // Features are available on the global SnapCarousel object
-  const { createCarousel, ControlsFeature, NavFeature } = SnapCarousel;
-  const CustomCarousel = createCarousel(ControlsFeature, NavFeature);
-  customElements.define('custom-carousel', CustomCarousel);
-&lt;/script&gt;</code></pre>
+&lt;/snap-carousel&gt;</code></pre>
+      <p>Buttons and dots come without visual styles. See <a href="#styling">Styling</a> to make them match your design.</p>
     </section>
 
     <section id="basic-usage">
@@ -1038,6 +1030,231 @@
             <span slot="next-label"></span>
           </snap-carousel>
       </example>
+
+      <example id="localized-labels">
+        <div>
+          <h2>Localized Labels</h2>
+          <small>Button text set from attributes, and changed at a breakpoint</small>
+          <pre><code class="language-html">&lt;snap-carousel
+    controls
+    nav
+    prev-label="Préc."
+    next-label="Suiv."
+    responsive='[{"breakpoint": 768, "settings": {"prevLabel": "Précédent", "nextLabel": "Suivant"}}]'
+&gt;
+...
+&lt;/snap-carousel&gt;</code></pre>
+          <p>The labels are the buttons' visible text and their accessible name, in both the native and the JS version. Inside <code>responsive</code> settings, options use their camelCase names.</p>
+        </div>
+        <snap-carousel controls nav prev-label="Préc." next-label="Suiv." responsive='[{"breakpoint": 768, "settings": {"prevLabel": "Précédent", "nextLabel": "Suivant"}}]'>
+          <ul>
+            <li data-slide="1"></li>
+            <li data-slide="2"></li>
+            <li data-slide="3"></li>
+            <li data-slide="4"></li>
+          </ul>
+        </snap-carousel>
+      </example>
+    </section>
+
+    <section id="styling">
+      <h2>Styling</h2>
+      <small>Buttons and dots ship without visual styles, here is how to style them</small>
+
+      <example id="styling-versions">
+        <div>
+          <h2>Two versions of the same buttons</h2>
+          <small>The browser draws them when it can, JavaScript does otherwise</small>
+          <p>In Chrome and Edge, the default prev/next buttons and nav dots are drawn by the browser with the CSS carousel pseudo-elements <code>::scroll-button()</code> and <code>::scroll-marker</code>, so no JavaScript is downloaded for them. Other browsers download the JS version, made of regular buttons in the carousel's shadow DOM.</p>
+          <p>Both versions have the same content, placement and behaviour, but they are different elements: <strong>the JS version is styled with <code>::part()</code>, the native version with the pseudo-elements</strong>. To get the same look everywhere, write your styles for both.</p>
+          <p>Your browser is using: <strong data-sc-path>…</strong></p>
+          <p>Supporting browsers still use the JS version when a carousel needs something the native one can't do:</p>
+          <ul>
+            <li>custom elements in the <code>prev-buttons</code>, <code>next-buttons</code>, <code>before-prev</code>, <code>after-next</code>, <code>prev-icon</code>, <code>next-icon</code>, <code>prev-label</code>, <code>next-label</code> or <code>pagination</code> slots</li>
+            <li><code>loop</code>, since native buttons stop at the ends</li>
+            <li><code>per-page</code> lower than the number of whole slides displayed, since native buttons move by a whole view</li>
+          </ul>
+        </div>
+      </example>
+
+      <example id="styling-parts">
+        <div>
+          <h2>1. JS version: <code>::part()</code></h2>
+          <small>Used by Safari, Firefox, and Chrome/Edge carousels that need the JS version</small>
+        </div>
+        <div class="options-grid">
+          <div class="option">
+            <h3>::part(button)</h3>
+            <p>Every default button: prev, next and dots.</p>
+          </div>
+          <div class="option">
+            <h3>::part(prev-button)<br>::part(next-button)</h3>
+            <p>The prev and next buttons. Also available together as <code>::part(control-button)</code>.</p>
+          </div>
+          <div class="option">
+            <h3>::part(buttons)</h3>
+            <p>The row holding prev and next, a flex row with one button at each end.</p>
+          </div>
+          <div class="option">
+            <h3>::part(nav)</h3>
+            <p>The container of the dots.</p>
+          </div>
+          <div class="option">
+            <h3>::part(nav-button)</h3>
+            <p>Each dot, a button showing its page number.</p>
+          </div>
+          <div class="option">
+            <h3>::part(active)</h3>
+            <p>The dot of the current page.</p>
+          </div>
+          <div class="option">
+            <h3>::part(pager)</h3>
+            <p>The pager, with <code>::part(current)</code>, <code>::part(page-sep)</code> and <code>::part(total)</code>. The pager is always JS.</p>
+          </div>
+        </div>
+        <div>
+          <p>States work as usual on parts: <code>::part(prev-button):disabled</code>, <code>::part(nav-button):hover</code>, <code>::part(nav-button):focus-visible</code>.</p>
+        </div>
+      </example>
+
+      <example id="styling-native">
+        <div>
+          <h2>2. Native version: <code>::scroll-button()</code> and <code>::scroll-marker</code></h2>
+          <small>Used by Chrome and Edge 135+. The pseudo-elements belong to the scroller, marked with the <code>snpc-s</code> attribute</small>
+        </div>
+        <div class="options-grid">
+          <div class="option">
+            <h3>[snpc-s]::scroll-button(*)</h3>
+            <p>Both prev and next. Target one with <code>(inline-start)</code> and <code>(inline-end)</code>, or <code>(block-start)</code> and <code>(block-end)</code> on vertical carousels.</p>
+          </div>
+          <div class="option">
+            <h3>[snpc-s]::scroll-button(*):disabled</h3>
+            <p>A button at the start or end of the carousel.</p>
+          </div>
+          <div class="option">
+            <h3>[snpc-s]::scroll-marker-group</h3>
+            <p>The container of the dots. <strong>Set its <code>height</code></strong>: the browser gives it size containment, so it doesn't grow with its dots. It defaults to <code>1.25rem</code>.</p>
+          </div>
+          <div class="option">
+            <h3>[snpc-s] &gt; *::scroll-marker</h3>
+            <p>Each dot. Dots are links: add <code>box-sizing: border-box</code> and <code>text-decoration: none</code> to match a button.</p>
+          </div>
+          <div class="option">
+            <h3>[snpc-s] &gt; *::scroll-marker:target-current</h3>
+            <p>The dot of the current page.</p>
+          </div>
+        </div>
+        <div>
+          <p>Only the first slide of each page gets a dot, so <code>&gt; *::scroll-marker</code> is enough to target them all.</p>
+        </div>
+      </example>
+
+      <example id="styling-both">
+        <div>
+          <h2>Styling both</h2>
+          <small>The same look written for each version</small>
+          <pre><code class="language-css">/* 1. JS version */
+.styled-carousel::part(prev-button),
+.styled-carousel::part(next-button) {
+  padding: .5rem 1.25rem;
+  border: 0;
+  border-radius: 99rem;
+  background: #1f2937;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+.styled-carousel::part(prev-button):disabled,
+.styled-carousel::part(next-button):disabled {
+  opacity: .3;
+  cursor: default;
+}
+.styled-carousel::part(nav) {
+  display: flex;
+  justify-content: center;
+  gap: .375rem;
+  margin-top: 1rem;
+}
+.styled-carousel::part(nav-button) {
+  width: 1.5rem;
+  height: .5rem;
+  padding: 0;
+  border: 0;
+  border-radius: 99rem;
+  background: #e2e8f0;
+  font-size: 0;
+  cursor: pointer;
+}
+.styled-carousel::part(active) {
+  width: 2.5rem;
+  background: #6366f1;
+}
+
+/* 2. Native version */
+.styled-carousel [snpc-s]::scroll-button(*) {
+  padding: .5rem 1.25rem;
+  border: 0;
+  border-radius: 99rem;
+  background: #1f2937;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+.styled-carousel [snpc-s]::scroll-button(*):disabled {
+  opacity: .3;
+  cursor: default;
+}
+.styled-carousel [snpc-s]::scroll-marker-group {
+  display: flex;
+  justify-content: center;
+  gap: .375rem;
+  margin-top: 1rem;
+  height: .5rem; /* the group doesn't size itself */
+}
+.styled-carousel [snpc-s] &gt; *::scroll-marker {
+  box-sizing: border-box; /* markers are links */
+  width: 1.5rem;
+  height: .5rem;
+  border-radius: 99rem;
+  background: #e2e8f0;
+  font-size: 0;
+  text-decoration: none;
+  cursor: pointer;
+}
+.styled-carousel [snpc-s] &gt; *::scroll-marker:target-current {
+  width: 2.5rem;
+  background: #6366f1;
+}</code></pre>
+          <p><strong>Keep the two versions in separate rules.</strong> A browser drops a whole rule when it doesn't know one of its selectors, so <code>.a::part(prev-button), .a [snpc-s]::scroll-button(*) { … }</code> would be ignored by Safari and Firefox, the very browsers that use the <code>::part()</code> version.</p>
+          <p>With a preprocessor, a mixin per look avoids writing each declaration twice:</p>
+          <pre><code class="language-scss">@mixin carousel-button {
+  padding: .5rem 1.25rem;
+  border-radius: 99rem;
+  /* ... */
+}
+
+.styled-carousel {
+  // Separate rules: one unknown selector would drop the whole rule
+  &amp;::part(prev-button),
+  &amp;::part(next-button) {
+    @include carousel-button;
+  }
+
+  [snpc-s]::scroll-button(*) {
+    @include carousel-button;
+  }
+}</code></pre>
+          <p>For complete control over the markup, slot your own buttons and pagination, as in the <a href="#customization">customization example</a>. The carousel then uses the JS version in every browser and only your styles apply.</p>
+        </div>
+        <snap-carousel class="styled-carousel" controls nav>
+          <ul>
+            <li data-slide="1"></li>
+            <li data-slide="2"></li>
+            <li data-slide="3"></li>
+            <li data-slide="4"></li>
+          </ul>
+        </snap-carousel>
+      </example>
     </section>
 
     <section id="module-structure">
@@ -1046,9 +1263,9 @@
 
       <example>
         <div>
-          <h3>1. Basic Usage (All Features)</h3>
-          <pre><code class="language-html">&lt;!-- Using UMD bundle in browser (auto-registers the component) --&gt;
-&lt;script src="https://unpkg.com/snap-carousel.js@latest/dist/snap-carousel.umd.js"&gt;&lt;/script&gt;
+          <h3>1. Basic Usage (features loaded on demand)</h3>
+          <pre><code class="language-html">&lt;!-- Registers &lt;snap-carousel&gt;, controls and nav are fetched when used --&gt;
+&lt;script type="module" src="https://unpkg.com/snap-carousel.js@2"&gt;&lt;/script&gt;
 &lt;snap-carousel displayed="3" gap="20" controls nav&gt;
   &lt;div slot="scroller"&gt;
     &lt;div&gt;Slide 1&lt;/div&gt;
@@ -1060,19 +1277,19 @@
 
         <div>
           <h3>2. ES Modules Usage</h3>
-          <pre><code class="language-javascript">// Import from npm package
-import { SnapCarousel } from 'snap-carousel.js';
+          <pre><code class="language-javascript">// Registers &lt;snap-carousel&gt;, features are loaded on demand
+import 'snap-carousel.js';
 
-// Register the web component
-customElements.define('snap-carousel', SnapCarousel);</code></pre>
+// The class is exported too, e.g. for instanceof checks
+import { SnapCarousel } from 'snap-carousel.js';</code></pre>
         </div>
 
         <div>
           <h3>3. Custom Build with Selected Features</h3>
-          <pre><code class="language-javascript">// Import base and features
-import { BaseCarousel, createCarousel } from './base-carousel';
-import { NavFeature } from './features/nav';
-import { PagerFeature } from './features/pager';
+          <pre><code class="language-javascript">// The base entry has no side effects and registers nothing
+import { createCarousel } from 'snap-carousel.js/base';
+import { NavFeature } from 'snap-carousel.js/features/nav';
+import { PagerFeature } from 'snap-carousel.js/features/pager';
 
 // Create custom carousel with only navigation and pager
 const CustomCarousel = createCarousel(NavFeature, PagerFeature);
@@ -1087,9 +1304,10 @@ customElements.define('custom-carousel', CustomCarousel);
         <div>
           <h3>4. Individual Features</h3>
           <pre><code class="language-javascript">// Import specific features
-import { ControlsFeature } from './features/controls';
-import { NavFeature } from './features/nav';
-import { PagerFeature } from './features/pager';
+import { createCarousel } from 'snap-carousel.js/base';
+import { ControlsFeature } from 'snap-carousel.js/features/controls';
+import { NavFeature } from 'snap-carousel.js/features/nav';
+import { PagerFeature } from 'snap-carousel.js/features/pager';
 
 // Create carousel with only the features you need
 const MinimalCarousel = createCarousel(ControlsFeature);
@@ -1102,50 +1320,29 @@ customElements.define('full-carousel', FullCarousel);</code></pre>
 
         <div>
           <h3>5. With Module Bundlers</h3>
-          <pre><code class="language-javascript">// vite.config.js
-export default defineConfig({
-  build: {
-    lib: {
-      entry: 'src/snap-carousel.js',
-      formats: ['es', 'umd'],
-      fileName: (format, entryName) => {
-        const formatSuffix = format === 'es' ? 'esm' : format;
-        return `${entryName}.${formatSuffix}.js`;
-      },
-      name: 'SnapCarousel'
-    }
-  }
-});
+          <pre><code class="language-javascript">// main.js: features imported this way are bundled with your code
+import { createCarousel } from 'snap-carousel.js/base';
+import { ControlsFeature } from 'snap-carousel.js/features/controls';
 
-// main.js
-import { BaseCarousel, createCarousel } from './base-carousel';
-import { ControlsFeature } from './features/controls';
-
-// Tree-shaking will remove unused features
 const MyCarousel = createCarousel(ControlsFeature);
-customElements.define('my-carousel', MyCarousel);</code></pre>
+customElements.define('my-carousel', MyCarousel);
+
+// Or keep on-demand loading: bundlers split the features into chunks
+import 'snap-carousel.js';</code></pre>
         </div>
 
         <div>
           <h3>6. Available Imports</h3>
-          <pre><code class="language-javascript">// Base carousel and composition
-import { BaseCarousel, createCarousel } from './base-carousel';
+          <pre><code class="language-javascript">// Main entry, registers &lt;snap-carousel&gt;
+import { SnapCarousel, BaseCarousel, createCarousel } from 'snap-carousel.js';
 
-// Individual features
-import { ControlsFeature } from './features/controls';
-import { NavFeature } from './features/nav';
-import { PagerFeature } from './features/pager';
+// Base entry, no side effects
+import { BaseCarousel, createCarousel } from 'snap-carousel.js/base';
 
-// Pre-configured variants
-import {
-  SnapCarousel,          // All features
-  SnapCarouselNav,       // Navigation only
-  SnapCarouselPager,     // Pager only
-  SnapCarouselControls,  // Controls only
-  SnapCarouselNavControls,
-  SnapCarouselNavPager,
-  SnapCarouselPagerControls
-} from './snap-carousel';</code></pre>
+// Features: a mixin for createCarousel() and a plugin for carousel.use()
+import { ControlsFeature, controls } from 'snap-carousel.js/features/controls';
+import { NavFeature, nav } from 'snap-carousel.js/features/nav';
+import { PagerFeature, pager } from 'snap-carousel.js/features/pager';</code></pre>
         </div>
 
         <div class="demo">
@@ -1224,10 +1421,22 @@ import {
             <p>Show current/total slides counter (e.g., "1 / 5").</p>
           </div>
           <div class="option">
+            <h3>prev-label</h3>
+            <div class="type">Type: <code>string</code></div>
+            <div class="default">Default: <code>"Previous"</code></div>
+            <p>Text and accessible name of the default previous button. <a href="#localized-labels">Example</a>.</p>
+          </div>
+          <div class="option">
+            <h3>next-label</h3>
+            <div class="type">Type: <code>string</code></div>
+            <div class="default">Default: <code>"Next"</code></div>
+            <p>Text and accessible name of the default next button.</p>
+          </div>
+          <div class="option">
             <h3>loop</h3>
             <div class="type">Type: <code>boolean</code></div>
             <div class="default">Default: <code>false</code></div>
-            <p>Enable infinite looping of carousel items.</p>
+            <p>Wrap from the last page to the first and back. Without it, navigation stops at the ends (autoplay still rewinds).</p>
           </div>
           <div class="option">
             <h3>autoplay</h3>
@@ -1238,8 +1447,8 @@ import {
           <div class="option">
             <h3>use-pause</h3>
             <div class="type">Type: <code>boolean</code></div>
-            <div class="default">Default: <code>false</code></div>
-            <p>Pause autoplay on hover.</p>
+            <div class="default">Default: <code>true</code></div>
+            <p>Pause autoplay on hover and while the carousel has focus.</p>
           </div>
           <div class="option">
             <h3>behavior</h3>
@@ -1261,9 +1470,9 @@ import {
           </div>
           <div class="option">
             <h3>responsive</h3>
-            <div class="type">Type: <code>object</code></div>
-            <div class="default">Default: <code>null</code></div>
-            <p>Breakpoint-specific settings (e.g., responsive='[{"breakpoint": "1024", "settings": {"displayed": "2"}}]').</p>
+            <div class="type">Type: <code>array</code></div>
+            <div class="default">Default: <code>[]</code></div>
+            <p>Settings applied above a viewport width (e.g., responsive='[{"breakpoint": "1024", "settings": {"displayed": "2"}}]'). Option names are camelCase inside settings, e.g. <code>perPage</code>, <code>prevLabel</code>.</p>
           </div>
           <div class="option">
             <h3>scrollbar</h3>
@@ -1282,8 +1491,17 @@ import {
     </section>
   </div>
 
-  <!-- Load the UMD version of the library -->
-  <script src="./snap-carousel.umd.min.js"></script>
+  <!-- Load the library, features are fetched when a carousel uses them -->
+  <script type="module" src="./snap-carousel.js"></script>
+
+  <!-- Tell which version of the buttons this browser uses (Styling section) -->
+  <script type="module">
+    await customElements.whenDefined('snap-carousel');
+    const carousel = document.querySelector('.styled-carousel');
+    document.querySelector('[data-sc-path]').textContent = carousel.states.has('native-controls')
+      ? 'the native version (::scroll-button, ::scroll-marker)'
+      : 'the JS version (::part)';
+  </script>
 
   <!-- Your existing scripts -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script>

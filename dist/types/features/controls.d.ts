@@ -1,19 +1,7 @@
-import { BaseCarousel, CarouselFeature } from '../base-carousel';
+import { CarouselMixin, CarouselPlugin } from '../base-carousel';
 
-export interface ControlsFeatureOptions {
-    controls?: boolean;
-}
+/** Attach the controls feature to a carousel instance: `carousel.use(controls)` */
+export declare const controls: CarouselPlugin;
 
-export declare class ControlsFeature implements CarouselFeature {
-    private carousel: BaseCarousel;
-
-    constructor(carousel: BaseCarousel);
-
-    init(): void;
-    destroy(): void;
-    update(): void;
-
-    private createControls(): void;
-    private removeControls(): void;
-    private updateControlsState(): void;
-}
+/** Controls feature mixin: `createCarousel(ControlsFeature)` */
+export declare const ControlsFeature: CarouselMixin;

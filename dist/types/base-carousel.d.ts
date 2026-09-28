@@ -1,61 +1,92 @@
 export interface CarouselOptions {
+    autoplay?: number;
     displayed?: number;
     perPage?: number;
-    gap?: string;
-    padding?: string;
-    behavior?: 'smooth' | 'auto';
+    gap?: string | number;
+    padding?: string | number;
+    controls?: boolean;
+    nav?: boolean;
+    pager?: boolean;
+    prevLabel?: string;
+    nextLabel?: string;
     loop?: boolean;
-    autoplay?: number;
-    usePause?: boolean;
+    behavior?: 'smooth' | 'auto';
     stop?: boolean;
+    usePause?: boolean;
     vertical?: boolean;
     responsive?: Array<{
-        breakpoint: string;
+        breakpoint: number | string;
         settings: Partial<CarouselOptions>;
     }>;
-    scrollbar?: boolean;
-    sync?: string;
+    sync?: string | null;
 }
 
-export interface CarouselFeature {
-    init(): void;
-    destroy(): void;
-    update?(): void;
+export interface CarouselState {
+    index: number;
+    itemsCount: number;
+    pageCount: number;
+    pages: HTMLElement[][];
+    isVisible: boolean;
+    autoplayInterval: ReturnType<typeof setTimeout> | null;
+    breakpoint: number | string | null | undefined;
+    ready: boolean;
+    isMoving: boolean;
+    pause: boolean;
 }
 
-export declare class BaseCarousel extends HTMLElement implements CarouselOptions {
-    displayed: number;
-    perPage: number;
-    gap: string;
-    padding: string;
-    behavior: 'smooth' | 'auto';
-    loop: boolean;
-    autoplay: number;
-    usePause: boolean;
-    stop: boolean;
-    vertical: boolean;
-    responsive: Array<{
-        breakpoint: string;
-        settings: Partial<CarouselOptions>;
-    }>;
-    scrollbar: boolean;
-    sync: string;
+export interface CarouselElements {
+    scroller: HTMLElement | null;
+    items: HTMLElement[];
+    sync: Element[] | null;
+    [feature: string]: unknown;
+}
 
-    constructor();
+export type CarouselHook = 'setup' | 'init' | 'updateState';
 
-    static get observedAttributes(): string[];
+/** A feature attached to one carousel instance, usable with `carousel.use()` */
+export type CarouselPlugin = (carousel: BaseCarousel) => void;
+
+/** A feature mixin, usable with `createCarousel()` */
+export type CarouselMixin = <T extends typeof BaseCarousel>(Base: T) => T;
+
+export interface CarouselEventMap extends HTMLElementEventMap {
+    scrollstart: CustomEvent<CarouselState>;
+    scrollupdate: CustomEvent<CarouselState>;
+    scrollend: CustomEvent<CarouselState>;
+}
+
+export declare class BaseCarousel extends HTMLElement {
+    static readonly defaultConfig: Required<CarouselOptions>;
+    static readonly observedAttributes: string[];
+    static setVisibility(element: HTMLElement, condition: boolean): void;
+    static registerElement(name: string, constructor: CustomElementConstructor): void;
+
+    readonly elements: CarouselElements;
+    readonly settings: {
+        default: Required<CarouselOptions>;
+        origin: Required<CarouselOptions>;
+        current: Required<CarouselOptions>;
+    };
+    readonly state: CarouselState;
+    readonly preventUiUpdate: boolean;
+    /** Custom states of the element, matched with `:state()` in CSS */
+    readonly states: CustomStateSet;
 
     connectedCallback(): void;
     disconnectedCallback(): void;
-    attributeChangedCallback(name: string, oldValue: string, newValue: string): void;
+    attributeChangedCallback(): void;
 
-    next(): void;
+    goTo(page: number): void;
     prev(): void;
-    goTo(index: number): void;
-    getCurrentIndex(): number;
-    getTotalSlides(): number;
+    next(): void;
 
-    protected initializeFeatures(): void;
-    protected destroyFeatures(): void;
-    protected updateFeatures(): void;
+    isLtr(): boolean;
+    getSlotElements(slotName: string, options?: { fallback?: boolean }): HTMLElement[];
+    registerHook(type: CarouselHook, callback: (this: this, index?: number) => void): void;
+    use(feature: CarouselPlugin): void;
+
+    addEventListener<K extends keyof CarouselEventMap>(type: K, listener: (this: this, ev: CarouselEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+    addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
 }
+
+export declare function createCarousel(...features: CarouselMixin[]): typeof BaseCarousel;
