@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.1.1](https://github.com/corentin-gautier/snap-carousel/compare/v2.1.0...v2.1.1) (2026-09-28)
+
+
+### Bug Fixes
+
+* revert example page config change ([72b78b1](https://github.com/corentin-gautier/snap-carousel/commit/72b78b19a7e44d5c56ec0174f3f763d25ac19574))
+
 ## [2.1.0](https://github.com/corentin-gautier/snap-carousel/compare/v2.0.0...v2.1.0) (2026-09-28)
 
 
