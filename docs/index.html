@@ -62,7 +62,7 @@
       "license": "https://opensource.org/licenses/MIT"
     }
   </script>
-  <script type="module" crossorigin src="./assets/index-DH92goQD.js"></script>
+  <script type="module" crossorigin src="./assets/index-CyquDsQi.js"></script>
   <link rel="stylesheet" crossorigin href="./assets/index.css">
 </head>
 
@@ -829,6 +829,7 @@
     controls
     nav
     pager
+    pager-separator=" OF "
     scrollbar
     vertical
     stop
@@ -929,6 +930,11 @@
     .custom-nav-carousel::part(buttons) {
       margin: 0;
     }
+
+    /* Only show the icon of the next button, it keeps "Next" as accessible name */
+    .custom-nav-carousel::part(next-label) {
+      display: none;
+    }
   &lt;/style&gt;
   &lt;ul slot="scroller"&gt;
     &lt;li style="position: sticky;left: 0;top: 0;"&gt;
@@ -961,17 +967,10 @@
     &lt;svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"&gt;&lt;path d="M660-240v-480h80v480h-80Zm-440 0v-480l360 240-360 240Zm80-240Zm0 90 136-90-136-90v180Z"/&gt;&lt;/svg&gt;
   &lt;/span&gt;
 
-  &lt;!-- Change the separator text --&gt;
-  &lt;span slot="sep"&gt;
-    OF
-  &lt;/span&gt;
-
-  &lt;!-- Remove the next buttton label --&gt;
-  &lt;span slot="next-label"&gt;&lt;/span&gt;
 &lt;/snap-carousel&gt;</code></pre>
           </div>
 
-          <snap-carousel scrollbar vertical stop displayed="1" controls nav pager class="custom-nav-carousel" style="height: 400px;">
+          <snap-carousel scrollbar vertical stop displayed="1" controls nav pager pager-separator=" OF " class="custom-nav-carousel" style="height: 400px;">
 
             <ul slot="scroller">
               <li style="position: sticky;left: 0;top: 0;">
@@ -1022,13 +1021,6 @@
               <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M660-240v-480h80v480h-80Zm-440 0v-480l360 240-360 240Zm80-240Zm0 90 136-90-136-90v180Z"/></svg>
             </span>
 
-            <!-- Change the separator text -->
-            <span slot="sep">
-              OF
-            </span>
-
-            <!-- Remove the next buttton label -->
-            <span slot="next-label"></span>
           </snap-carousel>
       </example>
 
@@ -1071,7 +1063,7 @@
           <p>Your browser is using: <strong data-sc-path>…</strong></p>
           <p>Supporting browsers still use the JS version when a carousel needs something the native one can't do:</p>
           <ul>
-            <li>custom elements in the <code>prev-buttons</code>, <code>next-buttons</code>, <code>before-prev</code>, <code>after-next</code>, <code>prev-icon</code>, <code>next-icon</code>, <code>prev-label</code>, <code>next-label</code> or <code>pagination</code> slots</li>
+            <li>custom elements in the <code>prev-buttons</code>, <code>next-buttons</code>, <code>before-prev</code>, <code>after-next</code>, <code>prev-icon</code>, <code>next-icon</code> or <code>pagination</code> slots</li>
             <li><code>loop</code>, since native buttons stop at the ends</li>
             <li><code>per-page</code> lower than the number of whole slides displayed, since native buttons move by a whole view</li>
           </ul>
@@ -1091,6 +1083,10 @@
           <div class="option">
             <h3>::part(prev-button)<br>::part(next-button)</h3>
             <p>The prev and next buttons. Also available together as <code>::part(control-button)</code>.</p>
+          </div>
+          <div class="option">
+            <h3>::part(prev-label)<br>::part(next-label)</h3>
+            <p>The text inside the prev and next buttons. Hide it to show only a slotted icon: the button keeps its label as accessible name.</p>
           </div>
           <div class="option">
             <h3>::part(buttons)</h3>
@@ -1432,6 +1428,12 @@ import { PagerFeature, pager } from 'snap-carousel.js/features/pager';</code></p
             <div class="type">Type: <code>string</code></div>
             <div class="default">Default: <code>"Next"</code></div>
             <p>Text and accessible name of the default next button.</p>
+          </div>
+          <div class="option">
+            <h3>pager-separator</h3>
+            <div class="type">Type: <code>string</code></div>
+            <div class="default">Default: <code>" / "</code></div>
+            <p>Text between the current and total page numbers of the pager, e.g. <code>" of "</code>.</p>
           </div>
           <div class="option">
             <h3>loop</h3>

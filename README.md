@@ -73,7 +73,7 @@ A browser without native `scrollend` support also downloads a small polyfill. Ru
 Where the browser supports CSS carousels (`::scroll-button()` and `::scroll-marker`, currently Chrome and Edge 135+), the default prev/next buttons and nav dots are drawn by the browser, and no JavaScript is downloaded for them. Other browsers get the JS version, with the same content, placement and behaviour.
 
 The JS version is also used in supporting browsers when a carousel needs something the native one can't do:
-- custom content in the `prev-buttons`, `next-buttons`, `before-prev`, `after-next`, `prev-icon`, `next-icon`, `prev-label`, `next-label` or `pagination` slots
+- custom content in the `prev-buttons`, `next-buttons`, `before-prev`, `after-next`, `prev-icon`, `next-icon` or `pagination` slots
 - `loop` (native buttons stop at the ends)
 - `per-page` lower than the number of whole slides displayed (native buttons move by a whole view)
 
@@ -136,6 +136,7 @@ customElements.define('custom-carousel', createCarousel(NavFeature, PagerFeature
 | `pager` | boolean | `false` | Show current/total slides counter |
 | `prevLabel` | string | `"Previous"` | Text of the default previous button (attribute `prev-label`) |
 | `nextLabel` | string | `"Next"` | Text of the default next button (attribute `next-label`) |
+| `pagerSeparator` | string | `" / "` | Text between the current and total pages of the pager (attribute `pager-separator`) |
 | `loop` | boolean | `false` | Wrap from the last page to the first and back. Without it, navigation stops at the ends (autoplay still rewinds) |
 | `autoplay` | number | `0` | Autoplay interval in milliseconds (0 to disable) |
 | `usePause` | boolean | `true` | Pause autoplay on hover and while the carousel has focus |
@@ -214,7 +215,8 @@ Requires browsers with support for:
 - **`isDocumentLtr()` became `isLtr()`.** It reads the carousel's own direction, so `dir="rtl"` on any ancestor is taken into account, not only on `<html>`.
 - **Default buttons and dots are native in Chrome and Edge.** `::part()` rules don't reach them; add the native selectors next to your `::part()` rules, see [Styling](#styling).
 - **Default prev/next buttons are visible without CSS.** In 1.x they stayed hidden until a `::part()` rule gave them a `display`. They keep the browser's default look.
-- **Layout:** the host uses `display: grid`. `[part="controls"]` is `display: contents`, so styles on `::part(controls)` no longer apply. `[part="buttons"]` is a flex row with prev and next at both ends.
+- **Layout:** the host uses `display: grid`. The `controls` part was removed, so styles on `::part(controls)` no longer apply. `[part="buttons"]` is a flex row with prev and next at both ends.
+- **Label and pager slots were replaced by attributes.** Instead of the `prev-label` and `next-label` slots, set the `prev-label` and `next-label` attributes; the text is in the `prev-label` and `next-label` parts, which you can hide to show only an icon. Instead of the `sep` slot, set `pager-separator`. The `current` and `total` slots were removed; style the `current`, `page-sep` and `total` parts.
 - **Accessibility:** the host is exposed as a `region` with the "carousel" role description through `ElementInternals`, instead of an `aria-roledescription` attribute. Only the active nav dot is in the tab order; arrow keys move between dots.
 
 ## Contributing

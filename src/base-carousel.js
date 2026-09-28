@@ -114,6 +114,7 @@ export class BaseCarousel extends HTMLElement {
       pager: false,         // Show page numbers
       prevLabel: 'Previous', // Text of the default previous button
       nextLabel: 'Next',    // Text of the default next button
+      pagerSeparator: ' / ', // Text between the current and total pages
       loop: false,          // Loop around when reaching the end
       behavior: 'smooth',   // Scroll behavior
       stop: false,          // Stop at each item
@@ -347,6 +348,11 @@ export class BaseCarousel extends HTMLElement {
     // Ensure perPage doesn't exceed displayed items
     current.perPage = Math.min(current.displayed, current.perPage);
 
+    // Text options: an empty attribute parses as true, numbers as numbers
+    ['prevLabel', 'nextLabel', 'pagerSeparator'].forEach(key => {
+      current[key] = current[key] === true ? '' : String(current[key]);
+    });
+
     this.#settings.current = current;
 
     if (this.#state.breakpoint !== match.breakpoint) {
@@ -380,8 +386,8 @@ export class BaseCarousel extends HTMLElement {
       gap: toPx(gap),
       padding: toPx(padding),
       behavior,
-      'prev-label': JSON.stringify(String(prevLabel)),
-      'next-label': JSON.stringify(String(nextLabel))
+      'prev-label': JSON.stringify(prevLabel),
+      'next-label': JSON.stringify(nextLabel)
     })
       .forEach(([name, value]) => this.style.setProperty('--' + name, value));
 

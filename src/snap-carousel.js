@@ -35,7 +35,7 @@ const features = {
 
 // Slots whose content only the JS features can render
 const customSlots = {
-  controls: ['prev-buttons', 'next-buttons', 'before-prev', 'after-next', 'prev-icon', 'next-icon', 'prev-label', 'next-label'],
+  controls: ['prev-buttons', 'next-buttons', 'before-prev', 'after-next', 'prev-icon', 'next-icon'],
   nav: ['pagination']
 };
 

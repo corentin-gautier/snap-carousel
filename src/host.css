@@ -46,10 +46,6 @@
   scroll-padding-block: var(--padding);
 }
 
-[part="controls"] {
-  display: contents;
-}
-
 [part="buttons"] {
   grid-area: 2 / 1;
   display: flex;

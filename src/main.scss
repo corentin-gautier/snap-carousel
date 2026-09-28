@@ -335,24 +335,15 @@ snap-carousel {
     margin-top: 1rem;
     font-size: 0.875rem;
     color: var(--text-light);
+  }
 
-    [slot="current"] {
-      color: var(--text);
-      font-weight: 600;
-      min-width: 1.5rem;
-      text-align: center;
-    }
+  &::part(current) {
+    color: var(--text);
+    font-weight: 600;
+  }
 
-    [slot="sep"] {
-      color: var(--text-light);
-      opacity: 0.7;
-    }
-
-    [slot="total"] {
-      color: var(--text-light);
-      min-width: 1.5rem;
-      text-align: center;
-    }
+  &::part(page-sep) {
+    opacity: 0.7;
   }
 }
 
@@ -1271,6 +1262,11 @@ section {
 
   &::part(buttons) {
     margin: 0;
+  }
+
+  // Only show the icon of the next button, it keeps "Next" as accessible name
+  &::part(next-label) {
+    display: none;
   }
 }
 

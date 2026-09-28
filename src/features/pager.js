@@ -5,29 +5,26 @@
  */
 export const pager = carousel => {
   let container;
-  let current;
-  let total;
 
   const update = () => {
-    if (current && carousel.settings.current.pager) {
-      current.textContent = carousel.state.index + 1;
+    if (carousel.settings.current.pager) {
+      container.firstElementChild.textContent = carousel.state.index + 1;
     }
   };
 
   carousel.registerHook('init', () => {
-    if (!container) {
-      container = carousel.shadowRoot.querySelector('[part="pager"]');
-      [current, total] = ['current', 'total'].map(name => carousel.getSlotElements(name)[0]);
-    }
+    const { current } = carousel.settings;
 
-    if (!current || !total) return;
+    container ||= carousel.shadowRoot.querySelector('[part="pager"]');
+    carousel.constructor.setVisibility(container, current.pager && carousel.state.pageCount > 1);
 
-    carousel.constructor.setVisibility(container, carousel.settings.current.pager && carousel.state.pageCount > 1);
+    const [, separator, total] = container.children;
+    separator.textContent = current.pagerSeparator;
     total.textContent = carousel.state.pageCount;
     update();
   });
 
-  carousel.registerHook('updateState', update);
+  carousel.registerHook('updateState', () => container && update());
 };
 
 export const PagerFeature = Base => class extends Base {

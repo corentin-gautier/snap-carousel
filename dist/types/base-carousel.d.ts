@@ -9,6 +9,7 @@ export interface CarouselOptions {
     pager?: boolean;
     prevLabel?: string;
     nextLabel?: string;
+    pagerSeparator?: string;
     loop?: boolean;
     behavior?: 'smooth' | 'auto';
     stop?: boolean;

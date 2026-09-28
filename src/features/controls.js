@@ -46,11 +46,12 @@ export const controls = carousel => {
     container ||= carousel.shadowRoot.querySelector('[part="buttons"]');
     carousel.constructor.setVisibility(container, current.controls && carousel.state.pageCount > 1);
 
-    // Labels of the default buttons, used unless a prev-label/next-label slot replaces them
+    // Labels of the default buttons. The aria-label keeps the name when the
+    // label part is hidden to show only an icon.
     container.querySelectorAll('[part~="control-button"]').forEach(button => {
-      const label = String(button.getAttribute('direction') === 'prev' ? current.prevLabel : current.nextLabel);
+      const label = button.getAttribute('direction') === 'prev' ? current.prevLabel : current.nextLabel;
       button.ariaLabel = label;
-      button.querySelector('slot[name$="-label"]').textContent = label;
+      button.querySelector('[part$="-label"]').textContent = label;
     });
 
     [...carousel.getSlotElements('prev-buttons'), ...carousel.getSlotElements('next-buttons')].forEach(button => {
