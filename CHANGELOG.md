@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.1.0](https://github.com/corentin-gautier/snap-carousel/compare/v2.0.0...v2.1.0) (2026-09-28)
+
+
+### Features
+
+* pager-separator option and simpler template ([f3755ab](https://github.com/corentin-gautier/snap-carousel/commit/f3755ab3dc7087b2262675576460c6237c5746b0))
+
+### Removed
+
+* The `prev-label`, `next-label`, `sep`, `current` and `total` slots and the `controls` part. Use the `prev-label`, `next-label` and `pager-separator` attributes, and the `prev-label`, `next-label`, `current`, `page-sep` and `total` parts. 2.0.0 was not published to npm, so these are listed with the other 1.x migration notes in the README.
+
 ## [2.0.0](https://github.com/corentin-gautier/snap-carousel/compare/v1.11.2...v2.0.0) (2026-09-28)
 
 
