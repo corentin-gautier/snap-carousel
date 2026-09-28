@@ -9,8 +9,10 @@
   <!-- Primary Meta Tags -->
   <title>Snap Carousel - Lightweight JavaScript Carousel Library</title>
   <meta name="title" content="Snap Carousel - Lightweight JavaScript Carousel Library">
-  <meta name="description" content="A modern, lightweight (4kB gzip) JavaScript carousel component using CSS scroll-snap. Perfect for creating responsive, performant image galleries and content sliders.">
-  <meta name="keywords" content="carousel, slider, javascript, web component, custom element, scroll snap, lightweight, responsive, image gallery">
+  <meta name="description"
+    content="A modern, lightweight (4kB gzip) JavaScript carousel component using CSS scroll-snap. Perfect for creating responsive, performant image galleries and content sliders.">
+  <meta name="keywords"
+    content="carousel, slider, javascript, web component, custom element, scroll snap, lightweight, responsive, image gallery">
   <meta name="author" content="Corentin Gautier">
 
   <meta name="google-site-verification" content="ZzQ0D93tWYmlaJGBHx_q1Hk4xZMRt_zgjYe9ATnlUfM" />
@@ -19,18 +21,21 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://corentin-gautier.github.io/snap-carousel/">
   <meta property="og:title" content="Snap Carousel - Lightweight JavaScript Carousel Library">
-  <meta property="og:description" content="A modern, lightweight (4kB gzip) JavaScript carousel component using CSS scroll-snap. Perfect for creating responsive, performant image galleries and content sliders.">
+  <meta property="og:description"
+    content="A modern, lightweight (4kB gzip) JavaScript carousel component using CSS scroll-snap. Perfect for creating responsive, performant image galleries and content sliders.">
   <meta property="og:image" content="https://corentin-gautier.github.io/snap-carousel/og-image.png">
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
   <meta property="twitter:url" content="https://corentin-gautier.github.io/snap-carousel/">
   <meta property="twitter:title" content="Snap Carousel - Lightweight JavaScript Carousel Library">
-  <meta property="twitter:description" content="A modern, lightweight (4kB gzip) JavaScript carousel component using CSS scroll-snap. Perfect for creating responsive, performant image galleries and content sliders.">
+  <meta property="twitter:description"
+    content="A modern, lightweight (4kB gzip) JavaScript carousel component using CSS scroll-snap. Perfect for creating responsive, performant image galleries and content sliders.">
   <meta property="twitter:image" content="https://corentin-gautier.github.io/snap-carousel/og-image.png">
 
   <!-- Favicon -->
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚀</text></svg>">
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚀</text></svg>">
 
   <!-- Preconnect to external resources -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -68,14 +73,19 @@
 
 <body>
   <header>
-    <svg style="color: var(--primary);margin-bottom: 1rem;" width="366" height="103" viewBox="0 0 366 103" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0 7C0 3.13401 3.13401 0 7 0H152C155.866 0 159 3.13401 159 7V96C159 99.866 155.866 103 152 103H7C3.13401 103 0 99.866 0 96V7Z"/>
-      <path d="M170 7C170 3.13401 173.134 0 177 0H322C325.866 0 329 3.13401 329 7V96C329 99.866 325.866 103 322 103H177C173.134 103 170 99.866 170 96V7Z"/>
-      <path d="M339 7C339 3.13401 342.134 0 346 0H359C362.866 0 366 3.13401 366 7V96C366 99.866 362.866 103 359 103H346C342.134 103 339 99.866 339 96V7Z"/>
+    <svg style="color: var(--primary);margin-bottom: 1rem;" width="366" height="103" viewBox="0 0 366 103"
+      fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M0 7C0 3.13401 3.13401 0 7 0H152C155.866 0 159 3.13401 159 7V96C159 99.866 155.866 103 152 103H7C3.13401 103 0 99.866 0 96V7Z" />
+      <path
+        d="M170 7C170 3.13401 173.134 0 177 0H322C325.866 0 329 3.13401 329 7V96C329 99.866 325.866 103 322 103H177C173.134 103 170 99.866 170 96V7Z" />
+      <path
+        d="M339 7C339 3.13401 342.134 0 346 0H359C362.866 0 366 3.13401 366 7V96C366 99.866 362.866 103 359 103H346C342.134 103 339 99.866 339 96V7Z" />
     </svg>
 
     <h1>Snap Carousel</h1>
-    <p>A lightweight vanilla JavaScript carousel library built with modern web technologies. Based on custom elements, scroll-snap, and scroll-padding.</p>
+    <p>A lightweight vanilla JavaScript carousel library built with modern web technologies. Based on custom elements,
+      scroll-snap, and scroll-padding.</p>
   </header>
 
   <div class="container">
@@ -115,7 +125,8 @@
     &lt;div&gt;Slide 3&lt;/div&gt;
   &lt;/div&gt;
 &lt;/snap-carousel&gt;</code></pre>
-      <p>Buttons and dots come without visual styles. See <a href="#styling">Styling</a> to make them match your design.</p>
+      <p>Buttons and dots come without visual styles. See <a href="#styling">Styling</a> to make them match your design.
+      </p>
     </section>
 
     <section id="basic-usage">
@@ -139,7 +150,8 @@
 &gt;
 &lt;/snap-carousel&gt;</code></pre>
         </div>
-        <snap-carousel displayed="1" per-page="1" nav controls pager gap="16" padding="16" behavior="smooth" loop autoplay="3000" use-pause data-responsive='[{"breakpoint": 1025, "settings": {"displayed": 2}}]'>
+        <snap-carousel displayed="1" per-page="1" nav controls loop pager gap="16" padding="16" behavior="smooth"
+          autoplay="3000" use-pause data-responsive='[{"breakpoint": 1025, "settings": {"displayed": 2}}]'>
           <ul>
             <li data-slide="1"></li>
             <li data-slide="2"></li>
@@ -551,8 +563,8 @@
       <example id="film-showcase">
         <div>
           <h2>Film Showcase</h2>
-            <small>Netflix-style movie carousel with hover details</small>
-            <pre><code class="language-html">&lt;snap-carousel
+          <small>Netflix-style movie carousel with hover details</small>
+          <pre><code class="language-html">&lt;snap-carousel
     displayed="3"
     per-page="3"
     gap="1rem"
@@ -563,268 +575,276 @@
 &gt;
 ...
 &lt;/snap-carousel&gt;</code></pre>
-          </div>
-          <snap-carousel displayed="3" per-page="3" gap="1rem" padding="0 2rem" controls nav class="film-carousel">
-            <ul slot="scroller">
-              <li>
-                <div class="film-card">
-                  <div class="poster">
-                    <img loading="lazy" src="https://picsum.photos/seed/frontier/300/450" alt="The Last Frontier">
-                    <div class="rating">
-                      <span class="age">12+</span>
-                      <span class="score">★ 8.5</span>
-                    </div>
-                    <button class="play">▶</button>
+        </div>
+        <snap-carousel displayed="3" per-page="3" gap="1rem" padding="0 2rem" controls nav class="film-carousel">
+          <ul slot="scroller">
+            <li>
+              <div class="film-card">
+                <div class="poster">
+                  <img loading="lazy" src="https://picsum.photos/seed/frontier/300/450" alt="The Last Frontier">
+                  <div class="rating">
+                    <span class="age">12+</span>
+                    <span class="score">★ 8.5</span>
                   </div>
-                  <div class="details">
-                    <h3>The Last Frontier</h3>
-                    <div class="meta">
-                      <span class="year">2024</span>
-                      <span class="duration">2h 15m</span>
-                      <span class="quality">4K</span>
-                    </div>
-                    <p class="synopsis">A thrilling space exploration journey to the edges of our solar system reveals unexpected discoveries.</p>
-                    <div class="genres">
-                      <span>Sci-Fi</span>
-                      <span>Adventure</span>
-                    </div>
+                  <button class="play">▶</button>
+                </div>
+                <div class="details">
+                  <h3>The Last Frontier</h3>
+                  <div class="meta">
+                    <span class="year">2024</span>
+                    <span class="duration">2h 15m</span>
+                    <span class="quality">4K</span>
+                  </div>
+                  <p class="synopsis">A thrilling space exploration journey to the edges of our solar system reveals
+                    unexpected discoveries.</p>
+                  <div class="genres">
+                    <span>Sci-Fi</span>
+                    <span>Adventure</span>
                   </div>
                 </div>
-              </li>
-              <li>
-                <div class="film-card">
-                  <div class="poster">
-                    <img loading="lazy" src="https://picsum.photos/seed/urban/300/450" alt="Urban Legends">
-                    <div class="rating">
-                      <span class="age">15+</span>
-                      <span class="score">★ 7.9</span>
-                    </div>
-                    <button class="play">▶</button>
+              </div>
+            </li>
+            <li>
+              <div class="film-card">
+                <div class="poster">
+                  <img loading="lazy" src="https://picsum.photos/seed/urban/300/450" alt="Urban Legends">
+                  <div class="rating">
+                    <span class="age">15+</span>
+                    <span class="score">★ 7.9</span>
                   </div>
-                  <div class="details">
-                    <h3>Urban Legends</h3>
-                    <div class="meta">
-                      <span class="year">2024</span>
-                      <span class="duration">1h 55m</span>
-                      <span class="quality">HD</span>
-                    </div>
-                    <p class="synopsis">Modern myths come to life in this psychological thriller that blends reality with urban folklore.</p>
-                    <div class="genres">
-                      <span>Thriller</span>
-                      <span>Mystery</span>
-                    </div>
+                  <button class="play">▶</button>
+                </div>
+                <div class="details">
+                  <h3>Urban Legends</h3>
+                  <div class="meta">
+                    <span class="year">2024</span>
+                    <span class="duration">1h 55m</span>
+                    <span class="quality">HD</span>
+                  </div>
+                  <p class="synopsis">Modern myths come to life in this psychological thriller that blends reality with
+                    urban folklore.</p>
+                  <div class="genres">
+                    <span>Thriller</span>
+                    <span>Mystery</span>
                   </div>
                 </div>
-              </li>
-              <li>
-                <div class="film-card">
-                  <div class="poster">
-                    <img loading="lazy" src="https://picsum.photos/seed/heist/300/450" alt="The Grand Heist">
-                    <div class="rating">
-                      <span class="age">16+</span>
-                      <span class="score">★ 8.2</span>
-                    </div>
-                    <button class="play">▶</button>
+              </div>
+            </li>
+            <li>
+              <div class="film-card">
+                <div class="poster">
+                  <img loading="lazy" src="https://picsum.photos/seed/heist/300/450" alt="The Grand Heist">
+                  <div class="rating">
+                    <span class="age">16+</span>
+                    <span class="score">★ 8.2</span>
                   </div>
-                  <div class="details">
-                    <h3>The Grand Heist</h3>
-                    <div class="meta">
-                      <span class="year">2024</span>
-                      <span class="duration">2h 30m</span>
-                      <span class="quality">4K</span>
-                    </div>
-                    <p class="synopsis">A masterful team of thieves attempts the most daring museum heist in history.</p>
-                    <div class="genres">
-                      <span>Action</span>
-                      <span>Crime</span>
-                    </div>
+                  <button class="play">▶</button>
+                </div>
+                <div class="details">
+                  <h3>The Grand Heist</h3>
+                  <div class="meta">
+                    <span class="year">2024</span>
+                    <span class="duration">2h 30m</span>
+                    <span class="quality">4K</span>
+                  </div>
+                  <p class="synopsis">A masterful team of thieves attempts the most daring museum heist in history.</p>
+                  <div class="genres">
+                    <span>Action</span>
+                    <span>Crime</span>
                   </div>
                 </div>
-              </li>
-              <li>
-                <div class="film-card">
-                  <div class="poster">
-                    <img loading="lazy" src="https://picsum.photos/seed/echoes/300/450" alt="Echoes of Time">
-                    <div class="rating">
-                      <span class="age">12+</span>
-                      <span class="score">★ 8.7</span>
-                    </div>
-                    <button class="play">▶</button>
+              </div>
+            </li>
+            <li>
+              <div class="film-card">
+                <div class="poster">
+                  <img loading="lazy" src="https://picsum.photos/seed/echoes/300/450" alt="Echoes of Time">
+                  <div class="rating">
+                    <span class="age">12+</span>
+                    <span class="score">★ 8.7</span>
                   </div>
-                  <div class="details">
-                    <h3>Echoes of Time</h3>
-                    <div class="meta">
-                      <span class="year">2024</span>
-                      <span class="duration">2h 05m</span>
-                      <span class="quality">4K</span>
-                    </div>
-                    <p class="synopsis">A mysterious artifact allows a historian to communicate with people from different time periods.</p>
-                    <div class="genres">
-                      <span>Drama</span>
-                      <span>Fantasy</span>
-                    </div>
+                  <button class="play">▶</button>
+                </div>
+                <div class="details">
+                  <h3>Echoes of Time</h3>
+                  <div class="meta">
+                    <span class="year">2024</span>
+                    <span class="duration">2h 05m</span>
+                    <span class="quality">4K</span>
+                  </div>
+                  <p class="synopsis">A mysterious artifact allows a historian to communicate with people from different
+                    time periods.</p>
+                  <div class="genres">
+                    <span>Drama</span>
+                    <span>Fantasy</span>
                   </div>
                 </div>
-              </li>
-              <li>
-                <div class="film-card">
-                  <div class="poster">
-                    <img loading="lazy" src="https://picsum.photos/seed/wild/300/450" alt="Wild Hearts">
-                    <div class="rating">
-                      <span class="age">PG</span>
-                      <span class="score">★ 7.8</span>
-                    </div>
-                    <button class="play">▶</button>
+              </div>
+            </li>
+            <li>
+              <div class="film-card">
+                <div class="poster">
+                  <img loading="lazy" src="https://picsum.photos/seed/wild/300/450" alt="Wild Hearts">
+                  <div class="rating">
+                    <span class="age">PG</span>
+                    <span class="score">★ 7.8</span>
                   </div>
-                  <div class="details">
-                    <h3>Wild Hearts</h3>
-                    <div class="meta">
-                      <span class="year">2024</span>
-                      <span class="duration">1h 45m</span>
-                      <span class="quality">HD</span>
-                    </div>
-                    <p class="synopsis">An unlikely friendship forms between a young girl and a wild horse in the American wilderness.</p>
-                    <div class="genres">
-                      <span>Family</span>
-                      <span>Adventure</span>
-                    </div>
+                  <button class="play">▶</button>
+                </div>
+                <div class="details">
+                  <h3>Wild Hearts</h3>
+                  <div class="meta">
+                    <span class="year">2024</span>
+                    <span class="duration">1h 45m</span>
+                    <span class="quality">HD</span>
+                  </div>
+                  <p class="synopsis">An unlikely friendship forms between a young girl and a wild horse in the American
+                    wilderness.</p>
+                  <div class="genres">
+                    <span>Family</span>
+                    <span>Adventure</span>
                   </div>
                 </div>
-              </li>
-              <li>
-                <div class="film-card">
-                  <div class="poster">
-                    <img loading="lazy" src="https://picsum.photos/seed/frontier/300/450" alt="The Last Frontier">
-                    <div class="rating">
-                      <span class="age">12+</span>
-                      <span class="score">★ 8.5</span>
-                    </div>
-                    <button class="play">▶</button>
+              </div>
+            </li>
+            <li>
+              <div class="film-card">
+                <div class="poster">
+                  <img loading="lazy" src="https://picsum.photos/seed/frontier/300/450" alt="The Last Frontier">
+                  <div class="rating">
+                    <span class="age">12+</span>
+                    <span class="score">★ 8.5</span>
                   </div>
-                  <div class="details">
-                    <h3>The Last Frontier</h3>
-                    <div class="meta">
-                      <span class="year">2024</span>
-                      <span class="duration">2h 15m</span>
-                      <span class="quality">4K</span>
-                    </div>
-                    <p class="synopsis">A thrilling space exploration journey to the edges of our solar system reveals unexpected discoveries.</p>
-                    <div class="genres">
-                      <span>Sci-Fi</span>
-                      <span>Adventure</span>
-                    </div>
+                  <button class="play">▶</button>
+                </div>
+                <div class="details">
+                  <h3>The Last Frontier</h3>
+                  <div class="meta">
+                    <span class="year">2024</span>
+                    <span class="duration">2h 15m</span>
+                    <span class="quality">4K</span>
+                  </div>
+                  <p class="synopsis">A thrilling space exploration journey to the edges of our solar system reveals
+                    unexpected discoveries.</p>
+                  <div class="genres">
+                    <span>Sci-Fi</span>
+                    <span>Adventure</span>
                   </div>
                 </div>
-              </li>
-              <li>
-                <div class="film-card">
-                  <div class="poster">
-                    <img loading="lazy" src="https://picsum.photos/seed/urban/300/450" alt="Urban Legends">
-                    <div class="rating">
-                      <span class="age">15+</span>
-                      <span class="score">★ 7.9</span>
-                    </div>
-                    <button class="play">▶</button>
+              </div>
+            </li>
+            <li>
+              <div class="film-card">
+                <div class="poster">
+                  <img loading="lazy" src="https://picsum.photos/seed/urban/300/450" alt="Urban Legends">
+                  <div class="rating">
+                    <span class="age">15+</span>
+                    <span class="score">★ 7.9</span>
                   </div>
-                  <div class="details">
-                    <h3>Urban Legends</h3>
-                    <div class="meta">
-                      <span class="year">2024</span>
-                      <span class="duration">1h 55m</span>
-                      <span class="quality">HD</span>
-                    </div>
-                    <p class="synopsis">Modern myths come to life in this psychological thriller that blends reality with urban folklore.</p>
-                    <div class="genres">
-                      <span>Thriller</span>
-                      <span>Mystery</span>
-                    </div>
+                  <button class="play">▶</button>
+                </div>
+                <div class="details">
+                  <h3>Urban Legends</h3>
+                  <div class="meta">
+                    <span class="year">2024</span>
+                    <span class="duration">1h 55m</span>
+                    <span class="quality">HD</span>
+                  </div>
+                  <p class="synopsis">Modern myths come to life in this psychological thriller that blends reality with
+                    urban folklore.</p>
+                  <div class="genres">
+                    <span>Thriller</span>
+                    <span>Mystery</span>
                   </div>
                 </div>
-              </li>
-              <li>
-                <div class="film-card">
-                  <div class="poster">
-                    <img loading="lazy" src="https://picsum.photos/seed/heist/300/450" alt="The Grand Heist">
-                    <div class="rating">
-                      <span class="age">16+</span>
-                      <span class="score">★ 8.2</span>
-                    </div>
-                    <button class="play">▶</button>
+              </div>
+            </li>
+            <li>
+              <div class="film-card">
+                <div class="poster">
+                  <img loading="lazy" src="https://picsum.photos/seed/heist/300/450" alt="The Grand Heist">
+                  <div class="rating">
+                    <span class="age">16+</span>
+                    <span class="score">★ 8.2</span>
                   </div>
-                  <div class="details">
-                    <h3>The Grand Heist</h3>
-                    <div class="meta">
-                      <span class="year">2024</span>
-                      <span class="duration">2h 30m</span>
-                      <span class="quality">4K</span>
-                    </div>
-                    <p class="synopsis">A masterful team of thieves attempts the most daring museum heist in history.</p>
-                    <div class="genres">
-                      <span>Action</span>
-                      <span>Crime</span>
-                    </div>
+                  <button class="play">▶</button>
+                </div>
+                <div class="details">
+                  <h3>The Grand Heist</h3>
+                  <div class="meta">
+                    <span class="year">2024</span>
+                    <span class="duration">2h 30m</span>
+                    <span class="quality">4K</span>
+                  </div>
+                  <p class="synopsis">A masterful team of thieves attempts the most daring museum heist in history.</p>
+                  <div class="genres">
+                    <span>Action</span>
+                    <span>Crime</span>
                   </div>
                 </div>
-              </li>
-              <li>
-                <div class="film-card">
-                  <div class="poster">
-                    <img loading="lazy" src="https://picsum.photos/seed/echoes/300/450" alt="Echoes of Time">
-                    <div class="rating">
-                      <span class="age">12+</span>
-                      <span class="score">★ 8.7</span>
-                    </div>
-                    <button class="play">▶</button>
+              </div>
+            </li>
+            <li>
+              <div class="film-card">
+                <div class="poster">
+                  <img loading="lazy" src="https://picsum.photos/seed/echoes/300/450" alt="Echoes of Time">
+                  <div class="rating">
+                    <span class="age">12+</span>
+                    <span class="score">★ 8.7</span>
                   </div>
-                  <div class="details">
-                    <h3>Echoes of Time</h3>
-                    <div class="meta">
-                      <span class="year">2024</span>
-                      <span class="duration">2h 05m</span>
-                      <span class="quality">4K</span>
-                    </div>
-                    <p class="synopsis">A mysterious artifact allows a historian to communicate with people from different time periods.</p>
-                    <div class="genres">
-                      <span>Drama</span>
-                      <span>Fantasy</span>
-                    </div>
+                  <button class="play">▶</button>
+                </div>
+                <div class="details">
+                  <h3>Echoes of Time</h3>
+                  <div class="meta">
+                    <span class="year">2024</span>
+                    <span class="duration">2h 05m</span>
+                    <span class="quality">4K</span>
+                  </div>
+                  <p class="synopsis">A mysterious artifact allows a historian to communicate with people from different
+                    time periods.</p>
+                  <div class="genres">
+                    <span>Drama</span>
+                    <span>Fantasy</span>
                   </div>
                 </div>
-              </li>
-              <li>
-                <div class="film-card">
-                  <div class="poster">
-                    <img loading="lazy" src="https://picsum.photos/seed/wild/300/450" alt="Wild Hearts">
-                    <div class="rating">
-                      <span class="age">PG</span>
-                      <span class="score">★ 7.8</span>
-                    </div>
-                    <button class="play">▶</button>
+              </div>
+            </li>
+            <li>
+              <div class="film-card">
+                <div class="poster">
+                  <img loading="lazy" src="https://picsum.photos/seed/wild/300/450" alt="Wild Hearts">
+                  <div class="rating">
+                    <span class="age">PG</span>
+                    <span class="score">★ 7.8</span>
                   </div>
-                  <div class="details">
-                    <h3>Wild Hearts</h3>
-                    <div class="meta">
-                      <span class="year">2024</span>
-                      <span class="duration">1h 45m</span>
-                      <span class="quality">HD</span>
-                    </div>
-                    <p class="synopsis">An unlikely friendship forms between a young girl and a wild horse in the American wilderness.</p>
-                    <div class="genres">
-                      <span>Family</span>
-                      <span>Adventure</span>
-                    </div>
+                  <button class="play">▶</button>
+                </div>
+                <div class="details">
+                  <h3>Wild Hearts</h3>
+                  <div class="meta">
+                    <span class="year">2024</span>
+                    <span class="duration">1h 45m</span>
+                    <span class="quality">HD</span>
+                  </div>
+                  <p class="synopsis">An unlikely friendship forms between a young girl and a wild horse in the American
+                    wilderness.</p>
+                  <div class="genres">
+                    <span>Family</span>
+                    <span>Adventure</span>
                   </div>
                 </div>
-              </li>
-            </ul>
-          </snap-carousel>
+              </div>
+            </li>
+          </ul>
+        </snap-carousel>
       </example>
 
       <example id="customization">
         <div>
-            <h2>Custom Navigation & addictionnal options</h2>
-            <small>Showcase of customized navigation styles and additional options</small>
-            <pre><code class="language-html">&lt;snap-carousel
+          <h2>Custom Navigation & addictionnal options</h2>
+          <small>Showcase of customized navigation styles and additional options</small>
+          <pre><code class="language-html">&lt;snap-carousel
     displayed="1"
     controls
     nav
@@ -968,60 +988,69 @@
   &lt;/span&gt;
 
 &lt;/snap-carousel&gt;</code></pre>
+        </div>
+
+        <snap-carousel scrollbar vertical stop displayed="1" controls nav pager pager-separator=" OF "
+          class="custom-nav-carousel" style="height: 400px;">
+
+          <ul slot="scroller">
+            <li style="position: sticky;left: 0;top: 0;">
+              <div
+                style="background: var(--primary); color: #FFF; padding: 1rem; border-radius: var(--radius-md);position: absolute;width: 200px;top:2rem;left:2rem;">
+                This item is not counted as a slide
+              </div>
+            </li>
+            <li>
+              <div class="nav-demo-slide" style="background: aquamarine;">
+                <h3>Modern Navigation</h3>
+                <p>Line indicators with floating controls</p>
+              </div>
+            </li>
+            <li>
+              <div class="nav-demo-slide" style="background: lightgreen;">
+                <h3>Sleek Design</h3>
+                <p>Minimalist and functional</p>
+              </div>
+            </li>
+            <li>
+              <div class="nav-demo-slide" style="background: lightsalmon;">
+                <h3>Custom Styling</h3>
+                <p style="color: #FFF;">Fully customizable navigation</p>
+              </div>
+            </li>
+            <li>
+              <div class="nav-demo-slide" style="background: lightseagreen;">
+                <h3>Responsive Layout</h3>
+                <p style="color: #FFF;">Adapts to any screen size</p>
+              </div>
+            </li>
+          </ul>
+
+          <div slot="pagination" class="custom-pagination">
+            <!-- pagination here -->
           </div>
 
-          <snap-carousel scrollbar vertical stop displayed="1" controls nav pager pager-separator=" OF " class="custom-nav-carousel" style="height: 400px;">
+          <!-- Change the default prev button by a custom one -->
+          <button slot="prev-buttons" aria-label="Previous" class="custom-nav-button" direction="prev">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+              fill="currentColor">
+              <path d="M220-240v-480h80v480h-80Zm520 0L380-480l360-240v480Zm-80-240Zm0 90v-180l-136 90 136 90Z" />
+            </svg>
+          </button>
 
-            <ul slot="scroller">
-              <li style="position: sticky;left: 0;top: 0;">
-                <div style="background: var(--primary); color: #FFF; padding: 1rem; border-radius: var(--radius-md);position: absolute;width: 200px;top:2rem;left:2rem;">
-                  This item is not counted as a slide
-                </div>
-              </li>
-              <li>
-                <div class="nav-demo-slide" style="background: aquamarine;">
-                  <h3>Modern Navigation</h3>
-                  <p>Line indicators with floating controls</p>
-                </div>
-              </li>
-              <li>
-                <div class="nav-demo-slide" style="background: lightgreen;">
-                  <h3>Sleek Design</h3>
-                  <p>Minimalist and functional</p>
-                </div>
-              </li>
-              <li>
-                <div class="nav-demo-slide" style="background: lightsalmon;">
-                  <h3>Custom Styling</h3>
-                  <p style="color: #FFF;">Fully customizable navigation</p>
-                </div>
-              </li>
-              <li>
-                <div class="nav-demo-slide" style="background: lightseagreen;">
-                  <h3>Responsive Layout</h3>
-                  <p style="color: #FFF;">Adapts to any screen size</p>
-                </div>
-              </li>
-            </ul>
+          <!-- Add a completely custom prev button which goes back 2 slides -->
+          <button slot="prev-buttons" aria-label="Previous (x2)" class="custom-nav-button" direction="prev"
+            modifier="2">Prev (x2)</button>
 
-            <div slot="pagination" class="custom-pagination">
-              <!-- pagination here -->
-            </div>
+          <!-- Change the next button icon -->
+          <span slot="next-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+              fill="currentColor">
+              <path d="M660-240v-480h80v480h-80Zm-440 0v-480l360 240-360 240Zm80-240Zm0 90 136-90-136-90v180Z" />
+            </svg>
+          </span>
 
-            <!-- Change the default prev button by a custom one -->
-            <button slot="prev-buttons" aria-label="Previous" class="custom-nav-button" direction="prev">
-              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M220-240v-480h80v480h-80Zm520 0L380-480l360-240v480Zm-80-240Zm0 90v-180l-136 90 136 90Z"/></svg>
-            </button>
-
-            <!-- Add a completely custom prev button which goes back 2 slides -->
-            <button slot="prev-buttons" aria-label="Previous (x2)" class="custom-nav-button" direction="prev" modifier="2">Prev (x2)</button>
-
-            <!-- Change the next button icon -->
-            <span slot="next-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M660-240v-480h80v480h-80Zm-440 0v-480l360 240-360 240Zm80-240Zm0 90 136-90-136-90v180Z"/></svg>
-            </span>
-
-          </snap-carousel>
+        </snap-carousel>
       </example>
 
       <example id="localized-labels">
@@ -1037,9 +1066,11 @@
 &gt;
 ...
 &lt;/snap-carousel&gt;</code></pre>
-          <p>The labels are the buttons' visible text and their accessible name, in both the native and the JS version. Inside <code>responsive</code> settings, options use their camelCase names.</p>
+          <p>The labels are the buttons' visible text and their accessible name, in both the native and the JS version.
+            Inside <code>responsive</code> settings, options use their camelCase names.</p>
         </div>
-        <snap-carousel controls nav prev-label="Préc." next-label="Suiv." responsive='[{"breakpoint": 768, "settings": {"prevLabel": "Précédent", "nextLabel": "Suivant"}}]'>
+        <snap-carousel controls nav prev-label="Préc." next-label="Suiv."
+          responsive='[{"breakpoint": 768, "settings": {"prevLabel": "Précédent", "nextLabel": "Suivant"}}]'>
           <ul>
             <li data-slide="1"></li>
             <li data-slide="2"></li>
@@ -1058,14 +1089,22 @@
         <div>
           <h2>Two versions of the same buttons</h2>
           <small>The browser draws them when it can, JavaScript does otherwise</small>
-          <p>In Chrome and Edge, the default prev/next buttons and nav dots are drawn by the browser with the CSS carousel pseudo-elements <code>::scroll-button()</code> and <code>::scroll-marker</code>, so no JavaScript is downloaded for them. Other browsers download the JS version, made of regular buttons in the carousel's shadow DOM.</p>
-          <p>Both versions have the same content, placement and behaviour, but they are different elements: <strong>the JS version is styled with <code>::part()</code>, the native version with the pseudo-elements</strong>. To get the same look everywhere, write your styles for both.</p>
+          <p>In Chrome and Edge, the default prev/next buttons and nav dots are drawn by the browser with the CSS
+            carousel pseudo-elements <code>::scroll-button()</code> and <code>::scroll-marker</code>, so no JavaScript
+            is downloaded for them. Other browsers download the JS version, made of regular buttons in the carousel's
+            shadow DOM.</p>
+          <p>Both versions have the same content, placement and behaviour, but they are different elements: <strong>the
+              JS version is styled with <code>::part()</code>, the native version with the pseudo-elements</strong>. To
+            get the same look everywhere, write your styles for both.</p>
           <p>Your browser is using: <strong data-sc-path>…</strong></p>
           <p>Supporting browsers still use the JS version when a carousel needs something the native one can't do:</p>
           <ul>
-            <li>custom elements in the <code>prev-buttons</code>, <code>next-buttons</code>, <code>before-prev</code>, <code>after-next</code>, <code>prev-icon</code>, <code>next-icon</code> or <code>pagination</code> slots</li>
+            <li>custom elements in the <code>prev-buttons</code>, <code>next-buttons</code>, <code>before-prev</code>,
+              <code>after-next</code>, <code>prev-icon</code>, <code>next-icon</code> or <code>pagination</code> slots
+            </li>
             <li><code>loop</code>, since native buttons stop at the ends</li>
-            <li><code>per-page</code> lower than the number of whole slides displayed, since native buttons move by a whole view</li>
+            <li><code>per-page</code> lower than the number of whole slides displayed, since native buttons move by a
+              whole view</li>
           </ul>
         </div>
       </example>
@@ -1086,7 +1125,8 @@
           </div>
           <div class="option">
             <h3>::part(prev-label)<br>::part(next-label)</h3>
-            <p>The text inside the prev and next buttons. Hide it to show only a slotted icon: the button keeps its label as accessible name.</p>
+            <p>The text inside the prev and next buttons. Hide it to show only a slotted icon: the button keeps its
+              label as accessible name.</p>
           </div>
           <div class="option">
             <h3>::part(buttons)</h3>
@@ -1106,23 +1146,30 @@
           </div>
           <div class="option">
             <h3>::part(pager)</h3>
-            <p>The pager, with <code>::part(current)</code>, <code>::part(page-sep)</code> and <code>::part(total)</code>. The pager is always JS.</p>
+            <p>The pager, with <code>::part(current)</code>, <code>::part(page-sep)</code> and
+              <code>::part(total)</code>. The pager is always JS.
+            </p>
           </div>
         </div>
         <div>
-          <p>States work as usual on parts: <code>::part(prev-button):disabled</code>, <code>::part(nav-button):hover</code>, <code>::part(nav-button):focus-visible</code>.</p>
+          <p>States work as usual on parts: <code>::part(prev-button):disabled</code>,
+            <code>::part(nav-button):hover</code>, <code>::part(nav-button):focus-visible</code>.
+          </p>
         </div>
       </example>
 
       <example id="styling-native">
         <div>
           <h2>2. Native version: <code>::scroll-button()</code> and <code>::scroll-marker</code></h2>
-          <small>Used by Chrome and Edge 135+. The pseudo-elements belong to the scroller, marked with the <code>snpc-s</code> attribute</small>
+          <small>Used by Chrome and Edge 135+. The pseudo-elements belong to the scroller, marked with the
+            <code>snpc-s</code> attribute</small>
         </div>
         <div class="options-grid">
           <div class="option">
             <h3>[snpc-s]::scroll-button(*)</h3>
-            <p>Both prev and next. Target one with <code>(inline-start)</code> and <code>(inline-end)</code>, or <code>(block-start)</code> and <code>(block-end)</code> on vertical carousels.</p>
+            <p>Both prev and next. Target one with <code>(inline-start)</code> and <code>(inline-end)</code>, or
+              <code>(block-start)</code> and <code>(block-end)</code> on vertical carousels.
+            </p>
           </div>
           <div class="option">
             <h3>[snpc-s]::scroll-button(*):disabled</h3>
@@ -1130,11 +1177,13 @@
           </div>
           <div class="option">
             <h3>[snpc-s]::scroll-marker-group</h3>
-            <p>The container of the dots. <strong>Set its <code>height</code></strong>: the browser gives it size containment, so it doesn't grow with its dots. It defaults to <code>1.25rem</code>.</p>
+            <p>The container of the dots. <strong>Set its <code>height</code></strong>: the browser gives it size
+              containment, so it doesn't grow with its dots. It defaults to <code>1.25rem</code>.</p>
           </div>
           <div class="option">
             <h3>[snpc-s] &gt; *::scroll-marker</h3>
-            <p>Each dot. Dots are links: add <code>box-sizing: border-box</code> and <code>text-decoration: none</code> to match a button.</p>
+            <p>Each dot. Dots are links: add <code>box-sizing: border-box</code> and <code>text-decoration: none</code>
+              to match a button.</p>
           </div>
           <div class="option">
             <h3>[snpc-s] &gt; *::scroll-marker:target-current</h3>
@@ -1142,7 +1191,8 @@
           </div>
         </div>
         <div>
-          <p>Only the first slide of each page gets a dot, so <code>&gt; *::scroll-marker</code> is enough to target them all.</p>
+          <p>Only the first slide of each page gets a dot, so <code>&gt; *::scroll-marker</code> is enough to target
+            them all.</p>
         </div>
       </example>
 
@@ -1222,7 +1272,9 @@
   width: 2.5rem;
   background: #6366f1;
 }</code></pre>
-          <p><strong>Keep the two versions in separate rules.</strong> A browser drops a whole rule when it doesn't know one of its selectors, so <code>.a::part(prev-button), .a [snpc-s]::scroll-button(*) { … }</code> would be ignored by Safari and Firefox, the very browsers that use the <code>::part()</code> version.</p>
+          <p><strong>Keep the two versions in separate rules.</strong> A browser drops a whole rule when it doesn't know
+            one of its selectors, so <code>.a::part(prev-button), .a [snpc-s]::scroll-button(*) { … }</code> would be
+            ignored by Safari and Firefox, the very browsers that use the <code>::part()</code> version.</p>
           <p>With a preprocessor, a mixin per look avoids writing each declaration twice:</p>
           <pre><code class="language-scss">@mixin carousel-button {
   padding: .5rem 1.25rem;
@@ -1241,7 +1293,9 @@
     @include carousel-button;
   }
 }</code></pre>
-          <p>For complete control over the markup, slot your own buttons and pagination, as in the <a href="#customization">customization example</a>. The carousel then uses the JS version in every browser and only your styles apply.</p>
+          <p>For complete control over the markup, slot your own buttons and pagination, as in the <a
+              href="#customization">customization example</a>. The carousel then uses the JS version in every browser
+            and only your styles apply.</p>
         </div>
         <snap-carousel class="styled-carousel" controls nav>
           <ul>
@@ -1397,7 +1451,8 @@ import { PagerFeature, pager } from 'snap-carousel.js/features/pager';</code></p
             <h3>padding</h3>
             <div class="type">Type: <code>string</code></div>
             <div class="default">Default: <code>"0"</code></div>
-            <p>Inline Padding around the carousel viewport (CSS units, you can specify both left and right padding e.g., "0px 4rem").</p>
+            <p>Inline Padding around the carousel viewport (CSS units, you can specify both left and right padding e.g.,
+              "0px 4rem").</p>
           </div>
           <div class="option">
             <h3>controls</h3>
@@ -1439,7 +1494,8 @@ import { PagerFeature, pager } from 'snap-carousel.js/features/pager';</code></p
             <h3>loop</h3>
             <div class="type">Type: <code>boolean</code></div>
             <div class="default">Default: <code>false</code></div>
-            <p>Wrap from the last page to the first and back. Without it, navigation stops at the ends (autoplay still rewinds).</p>
+            <p>Wrap from the last page to the first and back. Without it, navigation stops at the ends (autoplay still
+              rewinds).</p>
           </div>
           <div class="option">
             <h3>autoplay</h3>
@@ -1475,7 +1531,10 @@ import { PagerFeature, pager } from 'snap-carousel.js/features/pager';</code></p
             <h3>responsive</h3>
             <div class="type">Type: <code>array</code></div>
             <div class="default">Default: <code>[]</code></div>
-            <p>Settings applied above a viewport width (e.g., responsive='[{"breakpoint": "1024", "settings": {"displayed": "2"}}]'). Option names are camelCase inside settings, e.g. <code>perPage</code>, <code>prevLabel</code>.</p>
+            <p>Settings applied above a viewport width (e.g., responsive='[{"breakpoint": "1024", "settings":
+              {"displayed": "2"}}]'). Option names are camelCase inside settings, e.g. <code>perPage</code>,
+              <code>prevLabel</code>.
+            </p>
           </div>
           <div class="option">
             <h3>scrollbar</h3>
