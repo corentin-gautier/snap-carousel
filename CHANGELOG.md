@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.0.0](https://github.com/corentin-gautier/snap-carousel/compare/v1.11.2...v2.0.0) (2026-09-28)
+
+
+### ⚠ BREAKING CHANGES
+
+* the UMD build is removed, load the ES module instead.
+Importing the main entry registers <snap-carousel>. Features moved to
+snap-carousel.js/features/* and preset classes were removed. goTo()
+respects loop. Default buttons and dots are native in Chrome and Edge,
+where ::part() does not apply. The host uses display: grid and
+::part(controls) no longer applies. isDocumentLtr() is now isLtr().
+
+### Features
+
+* lightweight ESM build with on-demand features and native CSS carousel controls ([d677308](https://github.com/corentin-gautier/snap-carousel/commit/d6773087a033a6d09f487db89b5a26ca07237cea))
+
 ### [1.11.2](https://github.com/corentin-gautier/snap-carousel/compare/v1.11.1...v1.11.2) (2025-03-09)
 
 
