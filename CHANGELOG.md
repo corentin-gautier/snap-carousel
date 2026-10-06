@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.1.3](https://github.com/corentin-gautier/snap-carousel/compare/v2.1.2...v2.1.3) (2026-10-06)
+
+
+### Bug Fixes
+
+* declare sass as a dev dependency ([44bbca4](https://github.com/corentin-gautier/snap-carousel/commit/44bbca4f5acadbf1175af3b0f51949eb3c4ac984))
+
 ### [2.1.2](https://github.com/corentin-gautier/snap-carousel/compare/v2.1.1...v2.1.2) (2026-10-06)
 
 ### [2.1.1](https://github.com/corentin-gautier/snap-carousel/compare/v2.1.0...v2.1.1) (2026-09-28)
