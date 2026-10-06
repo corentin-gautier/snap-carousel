@@ -1,0 +1,4 @@
+# Keep GitHub's language stats on the library, not the demo page and build outputs
+docs/** linguist-generated
+dist/** linguist-generated
+src/index.html linguist-documentation
