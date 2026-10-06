@@ -63,6 +63,7 @@
     "devDependencies": {
         "@rollup/plugin-terser": "^0.4.4",
         "@types/node": "^20.11.24",
+        "sass": "^1.105.1",
         "scrollyfills": "^1.0.3",
         "terser": "^5.39.0",
         "typescript": "^5.3.3",
