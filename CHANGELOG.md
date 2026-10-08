@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.1.4](https://github.com/corentin-gautier/snap-carousel/compare/v2.1.3...v2.1.4) (2026-10-08)
+
+
+### Bug Fixes
+
+* controls disappear when children are added ([740eb08](https://github.com/corentin-gautier/snap-carousel/commit/740eb089f346ca10728b48f9c48fe0f92d149ac8))
+
 ### [2.1.3](https://github.com/corentin-gautier/snap-carousel/compare/v2.1.2...v2.1.3) (2026-10-06)
 
 
