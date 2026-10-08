@@ -1,6 +1,6 @@
 {
     "name": "snap-carousel.js",
-    "version": "2.1.4",
+    "version": "2.2.0",
     "description": "A lightweight CSS scroll snap carousel. A zero-dependency <snap-carousel> custom element built on scroll-snap and scroll-padding. Features are only loaded when used.",
     "type": "module",
     "main": "dist/snap-carousel.js",

@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.2.0](https://github.com/corentin-gautier/snap-carousel/compare/v2.1.4...v2.2.0) (2026-10-08)
+
+
+### Bug Fixes
+
+* mark slides with attributes instead of classes ([f864e95](https://github.com/corentin-gautier/snap-carousel/commit/f864e95eb7515fb15090abed9d987854a26b7712))
+* prefix the CSS custom properties with --sc- ([eb0cd24](https://github.com/corentin-gautier/snap-carousel/commit/eb0cd244a8c28fe650638e85e8ae61287375b207))
+
 ### [2.1.4](https://github.com/corentin-gautier/snap-carousel/compare/v2.1.3...v2.1.4) (2026-10-08)
 
 
