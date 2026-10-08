@@ -39,14 +39,11 @@
 
   <!-- Favicon -->
   <link rel="icon"
-    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚀</text></svg>">
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 fill=%22%23c8f031%22/><path d=%22M5 11h9v10H5zM16 11h9v10h-9zM27 11h2v10h-2z%22 fill=%22%23111210%22/></svg>">
+  <meta name="theme-color" content="#f4f3ee" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0e0f0c" media="(prefers-color-scheme: dark)">
 
-  <!-- Preconnect to external resources -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-  <!-- Fonts and Styles -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Styles -->
   <link rel="stylesheet" href="./main.scss">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/atom-one-dark.min.css">
 
@@ -74,22 +71,18 @@
 
 <body>
   <header>
-    <svg style="color: var(--primary);margin-bottom: 1rem;" width="366" height="103" viewBox="0 0 366 103"
-      fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-      <path
-        d="M0 7C0 3.13401 3.13401 0 7 0H152C155.866 0 159 3.13401 159 7V96C159 99.866 155.866 103 152 103H7C3.13401 103 0 99.866 0 96V7Z" />
-      <path
-        d="M170 7C170 3.13401 173.134 0 177 0H322C325.866 0 329 3.13401 329 7V96C329 99.866 325.866 103 322 103H177C173.134 103 170 99.866 170 96V7Z" />
-      <path
-        d="M339 7C339 3.13401 342.134 0 346 0H359C362.866 0 366 3.13401 366 7V96C366 99.866 362.866 103 359 103H346C342.134 103 339 99.866 339 96V7Z" />
+    <svg width="366" height="103" viewBox="0 0 366 103" fill="currentColor" aria-hidden="true"
+      xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 0h159v103H0zM170 0h159v103H170zM339 0h27v103h-27z" />
     </svg>
 
-    <h1>Snap Carousel</h1>
+    <h1>Snap <em>Carousel</em></h1>
     <p>A lightweight CSS scroll snap carousel. A zero-dependency custom element built on scroll-snap and
       scroll-padding, configured entirely through HTML attributes.</p>
-    <p>
+    <p class="header-links">
       <a href="https://github.com/corentin-gautier/snap-carousel">Snap Carousel on GitHub</a> ·
-      <a href="https://www.npmjs.com/package/snap-carousel.js">npm</a>
+      <a href="https://www.npmjs.com/package/snap-carousel.js">npm</a> ·
+      by <a href="https://corentin-gautier.github.io/">Corentin Gautier</a>
     </p>
   </header>
 
@@ -1211,8 +1204,8 @@
   padding: .5rem 1.25rem;
   border: 0;
   border-radius: 99rem;
-  background: #1f2937;
-  color: #fff;
+  background: #111210;
+  color: #f4f3ee;
   font-weight: 600;
   cursor: pointer;
 }
@@ -1233,13 +1226,13 @@
   padding: 0;
   border: 0;
   border-radius: 99rem;
-  background: #e2e8f0;
+  background: #c9c9be;
   font-size: 0;
   cursor: pointer;
 }
 .styled-carousel::part(active) {
   width: 2.5rem;
-  background: #6366f1;
+  background: #111210;
 }
 
 /* 2. Native version */
@@ -1247,8 +1240,8 @@
   padding: .5rem 1.25rem;
   border: 0;
   border-radius: 99rem;
-  background: #1f2937;
-  color: #fff;
+  background: #111210;
+  color: #f4f3ee;
   font-weight: 600;
   cursor: pointer;
 }
@@ -1268,14 +1261,14 @@
   width: 1.5rem;
   height: .5rem;
   border-radius: 99rem;
-  background: #e2e8f0;
+  background: #c9c9be;
   font-size: 0;
   text-decoration: none;
   cursor: pointer;
 }
 .styled-carousel [snpc-s] &gt; *::scroll-marker:target-current {
   width: 2.5rem;
-  background: #6366f1;
+  background: #111210;
 }</code></pre>
           <p><strong>Keep the two versions in separate rules.</strong> A browser drops a whole rule when it doesn't know
             one of its selectors, so <code>.a::part(prev-button), .a [snpc-s]::scroll-button(*) { … }</code> would be
