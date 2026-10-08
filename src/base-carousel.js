@@ -389,7 +389,7 @@ export class BaseCarousel extends HTMLElement {
       'prev-label': JSON.stringify(prevLabel),
       'next-label': JSON.stringify(nextLabel)
     })
-      .forEach(([name, value]) => this.style.setProperty('--' + name, value));
+      .forEach(([name, value]) => this.style.setProperty('--sc-' + name, value));
 
     // sc-page marks the first slide of each reachable page (native scroll markers).
     // Attributes rather than classes: a framework rendering the slides rewrites their class

@@ -78,7 +78,7 @@ Both are imported with `?inline`, and `template.html` with `?raw` (whitespace st
 
 `settings` has three layers: `default` → `origin` (defaults + attributes) → `current` (origin + the widest matching `responsive` entry, tracked with `matchMedia` listeners). Always read `settings.current`. Attribute values go through `JSON.parse` with a string fallback, and an empty attribute means `true`.
 
-Sizing reaches CSS as custom properties set on the host (`--perpage`, `--gap`, `--padding`, `--behavior`, `--prev-label`, `--next-label`).
+Sizing reaches CSS as custom properties set on the host (`--sc-perpage`, `--sc-gap`, `--sc-padding`, `--sc-behavior`, `--sc-prev-label`, `--sc-next-label`), prefixed so that a page using `--gap` or `--padding` for its own layout can't override them by accident.
 
 ### Scroll and state
 

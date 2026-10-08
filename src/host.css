@@ -19,8 +19,8 @@
   position: relative;
   margin: 0;
   display: flex;
-  gap: var(--gap);
-  scroll-behavior: var(--behavior);
+  gap: var(--sc-gap);
+  scroll-behavior: var(--sc-behavior);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -33,8 +33,8 @@
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   overscroll-behavior-x: contain;
-  scroll-padding-inline: var(--padding);
-  padding-inline: var(--padding) !important;
+  scroll-padding-inline: var(--sc-padding);
+  padding-inline: var(--sc-padding) !important;
 }
 
 :host([vertical]) ::slotted([slot="scroller"]) {
@@ -42,8 +42,8 @@
   overflow-y: auto;
   scroll-snap-type: y mandatory;
   overscroll-behavior-y: contain;
-  padding-block: var(--padding) !important;
-  scroll-padding-block: var(--padding);
+  padding-block: var(--sc-padding) !important;
+  scroll-padding-block: var(--sc-padding);
 }
 
 [part="buttons"] {
