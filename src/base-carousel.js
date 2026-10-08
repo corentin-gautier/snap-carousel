@@ -391,12 +391,13 @@ export class BaseCarousel extends HTMLElement {
     })
       .forEach(([name, value]) => this.style.setProperty('--' + name, value));
 
-    // sc-page marks the first slide of each reachable page (native scroll markers)
+    // sc-page marks the first slide of each reachable page (native scroll markers).
+    // Attributes rather than classes: a framework rendering the slides rewrites their class
     this.#elements.items.forEach((item, index) => {
       const anchor = index % perPage === 0;
-      item.classList.toggle('sc-anchor', anchor);
-      item.classList.toggle('sc-anchor-stop', anchor && !!stop);
-      item.classList.toggle('sc-page', anchor && index / perPage < this.#state.pageCount);
+      item.toggleAttribute('sc-anchor', anchor);
+      item.toggleAttribute('sc-anchor-stop', anchor && !!stop);
+      item.toggleAttribute('sc-page', anchor && index / perPage < this.#state.pageCount);
     });
   }
 

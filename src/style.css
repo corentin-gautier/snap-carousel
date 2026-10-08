@@ -25,12 +25,12 @@
   max-height: 100%;
 }
 
-.sc-anchor {
+[sc-anchor] {
   scroll-snap-align: start;
   scroll-snap-stop: normal;
 }
 
-.sc-anchor-stop {
+[sc-anchor-stop] {
   scroll-snap-stop: always;
 }
 
@@ -64,11 +64,11 @@
   height: 1.25rem;
 }
 
-:where(:state(native-nav) > [snpc-s] > .sc-page) {
+:where(:state(native-nav) > [snpc-s] > [sc-page]) {
   counter-increment: sc-page;
 }
 
-:where(:state(native-nav) > [snpc-s] > .sc-page)::scroll-marker {
+:where(:state(native-nav) > [snpc-s] > [sc-page])::scroll-marker {
   content: counter(sc-page) / "Page " counter(sc-page);
   /* Markers inherit from their slide, keep them to the group's height */
   font-size: 1rem;
