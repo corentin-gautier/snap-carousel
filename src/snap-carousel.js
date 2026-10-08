@@ -62,7 +62,10 @@ export class SnapCarousel extends BaseCarousel {
     };
 
     Object.keys(customSlots).forEach(name => {
-      const isNative = native && current[name] && canBeNative[name] &&
+      // The option as written: a native feature is turned off below, and the same
+      // settings come back on the next init (e.g. slides added or removed)
+      const wanted = current['_' + name] ??= current[name];
+      const isNative = native && wanted && canBeNative[name] &&
         !this.querySelector(customSlots[name].map(slot => `:scope > [slot="${slot}"]`).join());
 
       this.states[isNative ? 'add' : 'delete']('native-' + name);
