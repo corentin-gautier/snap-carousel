@@ -7,6 +7,12 @@ Snap Carousel is a lightweight (4kB gzip core) **CSS scroll snap carousel**: a z
 
 [View Demo](https://corentin-gautier.github.io/snap-carousel/) | [Documentation](#documentation) | [Installation](#installation) | [Usage](#usage)
 
+## Support
+
+If Snap Carousel is useful to you, you can support my work with a small donation on [Ko-fi](https://ko-fi.com/corentingautier). Thank you!
+
+[![Support me on Ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/corentingautier)
+
 ## Table of Contents
 - [Features](#features)
 - [Installation](#installation)
@@ -16,7 +22,6 @@ Snap Carousel is a lightweight (4kB gzip core) **CSS scroll snap carousel**: a z
   - [Examples](#examples)
 - [Browser Support](#browser-support)
 - [Migrating from 1.x](#migrating-from-1x)
-- [Support](#support)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -219,10 +224,6 @@ Requires browsers with support for:
 - **Layout:** the host uses `display: grid`. The `controls` part was removed, so styles on `::part(controls)` no longer apply. `[part="buttons"]` is a flex row with prev and next at both ends.
 - **Label and pager slots were replaced by attributes.** Instead of the `prev-label` and `next-label` slots, set the `prev-label` and `next-label` attributes; the text is in the `prev-label` and `next-label` parts, which you can hide to show only an icon. Instead of the `sep` slot, set `pager-separator`. The `current` and `total` slots were removed; style the `current`, `page-sep` and `total` parts.
 - **Accessibility:** the host is exposed as a `region` with the "carousel" role description through `ElementInternals`, instead of an `aria-roledescription` attribute. Only the active nav dot is in the tab order; arrow keys move between dots.
-
-## Support
-
-If Snap Carousel is useful to you, you can support my work with a small donation on [Ko-fi](https://ko-fi.com/corentingautier). Thank you!
 
 ## Contributing
 
