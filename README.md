@@ -5,7 +5,7 @@
 
 Snap Carousel is a lightweight (4kB gzip core) **CSS scroll snap carousel**: a zero-dependency `<snap-carousel>` custom element built on [scroll-snap](https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-snap-type) and shadow DOM. Perfect for creating responsive, performant, and customizable image galleries, product carousels, and content sliders.
 
-[View Demo](https://corentin-gautier.github.io/snap-carousel/) | [Documentation](#documentation) | [Installation](#installation) | [Usage](#usage)
+[View Demo](https://corentingautier.dev/snap-carousel/) | [Documentation](#documentation) | [Installation](#installation) | [Usage](#usage)
 
 ## Support
 
@@ -175,7 +175,7 @@ Example responsive configuration:
 </snap-carousel>
 ```
 
-See the [Demo page](https://corentin-gautier.github.io/snap-carousel/) for more examples and configuration options.
+See the [Demo page](https://corentingautier.dev/snap-carousel/) for more examples and configuration options.
 
 ### Examples
 

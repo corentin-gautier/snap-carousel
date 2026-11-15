@@ -63,7 +63,7 @@
     "bugs": {
         "url": "https://github.com/corentin-gautier/snap-carousel/issues"
     },
-    "homepage": "https://corentin-gautier.github.io/snap-carousel",
+    "homepage": "https://corentingautier.dev/snap-carousel",
     "devDependencies": {
         "@rollup/plugin-terser": "^0.4.4",
         "@types/node": "^20.11.24",
